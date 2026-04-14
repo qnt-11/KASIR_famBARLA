@@ -8,7 +8,7 @@
   "theme_color": "#1e3a8a",
   "icons": [
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%23ffffff'/%3E%3Cpath d='M96 96h128v128H96zm32 32h64v64h-64zm160-32h128v128H288zm32 32h64v64h-64zM96 288h128v128H96zm32 32h64v64h-64zm160-32h32v32h-32zm64 0h64v32h-64zm-64 64h32v64h-32zm64 0h32v32h-32zm32 32h32v32h-32z' fill='%23000000'/%3E%3C/svg%3E",
+      "src": "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48Y2lyY2xlIGN4PSIyNTYiIGN5PSIyNTYiIHI9IjI1NiIgZmlsbD0id2hpdGUiLz48ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgxMTIsIDExMikiIGZpbGw9ImJsYWNrIj48cGF0aCBkPSJNMCAwaDEwMHYxMDBIMHYxMDB6bTIwIDIwaDYwdjYwSDIwdjYwek00NCA0NGgxNnYxNkg0NHYxNnoiLz48cGF0aCBkPSJNMTg4IDBoMTAwdjEwMEgxODhWMTBwek0yMDggMjBoNjB2NjBoLTYwVjIwek0yMzIgNDRoMTZ2MTZoLTE2djE2WiIvPjxwYXRoIGQ9Ik0wIDE4OGgxMDB2MTAwSDBWMTg4em0yMCAyMGg2MHY2MEgyMHY2MHpMNDQgMjMyaDE2djE2SDQ0djE2WiIvPjxyZWN0IHg9IjE4OCIgeT0iMTg4IiB3aWR0aD=yMjgiIGhlaWdodD=yMjgiLz48cmVjdCB4PSIyNDQiIHk9IjE4OCIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2Ii8+PHJlY3QgeD=yMTg4IiB3aWR0aD=yMTYiIGhlaWdodD=yMTYiLz48cmVjdCB4PSIyNDQiIHk9IjIxOCIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2Ii8+PHJlY3QgeD=yMjcyIiB3aWR0aD=yMTYiIGhlaWdodD=yMTYiLz48cmVjdCB4PSIyNDQiIHk9IjIzMiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjE2Ii8+PHJlY3QgeD=yMjcyIiB5PSIyNjAiIHdpZHRoPSIxNiIgaGVpZ2h0PSIxNiIvPjwvZz48L3N2Zz4=",
       "sizes": "192x192 512x512",
       "type": "image/svg+xml",
       "purpose": "any maskable"
