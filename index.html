@@ -136,9 +136,9 @@
         <div class="bg-[#1e1f22] w-full max-w-xs rounded-3xl p-6 shadow-2xl space-y-4 border-t-[8px]" id="m-border">
             <h3 id="m-title" class="font-black text-white text-center uppercase text-lg italic"></h3>
             <p id="m-desc" class="text-[11px] text-white font-bold text-center uppercase whitespace-pre-wrap"></p>
-            <div id="m-input-box" style="display:none;" class="flex gap-2 items-center bg-[#131314] p-1 rounded-xl border border-[#4b5563]">
-                <input type="text" id="m-input" oninput="handleModalInput(this)" class="flex-1 p-3 bg-transparent border-none rounded-xl text-center text-xl font-black outline-none !border-0">
-                <button id="m-scan-btn" style="display:none;" class="w-10 h-10 bg-transparent flex items-center justify-center active:scale-90 transition pr-2"><div class="premium-scan w-7 h-7 border border-white !rounded-md"></div></button>
+            <div id="m-input-box" style="display:none;" class="flex gap-2 items-center">
+                <input type="text" id="m-input" oninput="handleModalInput(this)" class="flex-1 w-0 p-3 rounded-xl text-center text-xl font-black outline-none focus:border-[#3b82f6]">
+                <button id="m-scan-btn" style="display:none;" class="w-12 h-12 shrink-0 bg-transparent flex items-center justify-center active:scale-90 transition"><div class="premium-scan w-8 h-8 border-2 border-white rounded-md"></div></button>
             </div>
             <div class="flex gap-2 pt-1">
                 <button id="m-cancel" onclick="closeModal()" style="display:none;" class="flex-1 py-3 text-xs font-black text-white uppercase rounded-xl hover:bg-[#2b2d31] transition">Batal</button>
@@ -431,7 +431,7 @@
             if (type === 'barcode') openModal("EDIT BARCODE", brg.bc||"", brg.nama, (v) => { 
                 if(v && db.supplier.some(s=>s.barang.some(b=>b.bc===v.trim() && b.nama!==brg.nama))) return openModal("DUPLIKAT","","Barcode sudah dipakai!",null,"alert");
                 db.supplier[selS].barang[selB].bc = v.trim(); saveData(); 
-            }, "prompt", "text", true);
+            }, "prompt", "numeric", true);
             if (type === 'retur') openModal("RETUR", "", brg.nama, (v) => { let q = Math.abs(parseInt(v))||0; if(q<=0||q>brg.stok) return openModal("GAGAL","","Jumlah tidak valid!",null,"alert"); db.supplier[selS].barang[selB].stok -= q; let ada = db.retur.find(r=>r.sup===db.supplier[selS].nama && r.nama===brg.nama); if(ada) ada.qty+=q; else db.retur.push({sup:db.supplier[selS].nama, nama:brg.nama, qty:q}); cart=[]; saveData(); }, "prompt", "numeric");
             if (type === 'hapus') openModal("HAPUS?", "", `Hapus ${brg.nama}?`, () => { db.retur=db.retur.filter(r=>!(r.sup===db.supplier[selS].nama && r.nama===brg.nama)); cart=[]; db.supplier[selS].barang.splice(selB,1); saveData(); }, "confirm");
         }
@@ -459,7 +459,7 @@
             btnS.style.display = withScan?'flex':'none';
             if (t.includes("HAPUS?")) { btnOk.className = "flex-1 py-3 bg-[#ff0000] text-white rounded-xl text-xs font-black shadow-md uppercase active:scale-95 transition"; mBrd.style.borderTopColor = "#ff0000"; } 
             else if (t.includes("RETUR")) { btnOk.className = "flex-1 py-3 bg-[#facc15] text-black rounded-xl text-xs font-black shadow-md uppercase active:scale-95 transition"; mBrd.style.borderTopColor = "#facc15"; }
-            else if (t.includes("EDIT BARCODE") || t.includes("EDIT HARGA")) { btnOk.className = "flex-1 py-3 bg-[#ffffff] text-black rounded-xl text-xs font-black shadow-md uppercase active:scale-95 transition"; mBrd.style.borderTopColor = "#ffffff"; }
+            else if (t.includes("EDIT BARCODE")) { btnOk.className = "flex-1 py-3 bg-[#ffffff] text-black rounded-xl text-xs font-black shadow-md uppercase active:scale-95 transition"; mBrd.style.borderTopColor = "#ffffff"; }
             else { btnOk.className = "flex-1 py-3 bg-[#3b82f6] text-white rounded-xl text-xs font-black shadow-sm uppercase active:scale-95 transition"; mBrd.style.borderTopColor = "#3b82f6"; }
             btnS.onclick = () => bukaKameraPopup('modal');
             btnOk.onclick = () => { if(cb) mode==='prompt'?cb(inp.value):cb(); closeModal(); };
