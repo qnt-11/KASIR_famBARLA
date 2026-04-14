@@ -67,7 +67,7 @@
         </div>
     </header>
 
-    <div id="modal-kamera" class="modal-bg z-[1100]">
+    <div id="modal-kamera" class="modal-bg z-[1400]">
         <div class="bg-white w-full max-w-sm rounded-3xl p-4 shadow-2xl relative">
             <div id="scanner-modal-layer" class="w-full h-72 bg-black rounded-2xl overflow-hidden border-4 border-slate-100"></div>
             <button onclick="matikanKamera()" class="w-full bg-red-600 text-white font-black py-4 mt-3 rounded-2xl uppercase text-sm italic active:scale-95 transition">Tutup Scanner</button>
@@ -407,7 +407,10 @@
 
         function editSupplier(i) { closeSheet(); let old = db.supplier[i].nama; openModal("EDIT SUPPLIER", old, "", (v) => { let n = v.trim(); if(!n||db.supplier.some(s=>s.nama.toUpperCase()===n.toUpperCase() && s.nama!==old)) return openModal("GAGAL","","Nama sudah ada!",null,"alert"); db.retur.forEach(r=>{if(r.sup===old) r.sup=n;}); db.supplier[i].nama = n; saveData(); }, "prompt"); }
         function openModalSup() { openModal("TAMBAH SUPPLIER", "", "", (v) => { if(v.trim()) { db.supplier.unshift({nama:v.trim(), barang:[]}); saveData(); } }, "prompt"); }
-        function delSup(n) { openModal("HAPUS?", "", `Hapus Supplier ${n}?`, () => { db.retur=db.retur.filter(x=>x.sup!==n); db.supplier=db.supplier.filter(x=>x.nama!==n); openIdx=null; cart=[]; saveData(); }, "confirm"); }
+        
+        /* SAYA TAMBAHKAN closeSheet(); DI SINI AGAR MENU HAPUS SUPPLIER OTOMATIS TERTUTUP */
+        function delSup(n) { closeSheet(); openModal("HAPUS?", "", `Hapus Supplier ${n}?`, () => { db.retur=db.retur.filter(x=>x.sup!==n); db.supplier=db.supplier.filter(x=>x.nama!==n); openIdx=null; cart=[]; saveData(); }, "confirm"); }
+        
         function addB(i) {
             const n = document.getElementById(`ib-n-${i}`).value.trim(), bc = document.getElementById(`ib-bc-${i}`).value.trim(), h = clean(document.getElementById(`ib-h-${i}`).value), s = Math.abs(parseInt(document.getElementById(`ib-s-${i}`).value))||0;
             if(!n||h<=0) return;
