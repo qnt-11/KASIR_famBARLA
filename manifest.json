@@ -2,7 +2,7 @@
   "name": "KASIR BARLA STORE",
   "short_name": "KASIR",
   "start_url": "./index.html",
-  "display": "fullscreen",
+  "display": "standalone",
   "background_color": "#1e3a8a",
   "theme_color": "#1e3a8a",
   "icons": [
