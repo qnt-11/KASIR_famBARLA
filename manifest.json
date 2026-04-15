@@ -1,12 +1,11 @@
 {
-  "name": "BARLA STORE v18.0 PREMIUM",
+  "name": "BARLA STORE v18.0",
   "short_name": "BARLA KASIR",
-  "description": "Aplikasi Kasir Barla Store Premium",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#131314",
   "theme_color": "#131314",
-  "orientation": "portrait-primary",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "icon-192.png",
