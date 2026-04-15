@@ -403,7 +403,7 @@
             })); });
             const trxId = Date.now();
             db.history.unshift({ id: trxId, waktu: `${getTglStr()}-${getJamStr()}`, items: JSON.parse(JSON.stringify(cart)), total: t, bayar: b, kembali: b-t });
-            if (db.history.length > 50) db.history.pop();
+            if (db.history.length > 500) db.history.pop();
             if (tipe === 'print') cetakUlang(trxId); else if (tipe === 'wa') waUlang(trxId);
             cart = []; document.getElementById('i-bayar').value = ""; saveData(); renderCart(); refreshDL();
         }
