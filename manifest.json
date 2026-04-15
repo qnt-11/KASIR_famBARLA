@@ -1,13 +1,20 @@
 {
-  "name": "KASIR BARLA STORE",
-  "short_name": "KASIR",
+  "name": "BARLA STORE v18.0 PREMIUM",
+  "short_name": "BARLA KASIR",
+  "description": "Aplikasi Kasir Barla Store Premium",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#131314",
   "theme_color": "#131314",
+  "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "https://cdn-icons-png.flaticon.com/512/3514/3514491.png",
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
