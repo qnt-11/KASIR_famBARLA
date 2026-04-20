@@ -2,12 +2,15 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="theme-color" content="#131314">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="BARLA KASIR">
-    <title>BARLA STORE v18.0 PREMIUM</title>
+    <meta name="apple-mobile-web-app-title" content="STORE famBARLA">
+    <title>STORE famBARLA v30.0 Custom</title>
     <link rel="manifest" href="./manifest.json">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -18,7 +21,6 @@
         body { font-family: "Segoe UI", sans-serif; background: var(--gemini-bg); color: #ffffff; -webkit-tap-highlight-color: transparent; overflow-x: hidden; }
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         
-        /* CSS KHUSUS PRINT SUPER KAKU ANTI-BERANTAKAN */
         @media print {
             @page { margin: 0; size: auto; }
             body { background: white; margin: 0; padding: 0; }
@@ -32,27 +34,34 @@
         .sheet-bg { background: rgba(0, 0, 0, 0.85); z-index: 1000; position: fixed; inset: 0; display: none; align-items: flex-end; }
         .sheet-content { background: var(--gemini-grey); width: 100%; border-radius: 2rem 2rem 0 0; padding: 2rem; transform: translateY(100%); transition: transform 0.3s; }
         .sheet-active .sheet-content { transform: translateY(0); }
-        .modal-bg { background: rgba(0, 0, 0, 0.9); z-index: 1200; position: fixed; inset: 0; display: none; align-items: center; justify-content: center; padding: 20px; }
-        .nav-btn { transition: all 0.2s; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; background: transparent; border: none; }
-        .nav-btn i { font-size: 15px; color: #6b7280; transition: color 0.2s; } 
+        .modal-bg { background: rgba(0, 0, 0, 0.9); position: fixed; inset: 0; display: none; align-items: center; justify-content: center; padding: 20px; z-index: 1500; }
+        
+        .nav-btn { transition: all 0.2s; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; background: transparent; border: none; padding-top: 15px; padding-bottom: 10px; }
+        .nav-btn i { font-size: 16px; color: #6b7280; transition: color 0.2s; } 
         .nav-btn span { font-size: 9px; font-weight: 700; text-transform: uppercase; color: #6b7280; } 
-        .active-nav { background: transparent !important; border: none !important; }
-        .active-nav i { color: #ffffff !important; }
-        .active-nav span { color: #6b7280 !important; }
-        .premium-scan { border-radius: 8px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .premium-scan::before { content: ""; width: 80%; height: 2px; background: #ff0000; position: absolute; box-shadow: 0 0 8px #ff0000; animation: laser 1.5s infinite ease-in-out; z-index: 10; }
-        @keyframes laser { 0%, 100% { top: 20%; } 50% { top: 75%; } }
-        #qr-shaded-region { display: none !important; }
+        .active-nav i, .active-nav span { color: #ffffff !important; }
+
+        .premium-scan { border-radius: 6px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; }
+        .premium-scan::before { content: ""; width: 85%; height: 2px; background: #ff0000; position: absolute; box-shadow: 0 0 10px #ff0000; animation: laser 1.8s infinite ease-in-out; z-index: 10; }
+        @keyframes laser { 0%, 100% { top: 15%; } 50% { top: 80%; } }
+
         #scanner-modal-layer video { object-fit: cover !important; }
         input { background-color: var(--gemini-bg) !important; color: #ffffff !important; border: 1px solid #4b5563 !important; }
-        input::placeholder { color: #94a3b8 !important; }
+        
+        .m-dual-wrapper { border-width: 2px; border-radius: 1rem; overflow: hidden; background: #131314; display: flex; align-items: stretch; margin-bottom: 10px; }
+        .m-label-box { width: 85px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 10px; text-transform: uppercase; cursor: pointer; transition: opacity 0.2s; }
+        .m-label-box:active { opacity: 0.7; }
+        button:focus { outline: none; box-shadow: none; }
+        
+        /* Indikator Awan (Auto-Sync) */
+        .sync-dot { display: none; width: 6px; height: 6px; background-color: #ff0000; border-radius: 50%; position: absolute; top: -2px; right: -2px; box-shadow: 0 0 5px #ff0000; }
     </style>
 </head>
-<body class="pb-20">
+<body class="pb-24">
 
     <header class="bg-[#131314] p-3 text-white shadow-md sticky top-0 z-50 flex justify-between items-center no-print border-b border-[#2b2d31]">
         <div>
-            <h1 class="text-base font-black italic uppercase leading-none text-white">BARLA STORE</h1>
+            <h1 class="text-base font-black italic uppercase leading-none text-white tracking-wide flex items-baseline gap-1">STORE <span class="text-[8px] font-bold lowercase transform -translate-y-[2px] inline-block">fam</span>BARLA</h1>
             <p id="h-time" class="text-[8px] mt-1 uppercase"></p>
         </div>
         <div class="flex items-center gap-4">
@@ -60,40 +69,27 @@
                 <button onclick="bukaHistory()" class="active:scale-75 transition"><i class="fas fa-history text-[18px] text-white"></i></button>
                 <button onclick="bukaKameraPopup('auto')" class="active:scale-75 transition"><div class="premium-scan w-7 h-7 border-2 border-white"></div></button>
             </div>
-            
             <div id="h-stok" class="hidden flex items-center gap-3">
-                <button onclick="uploadCloud()" class="flex flex-col items-center text-sky-400 active:scale-75 transition mt-0.5">
+                <button onclick="uploadCloud(false)" class="text-sky-400 active:scale-75 transition flex flex-col items-center mt-0.5 relative">
                     <i class="fas fa-cloud-upload-alt text-lg"></i>
                     <span class="text-[7px] font-bold mt-0.5 uppercase text-white">UPLOAD</span>
+                    <div id="sync-indicator" class="sync-dot"></div>
                 </button>
-
                 <div class="relative flex items-center h-full">
-                    <button onclick="toggleMenu('floatingStokMenu')" class="text-white active:scale-75 transition px-2 py-1">
-                        <i class="fas fa-ellipsis-v text-sm"></i>
-                    </button>
-
-                    <div id="floatingStokMenu" class="hidden absolute right-0 top-full mt-3 w-40 p-2 bg-[#1e1f22] border border-[#2b2d31] rounded-xl shadow-2xl z-[60] space-y-1.5">
-                        <button onclick="toggleMenu('floatingStokMenu'); downloadCloud();" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg border border-sky-400 text-white hover:bg-[#2b2d31] transition">
-                            <i class="fas fa-cloud-download-alt text-base text-sky-400 w-5 text-center"></i>
-                            <span class="text-[10px] font-bold uppercase tracking-wide">Load Cloud</span>
-                        </button>
-                        <div class="border-t border-[#2b2d31] my-1"></div>
-                        <button onclick="toggleMenu('floatingStokMenu'); exportData();" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg border border-[#217346] text-[#217346] hover:bg-[#2b2d31] transition">
-                            <i class="fas fa-file-export text-base w-5 text-center"></i>
-                            <span class="text-[10px] font-bold uppercase tracking-wide">Save Excel</span>
-                        </button>
-                        <button onclick="toggleMenu('floatingStokMenu'); document.getElementById('fIn').click();" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg border border-[#217346] text-[#217346] hover:bg-[#2b2d31] transition">
-                            <i class="fas fa-file-import text-base w-5 text-center"></i>
-                            <span class="text-[10px] font-bold uppercase tracking-wide">Load Excel</span>
-                        </button>
+                    <button onclick="toggleMenu('floatingStokMenu')" class="text-white active:scale-75 transition px-2 py-1"><i class="fas fa-ellipsis-v text-sm"></i></button>
+                    <div id="floatingStokMenu" class="hidden absolute right-0 top-full mt-3 w-40 p-2 bg-[#1e1f22] border border-[#2b2d31] rounded-xl shadow-2xl z-[300] space-y-1.5">
+                        <button onclick="toggleMenu('floatingStokMenu'); exportData();" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg border border-[#217346] text-[#217346] hover:bg-[#2b2d31] transition"><i class="fas fa-file-export text-base w-5 text-center"></i><span class="text-[10px] font-bold uppercase tracking-wide">Save Excel</span></button>
+                        <button onclick="toggleMenu('floatingStokMenu'); document.getElementById('fIn').click();" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg border border-[#217346] text-[#217346] hover:bg-[#2b2d31] transition"><i class="fas fa-file-import text-base w-5 text-center"></i><span class="text-[10px] font-bold uppercase tracking-wide">Load Excel</span></button>
                         <input type="file" id="fIn" class="hidden" accept=".csv, .xlsx, .xls" onchange="importData(this)">
+                        <div class="border-t border-[#2b2d31] my-1"></div>
+                        <button onclick="toggleMenu('floatingStokMenu'); konfirmasiDownload();" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg border border-sky-400 text-white hover:bg-[#2b2d31] transition"><i class="fas fa-cloud-download-alt text-base text-sky-400 w-5 text-center"></i><span class="text-[10px] font-bold uppercase tracking-wide">Load Cloud</span></button>
                     </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <div id="modal-kamera" class="modal-bg z-[1400]">
+    <div id="modal-kamera" class="modal-bg z-[2100]" onclick="if(event.target.id==='modal-kamera') matikanKamera();">
         <div class="bg-[#1e1f22] w-full max-w-sm rounded-3xl p-4 shadow-2xl relative border border-[#2b2d31]">
             <div id="scanner-modal-layer" class="w-full h-72 bg-black rounded-2xl overflow-hidden border-4 border-[#2b2d31]"></div>
             <button onclick="matikanKamera()" class="w-full bg-[#ff0000] text-white font-black py-4 mt-3 rounded-2xl uppercase text-sm italic active:scale-95 transition">Tutup Scanner</button>
@@ -105,20 +101,18 @@
             <div class="bg-[#1e1f22] p-3 rounded-xl shadow-sm border border-[#2b2d31] mb-2">
                 <div class="flex gap-2 mb-2">
                     <div class="relative flex-1">
-                        <input type="text" id="k-nama" list="db-list" oninput="handleInputNama(this)" placeholder="Nama Barang" class="w-full pl-3 pr-9 py-2 rounded-lg font-bold text-xs outline-none transition-all">
+                        <input type="text" id="k-nama" list="db-list" oninput="handleInputNama(this)" placeholder="Nama Barang / Barcode" class="w-full pl-3 pr-9 py-2 rounded-lg font-bold text-xs outline-none transition-all">
                         <button onclick="clearKasir()" class="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 flex justify-center items-center text-[#ff0000] rounded-full transition z-10"><i class="fas fa-times text-sm"></i></button>
                         <datalist id="db-list"></datalist>
                     </div>
                 </div>
                 <div class="flex gap-2">
                     <div class="relative w-2/5"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-[9px] font-black text-white z-10">Rp</span><input type="text" id="k-harga" inputmode="numeric" oninput="formatRupiah(this)" placeholder="Harga" class="w-full pl-7 pr-2 py-2 rounded-lg font-bold text-xs outline-none transition-all"></div>
-                    <input type="number" id="k-qty" inputmode="numeric" placeholder="Qty" class="w-1/5 px-1 py-2 rounded-lg font-bold text-xs text-center outline-none transition-all">
+                    <input type="number" step="0.01" id="k-qty" inputmode="decimal" placeholder="Qty" class="w-1/5 px-1 py-2 rounded-lg font-bold text-xs text-center outline-none transition-all">
                     <button onclick="tambahItem()" class="w-2/5 bg-[#3b82f6] hover:opacity-80 text-white font-bold text-xs rounded-lg shadow-sm active:scale-95 transition flex items-center justify-center gap-1"><i class="fas fa-plus"></i> ADD</button>
                 </div>
             </div>
-            
             <div id="list-cart" class="space-y-1.5 bg-[#131314]"></div>
-            
             <div id="p-bayar" class="fixed bottom-[48px] left-0 w-full bg-[#131314] px-4 py-3 shadow-[0_-4px_15px_rgba(0,0,0,0.8)] border-t border-[#2b2d31] z-30">
                 <div class="flex justify-between items-center mb-2 gap-3 max-w-md mx-auto">
                     <div class="flex flex-col"><span class="text-[9px] font-black text-white uppercase tracking-wide">Total</span><span id="t-total" class="text-2xl font-black text-[#ff0000] leading-none tracking-tighter">Rp 0</span></div>
@@ -147,32 +141,105 @@
                     <button onclick="toggleStokSearch(false)" class="absolute right-2 top-1/2 -translate-y-1/2 text-[#ff0000] font-black text-sm p-1"><i class="fas fa-times"></i></button>
                 </div>
             </div>
-            <div id="stok-content" class="space-y-3 pb-20"></div>
-            <button onclick="openModalSup()" id="fab" class="fixed right-5 bottom-16 w-12 h-12 bg-[#3b82f6] text-white rounded-xl shadow-lg flex items-center justify-center text-lg z-40 active:scale-90 transition border border-[#3b82f6]"><i class="fas fa-plus"></i></button>
+            <div id="stok-content" class="space-y-3 pb-24"></div>
+            
+            <button onclick="openModalSup()" id="fab" class="fixed right-5 bottom-[100px] w-[56px] h-[56px] bg-[#facc15] text-[#131314] rounded-[16px] shadow-[0_4px_15px_rgba(0,0,0,0.6)] flex items-center justify-center text-2xl z-50 active:scale-90 transition border border-[#ca8a04]">
+                <i class="fas fa-plus"></i>
+            </button>
         </div>
     </main>
 
-    <div id="modal-history" class="modal-bg">
-        <div class="bg-[#1e1f22] w-full max-w-sm rounded-3xl p-5 shadow-2xl flex flex-col border border-[#2b2d31]" style="max-height: 80vh;">
+    <div id="modal-history" class="modal-bg z-[1600]">
+        <div class="bg-[#1e1f22] w-full max-w-sm rounded-3xl p-5 shadow-2xl flex flex-col border border-[#2b2d31]" style="max-height: 85vh;">
             <div class="flex justify-between items-center mb-3 border-b border-[#2b2d31] pb-2"><h3 class="font-black text-[#3b82f6] text-lg uppercase italic"><i class="fas fa-history mr-2"></i>Riwayat Jual</h3><button onclick="tutupHistory()" class="text-[#ff0000] font-bold text-2xl leading-none">&times;</button></div>
+            
+            <div class="flex flex-col gap-2 mb-3 border-b border-[#2b2d31] pb-3">
+                <div class="flex justify-between items-center">
+                    <span class="text-[10px] font-bold text-[#6b7280] uppercase">Omzet Lokal Hari Ini:</span>
+                    <span id="omzet-hari-ini" class="text-sm font-black text-[#25D366]">Rp 0</span>
+                </div>
+                <div class="flex gap-2 items-center mt-1">
+                    <input type="date" id="input-cari-tanggal" class="flex-1 bg-[#131314] text-white text-xs font-bold p-2 rounded-lg border border-[#4b5563] outline-none">
+                    <button onclick="cariRiwayatCloud()" class="bg-[#3b82f6] text-white px-3 py-2.5 rounded-lg text-[10px] font-bold uppercase active:scale-95 transition whitespace-nowrap"><i class="fas fa-cloud-download-alt mr-1"></i> Cari Cloud</button>
+                </div>
+            </div>
+
             <div id="history-content" class="overflow-y-auto flex-1 space-y-3 pr-1"></div>
-            <button onclick="hapusHistory()" class="mt-3 w-full py-3 bg-[#2b2d31] border border-[#ff0000] text-[#ff0000] rounded-xl text-xs font-black uppercase transition-all">Bersihkan Riwayat</button>
+            <button onclick="hapusHistory()" class="mt-3 w-full py-3 bg-[#2b2d31] border border-[#ff0000] text-[#ff0000] rounded-xl text-xs font-black uppercase transition-all">Bersihkan Riwayat Lokal</button>
+        </div>
+    </div>
+
+    <div id="b-modal-isi-grosir" class="modal-bg z-[2200]">
+        <div class="bg-[#1e1f22] w-full max-w-xs rounded-3xl p-6 shadow-2xl space-y-4 border-t-[8px] border-[#6b7280]">
+            <h3 id="ig-title" class="font-black text-center uppercase text-lg italic text-[#6b7280]">ISI PER GROSIR</h3>
+            <div class="flex gap-2 items-center rounded-2xl border-2 overflow-hidden bg-transparent border-[#6b7280]">
+                <input type="number" id="ig-input" placeholder="0" class="flex-1 w-0 p-3 bg-transparent border-none text-center text-xl font-black outline-none text-white">
+            </div>
+            <button id="ig-confirm" tabindex="-1" class="w-full py-3 text-white rounded-xl text-xs font-black shadow-sm uppercase active:scale-95 transition bg-[#6b7280]">Oke</button>
+        </div>
+    </div>
+
+    <div id="modal-retur-step1" class="modal-bg z-[1600]">
+        <div class="bg-[#1e1f22] w-full max-w-xs rounded-3xl p-6 shadow-2xl space-y-4 border-t-[8px] border-[#facc15]">
+            <h3 class="font-black text-center uppercase text-lg italic text-[#facc15]">RETUR BARANG</h3>
+            <p id="mr-nama-brg" class="text-[11px] text-white font-bold text-center uppercase whitespace-pre-wrap"></p>
+            <div class="space-y-2 mt-4">
+                <button id="btn-retur-in" onclick="selectReturType('in')" class="w-full p-3 rounded-xl font-bold uppercase text-[11px] border border-[#4b5563] text-[#6b7280] bg-[#2b2d31] transition">RETUR DARI PEMBELI</button>
+                <button id="btn-retur-out" onclick="selectReturType('out')" class="w-full p-3 rounded-xl font-bold uppercase text-[11px] border border-[#4b5563] text-[#6b7280] bg-[#2b2d31] transition">RETUR KE SUPPLIER</button>
+            </div>
+            <div class="flex gap-2 pt-2">
+                <button onclick="document.getElementById('modal-retur-step1').style.display='none'" class="flex-1 py-3 text-xs font-black text-white uppercase rounded-xl hover:bg-[#2b2d31] border border-[#facc15] transition">Batal</button>
+                <button onclick="confirmReturStep1()" tabindex="-1" class="flex-1 py-3 text-black bg-[#facc15] rounded-xl text-xs font-black shadow-sm uppercase active:scale-95 transition">OK</button>
+            </div>
         </div>
     </div>
 
     <div id="a-sheet" class="sheet-bg" onclick="closeSheet(event)"><div class="sheet-content border-t border-[#2b2d31]"><div id="sheet-opts" class="grid gap-3"></div></div></div>
     
-    <div id="b-modal" class="modal-bg z-[1300]">
+    <div id="b-modal" class="modal-bg z-[1800]">
         <div class="bg-[#1e1f22] w-full max-w-xs rounded-3xl p-6 shadow-2xl space-y-4 border-t-[8px]" id="m-border">
-            <h3 id="m-title" class="font-black text-white text-center uppercase text-lg italic"></h3>
+            <h3 id="m-title" class="font-black text-center uppercase text-lg italic transition-colors"></h3>
             <p id="m-desc" class="text-[11px] text-white font-bold text-center uppercase whitespace-pre-wrap"></p>
-            <div id="m-input-box" style="display:none;" class="flex gap-2 items-center rounded-2xl border-2 overflow-hidden">
-                <input type="text" id="m-input" oninput="handleModalInput(this)" class="flex-1 w-0 p-3 bg-transparent border-none text-center text-xl font-black outline-none text-white">
-                <button id="m-scan-btn" style="display:none;" class="w-12 h-12 shrink-0 bg-transparent flex items-center justify-center active:scale-90 transition pr-2"><div class="premium-scan w-8 h-8 border border-white rounded-md"></div></button>
+            
+            <div id="m-dual-input" style="display:none;" class="space-y-0">
+                <div class="m-dual-wrapper" id="m-dw-ecer">
+                    <input type="text" inputmode="decimal" id="m-input-kecil" placeholder="0" class="flex-1 w-0 p-3 bg-transparent border-none text-center text-xl font-black outline-none text-white">
+                    <div class="m-label-box relative" id="m-lb-ecer">
+                        <span id="m-label-kecil" class="m-auto text-white flex items-center gap-1"></span>
+                        <div id="m-dd-ecer" class="hidden absolute top-[110%] left-0 w-full min-w-[100px] bg-[#1e1f22] border border-[#4b5563] rounded-lg shadow-xl z-[3000] overflow-hidden"></div>
+                    </div>
+                </div>
+                <div class="m-dual-wrapper" id="m-dw-grosir">
+                    <input type="text" inputmode="decimal" id="m-input-besar" placeholder="0" class="flex-1 w-0 p-3 bg-transparent border-none text-center text-xl font-black outline-none text-white">
+                    <div class="m-label-box relative" id="m-lb-grosir">
+                        <span id="m-label-besar" class="m-auto text-white flex items-center gap-1"></span>
+                        <div id="m-dd-grosir" class="hidden absolute top-[110%] left-0 w-full min-w-[100px] bg-[#1e1f22] border border-[#4b5563] rounded-lg shadow-xl z-[3000] overflow-hidden"></div>
+                    </div>
+                </div>
             </div>
-            <div class="flex gap-2 pt-1">
-                <button id="m-cancel" onclick="closeModal()" style="display:none;" class="flex-1 py-3 text-xs font-black text-white uppercase rounded-xl hover:bg-[#2b2d31] transition">Batal</button>
-                <button id="m-confirm" class="flex-1 py-3 text-white rounded-xl text-xs font-black shadow-sm uppercase active:scale-95 transition">Oke</button>
+
+            <div id="m-dual-barcode" style="display:none;" class="space-y-2">
+                <div class="relative flex items-center bg-[#000] rounded-xl overflow-hidden border border-[#ffffff]">
+                    <input id="mb-input-kecil" inputmode="numeric" placeholder="BC SATUAN" class="w-full p-3 bg-transparent border-none text-xs outline-none text-white font-bold tracking-widest text-center">
+                    <div class="premium-scan absolute right-2 w-6 h-6 border border-white/20"></div>
+                    <button onclick="bukaKameraPopup('mb-input-kecil')" class="absolute inset-0 z-20"></button>
+                </div>
+                <div class="relative flex items-center bg-[#000] rounded-xl overflow-hidden border border-[#ffffff]">
+                    <input id="mb-input-besar" inputmode="numeric" placeholder="BC GROSIR" class="w-full p-3 bg-transparent border-none text-xs outline-none text-white font-bold tracking-widest text-center">
+                    <div class="premium-scan absolute right-2 w-6 h-6 border border-white/20"></div>
+                    <button onclick="bukaKameraPopup('mb-input-besar')" class="absolute inset-0 z-20"></button>
+                </div>
+            </div>
+
+            <div id="m-single-input-box" style="display:none;" class="flex gap-2 items-center rounded-2xl border-2 overflow-hidden transition-colors">
+                <input type="text" id="m-input" class="flex-1 w-0 p-3 bg-transparent border-none text-center text-xl font-black outline-none text-white">
+                <button id="m-scan-btn" style="display:none;" class="w-12 h-12 shrink-0 bg-transparent flex items-center justify-center active:scale-90 transition pr-2"><div class="premium-scan w-8 h-8 border border-white"></div></button>
+            </div>
+            
+            <div class="flex gap-2 pt-1" id="m-btn-container">
+                <button id="m-cancel" onclick="closeModal()" style="display:none;" class="flex-1 py-3 text-xs font-black text-white uppercase rounded-xl hover:bg-[#2b2d31] border border-[#4b5563] transition">Batal</button>
+                <button id="m-back" onclick="backToStep1()" style="display:none;" class="flex-1 py-3 text-xs font-black text-[#6b7280] uppercase rounded-xl hover:bg-[#2b2d31] border border-[#4b5563] transition">Kembali</button>
+                <button id="m-confirm" tabindex="-1" class="flex-1 py-3 text-white rounded-xl text-xs font-black shadow-sm uppercase active:scale-95 transition z-[2300] relative">Oke</button>
             </div>
         </div>
     </div>
@@ -184,590 +251,115 @@
     <div id="areaStruk" class="hidden"><div id="p-konten"></div></div>
 
     <script>
-        const KEY = 'BARLA_ULTRA_V18_0';
-        const CLOUD_URL = "https://script.google.com/macros/s/AKfycby43-uejqHJ5e2oFc2xO3vmvltAxQKSD3z3plOhK3CBmNbw_dDRNNYmSsSIhpbAg3NA/exec"; 
+        const KEY = 'STORE_FAM_BARLA_V30_CUSTOM';
+        // PASTI GANTI INI DENGAN URL APPS SCRIPT ANDA
+        const CLOUD_URL = "URL_GOOGLE_APPS_SCRIPT_ANDA_DI_SINI"; 
 
         let db = { supplier: [], retur: [], history: [] }; 
-        let cart = []; 
-        let isScanning = false, html5QrCode = null, curTab = 'sup', selS = null, selB = null, openIdx = null;
+        let cart = []; let tempCloudHistory = [];
+        let isScanning = false, html5QrCode = null, curTab = 'sup', selS = null, selB = null, openIdx = null, pendingIdxGrosir = null; 
+        let isKasirGrosir = false, selKasirSup = null, activeReturType = null, activeReturItem = null, curDropdownOpen = null, activeDropdownCallback = null;
+        let unuploadedData = false; 
+
+        const ecerUnitList = ['pcs', 'renceng', 'botol', 'kg', 'bungkus', 'kaleng', 'sachet', 'strip'];
+        const grosirUnitList = ['karton', 'lusin', 'slop', 'pack'];
+        const printMap = { 'karton':'Krt', 'bungkus':'Bks', 'renceng':'Rcg', 'lusin':'Lsn', 'sachet':'Sch', 'strip':'Stp', 'botol':'Btl', 'slop':'Slp', 'pack':'Pck' };
+
+        function getMinLimit(unit) { const u = (unit || '').toLowerCase(); const limits = { 'karton':2, 'lusin':1, 'slop':1, 'pack':3, 'renceng':5, 'botol':10, 'kg':5, 'bungkus':15, 'kaleng':10, 'pcs':10, 'strip':15, 'sachet':12 }; return limits[u] || 0; }
 
         window.onload = () => { 
-            try {
-                const data = localStorage.getItem(KEY); 
-                if (data) db = JSON.parse(data);
-                if (!db.history) db.history = [];
-                const savedCart = localStorage.getItem('BARLA_CART');
-                if (savedCart) cart = JSON.parse(savedCart);
+            try { const data = localStorage.getItem(KEY); if (data) db = JSON.parse(data); if (!db.history) db.history = []; if(!db.retur) db.retur = [];
+                const savedCart = localStorage.getItem('BARLA_CART_' + KEY); if (savedCart) cart = JSON.parse(savedCart);
             } catch(e) { db = { supplier: [], retur: [], history: [] }; }
-            html5QrCode = new Html5Qrcode("scanner-modal-layer");
-            refreshClock(); setInterval(refreshClock, 60000); refreshDL(); renderCart();
-            setupScannerEvents();
-            
-            let savedMode = localStorage.getItem('BARLA_LAST_MODE') || 'kasir';
-            let savedTab = localStorage.getItem('BARLA_LAST_TAB') || 'sup';
-            curTab = savedTab;
-            mode(savedMode);
-            if(savedMode !== 'stok') renderStok(curTab);
+            html5QrCode = new Html5Qrcode("scanner-modal-layer"); refreshClock(); setInterval(refreshClock, 60000); refreshDL(); renderCart(); setupScannerEvents();
+            localStorage.setItem('BARLA_LAST_MODE', 'kasir'); mode('kasir'); 
         };
 
-        function toggleMenu(menuId) {
-            document.getElementById(menuId).classList.toggle('hidden');
-        }
+        document.addEventListener('keydown', (e) => { if (e.key === 'Enter') { const m = document.getElementById('b-modal'), mR1 = document.getElementById('modal-retur-step1'), mIg = document.getElementById('b-modal-isi-grosir'); if ((m && m.style.display === 'flex') || (mR1 && mR1.style.display === 'flex') || (mIg && mIg.style.display === 'flex')) { e.preventDefault(); } } });
+        document.addEventListener('click', (e) => { const sm = document.getElementById('floatingStokMenu'); if (sm && !sm.classList.contains('hidden') && !e.target.closest('[onclick*="toggleMenu"]') && !e.target.closest('#floatingStokMenu')) sm.classList.add('hidden'); if(curDropdownOpen && !e.target.closest(`#${curDropdownOpen.replace('dd', 'lb')}`) && !e.target.closest(`#${curDropdownOpen.replace('dd', 'btn')}`)) { document.getElementById(curDropdownOpen).classList.add('hidden'); curDropdownOpen = null; } });
 
-        document.addEventListener('click', (e) => {
-            const stokMenu = document.getElementById('floatingStokMenu');
-            if (stokMenu && !stokMenu.classList.contains('hidden') && 
-                !e.target.closest('[onclick*="toggleMenu(\'floatingStokMenu\')"]') && 
-                !e.target.closest('#floatingStokMenu')) {
-                stokMenu.classList.add('hidden');
-            }
-        });
-
-        async function uploadCloud() {
-            openModal("UPLOADING", "", "Menyimpan data ke Cloud...", null, "alert");
-            try {
-                const res = await fetch(CLOUD_URL, { method: 'POST', body: JSON.stringify(db), headers: { 'Content-Type': 'text/plain;charset=utf-8' } });
-                const result = await res.json();
-                if(result.status === 'success') openModal("SUKSES", "", "BACKUP KE GOOGLE SHEETS!", () => {}, "alert");
-                else throw new Error();
-            } catch(e) { openModal("GAGAL", "", "Koneksi ke Google Sheets gagal.", null, "alert"); }
-        }
-
-        async function downloadCloud() {
-            openModal("DOWNLOADING", "", "Mengambil data dari Cloud...", null, "alert");
-            try {
-                const res = await fetch(CLOUD_URL);
-                const data = await res.json();
-                if(data && data.supplier) { 
-                    db = data; saveData(); 
-                    openModal("SUKSES", "", "LOAD DARI GOOGLE SHEETS!", () => { renderStok(curTab); refreshDL(); }, "alert"); 
-                }
-                else openModal("GAGAL", "", "Data Cloud kosong.", null, "alert");
-            } catch(e) { openModal("GAGAL", "", "Gagal mengambil data.", null, "alert"); }
-        }
-
-        function setupScannerEvents() {
-            const kNama = document.getElementById('k-nama');
-            kNama.addEventListener('keypress', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault(); handleInputNama(this);
-                    setTimeout(() => { if (clean(document.getElementById('k-harga').value) > 0) tambahItem(); else document.getElementById('k-harga').focus(); }, 100);
-                }
-            });
-            document.getElementById('k-harga').addEventListener('keypress', e => { if(e.key==='Enter') tambahItem(); });
-            document.getElementById('k-qty').addEventListener('keypress', e => { if(e.key==='Enter') tambahItem(); });
-        }
-
-        function clearKasir() { document.getElementById('k-nama').value = ""; document.getElementById('k-harga').value = ""; document.getElementById('k-qty').value = ""; document.getElementById('k-nama').focus(); }
+        function toggleMenu(menuId) { document.getElementById(menuId).classList.toggle('hidden'); }
+        function setupScannerEvents() { const kn = document.getElementById('k-nama'); const kq = document.getElementById('k-qty'); kn.addEventListener('keypress', e => { if (e.key === 'Enter') { e.preventDefault(); handleInputNama(kn); setTimeout(() => { if (clean(document.getElementById('k-harga').value) > 0) tambahItem(); else document.getElementById('k-harga').focus(); }, 100); } }); document.getElementById('k-harga').addEventListener('keypress', e => { if(e.key==='Enter') tambahItem(); }); kq.addEventListener('keypress', e => { if(e.key==='Enter') { e.preventDefault(); tambahItem(); } }); }
+        function clearKasir() { document.getElementById('k-nama').value = ""; document.getElementById('k-harga').value = ""; document.getElementById('k-qty').value = ""; document.getElementById('k-qty').blur(); isKasirGrosir = false; selKasirSup = null; }
         function escapeHTML(str) { return str ? str.toString().replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag])) : ""; }
-        function saveData() { localStorage.setItem(KEY, JSON.stringify(db)); localStorage.setItem('BARLA_CART', JSON.stringify(cart)); refreshDL(); if (!document.getElementById('section-stok').classList.contains('hidden')) renderStok(curTab); }
+        
+        function saveData() { localStorage.setItem(KEY, JSON.stringify(db)); localStorage.setItem('BARLA_CART_' + KEY, JSON.stringify(cart)); refreshDL(); if (!document.getElementById('section-stok').classList.contains('hidden')) renderStok(curTab); unuploadedData = true; document.getElementById('sync-indicator').style.display = 'block'; }
+        
         function formatRupiah(el) { let v = el.value.replace(/[^0-9]/g, ""); el.value = v ? new Intl.NumberFormat('id-ID').format(v) : ""; if (el.id === 'i-bayar') updateChange(); }
         function clean(s) { return parseInt(s.toString().replace(/[^0-9]/g, "")) || 0; }
-        function refreshClock() { const optD = { day: '2-digit', month: 'short', year: 'numeric' }; const optT = { hour: '2-digit', minute: '2-digit', hour12: false }; const now = new Date(); const tgl = now.toLocaleDateString('id-ID', optD); const jam = now.toLocaleTimeString('id-ID', optT).replace(/\./g, ':'); document.getElementById('h-time').innerHTML = `<span class="text-white">${tgl}</span> <span class="text-[#ff0000] font-black ml-1">${jam}</span>`; }
+        function refreshClock() { const now = new Date(); document.getElementById('h-time').innerHTML = `<span class="text-white">${now.toLocaleDateString('id-ID', {day:'2-digit', month:'short', year:'numeric'})}</span> <span class="text-[#ff0000] font-black ml-1">${now.toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}).replace(/\./g, ':')}</span>`; }
         function getTglStr() { return new Date().toLocaleDateString('id-ID', {day: '2-digit', month: '2-digit', year: '2-digit'}).replace(/\//g, '.'); }
         function getJamStr() { return new Date().toLocaleTimeString('id-ID', {hour: '2-digit', minute: '2-digit'}).replace(/\./g, ':'); }
 
-        async function matikanKamera() { if (isScanning && html5QrCode) { try { const state = html5QrCode.getState(); if (state === 2) await html5QrCode.stop(); } catch(e) {} isScanning = false; } document.getElementById('modal-kamera').style.display = 'none'; }
+        async function matikanKamera() { if (isScanning && html5QrCode) { try { if (html5QrCode.getState() === 2) await html5QrCode.stop(); } catch(e) { console.error(e); } isScanning = false; } document.getElementById('modal-kamera').style.display = 'none'; }
+        async function bukaKameraPopup(target = 'auto') { if (isScanning) return; document.getElementById('modal-kamera').style.display = 'flex'; isScanning = true; try { await html5QrCode.start({ facingMode: "environment" }, { fps: 30 }, (decoded) => { const code = decoded.trim(); matikanKamera(); if (target === 'auto') { let f = null; let isG = false; let fSup = null; db.supplier.forEach(s => s.barang.forEach(b => { if (b.bcE === code) { f = b; isG = false; fSup = s.nama; } if (b.bcG === code && code !== "") { f = b; isG = true; fSup = s.nama; } })); isKasirGrosir = isG; selKasirSup = fSup; if (f) { document.getElementById('k-nama').value = f.nama; document.getElementById('k-harga').value = (isG && f.hargaG > 0) ? f.hargaG.toLocaleString('id-ID') : f.hargaE.toLocaleString('id-ID'); document.getElementById('k-qty').value = 1; tambahItem(); } else openModal("TIDAK ADA", "", "Produk belum terdaftar.", null, "alert"); } else if (target === 'modal') document.getElementById('m-input').value = code; else { document.getElementById(target).value = code; } }); } catch (err) { matikanKamera(); } }
+        function handleInputNama(el) { let val = el.value; if (!val) { document.getElementById('k-harga').value = ""; return; } el.value = val.split(' ').map(w => /^(PVC|SNI|P\/C)$/i.test(w) ? w.toUpperCase() : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' '); let f = null; let isG = false; let fSup = null; db.supplier.forEach(s => s.barang.forEach(b => { if (b.nama.toUpperCase() === el.value.toUpperCase() || b.bcE === el.value) { f = b; isG = false; fSup = s.nama; } if (b.bcG === el.value && el.value !== "") { f = b; isG = true; fSup = s.nama; } })); isKasirGrosir = isG; selKasirSup = fSup; if (f) { document.getElementById('k-nama').value = f.nama; document.getElementById('k-harga').value = (isG && f.hargaG > 0) ? f.hargaG.toLocaleString('id-ID') : f.hargaE.toLocaleString('id-ID'); document.getElementById('k-qty').value = 1; document.getElementById('k-qty').focus(); } }
 
-        async function bukaKameraPopup(target = 'auto') {
-            if (isScanning) return;
-            document.getElementById('modal-kamera').style.display = 'flex';
-            isScanning = true;
-            try {
-                await html5QrCode.start({ facingMode: "environment" }, { fps: 30 }, (decoded) => {
-                    const code = decoded.trim();
-                    matikanKamera();
-                    if (target === 'auto') {
-                        let f = null; db.supplier.forEach(s => s.barang.forEach(b => { if (b.bc === code) f = b; }));
-                        if (f) { document.getElementById('k-nama').value = f.nama; document.getElementById('k-harga').value = f.harga.toLocaleString('id-ID'); document.getElementById('k-qty').value = Math.abs(parseInt(document.getElementById('k-qty').value)) || 1; tambahItem(); } 
-                        else { openModal("BARCODE TIDAK ADA", "", "PRODUK BELUM TERDAFTAR.", null, "alert"); }
-                    } else if (target === 'modal') { document.getElementById('m-input').value = code; } 
-                    else { document.getElementById(target).value = code; }
-                });
-            } catch (err) { matikanKamera(); openModal("GAGAL", "", "Kamera Error.", null, "alert"); }
-        }
+        function refreshDL() { const dl = document.getElementById('db-list'); dl.innerHTML = ""; db.supplier.forEach(s => s.barang.forEach(b => { const inC = cart.find(x => x.nama.toUpperCase() === b.nama.toUpperCase() && x.sup === s.nama); if (b.stok > 0 && (!inC || inC.qty < b.stok)) { let o = document.createElement('option'); o.value = b.nama; o.innerText = `Sisa: ${formatStok(b.stok, b.isi, b.sK, b.sB)}`; dl.appendChild(o); } })); }
+        function formatStok(total, isi, sK, sB) { if (!sB || !isi || isi <= 1) return `${total} ${sK || 'satuan'}`; let besar = Math.floor(total / isi); let kecil = (total % isi).toFixed(2).replace(/\.00$/, ""); let res = []; if (besar > 0) res.push(`${besar} ${sB}`); if (kecil > 0 || besar === 0) res.push(`${kecil} ${sK || 'satuan'}`); return res.join(' '); }
 
-        function handleInputNama(el) {
-            let val = el.value; if (!val) { document.getElementById('k-harga').value = ""; return; }
-            el.value = val.split(' ').map(w => /^(PVC|SNI|P\/C)$/i.test(w) ? w.toUpperCase() : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
-            let found = null;
-            db.supplier.forEach(s => s.barang.forEach(b => { if (b.nama.toUpperCase() === el.value.toUpperCase() || b.bc === el.value) { if (b.stok > 0) found = b; else if (!found) found = b; } }));
-            if (found) { document.getElementById('k-harga').value = found.harga.toLocaleString('id-ID'); document.getElementById('k-qty').focus(); }
-        }
+        function tambahItem() { const n = document.getElementById('k-nama').value.trim(); let qInput = Math.abs(parseFloat(document.getElementById('k-qty').value)) || 1; let pInput = clean(document.getElementById('k-harga').value); if (!n) return; let fb = null; let fbSup = null; if (selKasirSup) { let s = db.supplier.find(x => x.nama === selKasirSup); if (s) { fb = s.barang.find(b => b.nama.toUpperCase() === n.toUpperCase()); fbSup = s; } } if (!fb) { db.supplier.forEach(s => s.barang.forEach(b => { if (b.nama.toUpperCase() === n.toUpperCase()) { fb = b; fbSup = s; } })); } if (!fb) { openModal("TIDAK ADA", "", "Barang tidak terdaftar!", null, "alert"); return; } if (fb.stok <= 0) { openModal("KOSONG", "", "Barang tidak ada di stok!", null, "alert"); return; } let actualQty = isKasirGrosir && fb.isi > 1 ? qInput * fb.isi : qInput; let baseHargaE = fb.hargaE; let baseHargaG = fb.hargaG; if (isKasirGrosir) { if (pInput !== fb.hargaG && pInput > 0) { baseHargaG = pInput; baseHargaE = fb.isi > 0 ? pInput / fb.isi : 0; } } else { if (pInput !== fb.hargaE && pInput > 0) { baseHargaE = pInput; baseHargaG = fb.isi > 0 ? pInput * fb.isi : 0; } } let inC = cart.find(x => x.nama.toUpperCase() === n.toUpperCase() && x.sup === fbSup.nama && x.hargaE === baseHargaE && x.hargaG === baseHargaG); let totalInCart = cart.filter(x => x.nama.toUpperCase() === n.toUpperCase() && x.sup === fbSup.nama).reduce((sum, item) => sum + item.qty, 0); if ((totalInCart + actualQty) > fb.stok) { openModal("KURANG", "", `Sisa stok: ${fb.stok}`, null, "alert"); return; } if (inC) { inC.qty += actualQty; } else { cart.push({ nama: n, sup: fbSup.nama, hargaE: baseHargaE, hargaG: baseHargaG, qty: actualQty, sK: fb.sK, sB: fb.sB, isi: fb.isi }); } clearKasir(); saveData(); renderCart(); refreshDL(); }
+        function ubahQty(idx, delta) { let it = cart[idx]; let ts = 0; let supObj = db.supplier.find(s => s.nama === it.sup); if(supObj) { let b = supObj.barang.find(x => x.nama.toUpperCase() === it.nama.toUpperCase()); if(b) ts = b.stok; } let currentTotalInCart = cart.filter((x, i) => i !== idx && x.nama.toUpperCase() === it.nama.toUpperCase() && x.sup === it.sup).reduce((sum, item) => sum + item.qty, 0); if (it.qty + delta <= 0) cart.splice(idx, 1); else if ((currentTotalInCart + it.qty + delta) > ts) openModal("LIMIT", "", `Stok maksimal: ${ts}`, null, "alert"); else it.qty += delta; saveData(); renderCart(); refreshDL(); }
 
-        function handleModalInput(el) { const title = document.getElementById('m-title').innerText; if (title.includes("HARGA")) { let v = el.value.replace(/[^0-9]/g, ""); el.value = v ? new Intl.NumberFormat('id-ID').format(v) : ""; } }
-
-        function refreshDL() {
-            const dl = document.getElementById('db-list'); dl.innerHTML = "";
-            db.supplier.forEach(s => s.barang.forEach(b => {
-                const inC = cart.find(x => x.nama.toUpperCase() === b.nama.toUpperCase() && x.harga === b.harga);
-                if (b.stok > 0 && (!inC || inC.qty < b.stok)) {
-                    let o = document.createElement('option'); o.value = b.nama; o.innerText = `Rp ${b.harga.toLocaleString('id-ID')} | Sisa: ${inC ? (b.stok - inC.qty) : b.stok}`; dl.appendChild(o);
-                }
-            }));
-        }
-
-        function tambahItem() {
-            const nI = document.getElementById('k-nama'), hI = document.getElementById('k-harga'), qI = document.getElementById('k-qty');
-            const n = nI.value.trim(), h = clean(hI.value); let q = Math.abs(parseInt(qI.value)) || 1;
-            if (!n || h <= 0) return;
-            let totalStok = 0; db.supplier.forEach(s => s.barang.forEach(b => { if (b.nama.toUpperCase() === n.toUpperCase() && b.harga === h) totalStok += b.stok; }));
-            if (totalStok === 0) { openModal("TIDAK ADA", "", `Barang tidak ada di stok!`, null, "alert"); return; }
-            let inC = cart.find(x => x.nama.toUpperCase() === n.toUpperCase() && x.harga === h);
-            if ((inC ? inC.qty + q : q) > totalStok) { openModal("KURANG", "", `Sisa stok ${n}: ${totalStok}`, null, "alert"); return; }
-            if (inC) inC.qty += q; else cart.push({ nama: n, harga: h, qty: q });
-            clearKasir(); saveData(); renderCart(); refreshDL();
-        }
-
-        function ubahQty(idx, delta) {
-            let item = cart[idx]; let totalStok = 0;
-            db.supplier.forEach(s => s.barang.forEach(b => { if(b.nama.toUpperCase() === item.nama.toUpperCase() && b.harga === item.harga) totalStok += b.stok; }));
-            if (item.qty + delta <= 0) cart.splice(idx, 1);
-            else if (item.qty + delta > totalStok) openModal("STOK HABIS", "", `Maksimal stok: ${totalStok}`, null, "alert");
-            else item.qty += delta;
-            saveData(); renderCart(); refreshDL();
-        }
-
-        function renderCart() {
-            const l = document.getElementById('list-cart'); l.innerHTML = ""; let tot = 0;
-            if (cart.length === 0) document.getElementById('i-bayar').value = "";
-            cart.forEach((k, i) => {
-                let sub = k.harga * k.qty; tot += sub;
-                l.innerHTML += `
-                <div class="bg-[#1e1f22] p-3 rounded-xl flex items-center justify-between border border-[#2b2d31] shadow-sm relative overflow-hidden">
-                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-[#3b82f6]"></div>
-                    <div class="pl-2 flex-1"><h4 class="text-xs font-black text-white uppercase leading-tight mb-1">${escapeHTML(k.nama)}</h4>
-                        <div class="flex items-center text-[10px] font-bold text-white gap-2 mt-1">
-                            <div class="flex items-center bg-[#2b2d31] border border-[#ff0000] rounded">
-                                <button onclick="ubahQty(${i},-1)" class="w-9 h-9 flex items-center justify-center text-[#ff0000] font-bold text-lg">-</button>
-                                <span onclick="promptQty(${i})" class="px-3 font-black text-white text-sm">${k.qty}</span>
-                                <button onclick="ubahQty(${i},1)" class="w-9 h-9 flex items-center justify-center text-[#ff0000] font-bold text-lg">+</button>
-                            </div><span>@ Rp ${k.harga.toLocaleString('id-ID')}</span>
-                        </div>
-                    </div>
-                    <div class="text-right flex flex-col items-end gap-1"><span class="text-white font-black text-[13px]">${sub.toLocaleString('id-ID')}</span>
-                    <button onclick="cart.splice(${i},1);saveData();renderCart();refreshDL();" class="text-[#ff0000] text-[8px] uppercase font-black bg-[#2b2d31] px-2 py-1 rounded border border-[#ff0000]">Hapus</button></div>
-                </div>`;
-            });
-            document.getElementById('t-total').innerText = "Rp " + tot.toLocaleString('id-ID'); updateChange();
-        }
-
-        function promptQty(idx) {
-            let item = cart[idx];
-            openModal("EDIT JUMLAH", item.qty.toString(), `Jumlah untuk ${item.nama}:`, (v) => {
-                let nQ = Math.abs(parseInt(v)) || 0;
-                if (nQ === 0) cart.splice(idx, 1);
-                else {
-                    let totalStok = 0; db.supplier.forEach(s => s.barang.forEach(b => { if(b.nama.toUpperCase() === item.nama.toUpperCase() && b.harga === item.harga) totalStok += b.stok; }));
-                    if (nQ > totalStok) { openModal("STOK KURANG", "", `Maksimal: ${totalStok}`, null, "alert"); return; }
-                    item.qty = nQ;
-                }
-                saveData(); renderCart(); refreshDL();
-            }, "prompt", "numeric");
-        }
-
-        function updateChange() {
-            const t = cart.reduce((s, i) => s + (i.harga * i.qty), 0);
-            const bStr = document.getElementById('i-bayar').value;
-            const b = bStr ? clean(bStr) : 0;
-            const box = document.getElementById('b-kembali');
-            const tKembali = document.getElementById('t-kembali');
-
-            if (cart.length > 0 && bStr !== "") {
-                box.classList.remove('hidden');
-                let diff = b - t;
-                if (diff < 0) {
-                    tKembali.innerText = "-Rp " + Math.abs(diff).toLocaleString('id-ID');
-                    tKembali.className = "text-sm font-black text-[#ff0000]";
-                } else {
-                    tKembali.innerText = "Rp " + diff.toLocaleString('id-ID');
-                    tKembali.className = "text-sm font-black text-white";
-                }
-            } else {
-                box.classList.add('hidden');
-            }
-        }
+        function renderCart() { const l = document.getElementById('list-cart'); l.innerHTML = ""; let tot = 0; cart.forEach((k, i) => { let sub = 0; let dTxt = ""; let hTxt = ""; if (k.isi > 1 && k.sB && k.qty >= k.isi) { let b = Math.floor(k.qty / k.isi); let e = k.qty % k.isi; let hG = k.hargaG > 0 ? k.hargaG : (k.isi * k.hargaE); sub = (b * hG) + (e * k.hargaE); let dArr = []; if (b > 0) dArr.push(`${b} ${k.sB}`); if (e > 0) dArr.push(`${e.toFixed(2).replace(/\.00$/, "")} ${k.sK || 'satuan'}`); dTxt = dArr.join(' '); hTxt = `@ ${k.hargaG > 0 ? 'G:' + k.hargaG.toLocaleString('id-ID') : ''} ${k.hargaE > 0 ? 'S:' + k.hargaE.toLocaleString('id-ID') : ''}`; } else { sub = k.qty * k.hargaE; dTxt = `${k.qty} ${k.sK || 'satuan'}`; hTxt = `@ Rp ${k.hargaE.toLocaleString('id-ID')}`; } tot += sub; l.innerHTML += `<div class="bg-[#1e1f22] p-3 rounded-xl flex items-center justify-between border border-[#2b2d31] shadow-sm relative overflow-hidden"><div class="absolute left-0 top-0 bottom-0 w-1 bg-[#3b82f6]"></div><div class="pl-2 flex-1"><h4 class="text-xs font-black text-white uppercase leading-tight mb-1">${escapeHTML(k.nama)}</h4><div class="flex items-center text-[10px] font-bold text-white gap-2 mt-1"><div class="flex items-center bg-[#2b2d31] border border-[#ff0000] rounded"><button onclick="ubahQty(${i},-1)" class="w-11 h-11 flex items-center justify-center text-[#ff0000] font-bold text-xl active:scale-90 transition">-</button><span onclick="promptQty(${i})" class="px-3 font-black text-[#3b82f6] text-sm whitespace-nowrap active:scale-90 transition cursor-pointer">${dTxt}</span><button onclick="ubahQty(${i},1)" class="w-11 h-11 flex items-center justify-center text-[#ff0000] font-bold text-xl active:scale-90 transition">+</button></div><span class="text-[#6b7280]">${hTxt}</span></div></div><div class="text-right flex flex-col items-end gap-1"><span class="text-white font-black text-[13px]">${sub.toLocaleString('id-ID')}</span><button onclick="cart.splice(${i},1);saveData();renderCart();" class="text-[#ff0000] text-[8px] uppercase font-black bg-[#2b2d31] px-2 py-1 rounded border border-[#ff0000]">Hapus</button></div></div>`; }); document.getElementById('t-total').innerText = "Rp " + tot.toLocaleString('id-ID'); updateChange(); }
+        function promptQty(idx) { let it = cart[idx]; let fb = null; let supObj = db.supplier.find(s => s.nama === it.sup); if(supObj) fb = supObj.barang.find(b => b.nama.toUpperCase() === it.nama.toUpperCase()); let currentTotalInCart = cart.filter((x, i) => i !== idx && x.nama.toUpperCase() === it.nama.toUpperCase() && x.sup === it.sup).reduce((sum, item) => sum + item.qty, 0); if (fb && fb.sB && fb.isi > 1) { openModal("EDIT QTY", it.qty, it.nama, (v) => { let nQ = Math.abs(parseFloat(v)) || 0; if (nQ === 0) cart.splice(idx, 1); else { if ((currentTotalInCart + nQ) > fb.stok) { openModal("KURANG", "", `Sisa yg bisa ditambah: ${fb.stok - currentTotalInCart}`, null, "alert"); return; } it.qty = nQ; } saveData(); renderCart(); refreshDL(); }, "dual_edit_stok", "numeric", false, {sK: fb.sK, sB: fb.sB, stok: it.qty, isi: fb.isi}); } else { openModal("EDIT QTY", it.qty.toString(), it.nama, (v) => { let nQ = Math.abs(parseFloat(v)) || 0; if (nQ === 0) cart.splice(idx, 1); else { if ((currentTotalInCart + nQ) > fb.stok) { openModal("KURANG", "", `Sisa yg bisa ditambah: ${fb.stok - currentTotalInCart}`, null, "alert"); return; } it.qty = nQ; } saveData(); renderCart(); refreshDL(); }, "prompt", "numeric"); } }
+        function updateChange() { let t = 0; cart.forEach(k => { if (k.isi > 1 && k.sB && k.qty >= k.isi) { let b = Math.floor(k.qty / k.isi); let e = k.qty % k.isi; let hG = k.hargaG > 0 ? k.hargaG : (k.isi * k.hargaE); t += (b * hG) + (e * k.hargaE); } else t += (k.qty * k.hargaE); }); const bs = document.getElementById('i-bayar').value, b = bs ? clean(bs) : 0; const bx = document.getElementById('b-kembali'), tk = document.getElementById('t-kembali'); if (cart.length > 0 && bs !== "") { bx.classList.remove('hidden'); let df = b - t; tk.innerText = (df < 0 ? "-Rp " : "Rp ") + Math.abs(df).toLocaleString('id-ID'); tk.className = `text-sm font-black ${df < 0 ? 'text-[#ff0000]' : 'text-white'}`; } else bx.classList.add('hidden'); }
 
         function checkout(tipe) {
-            const t = cart.reduce((s, i) => s + (i.harga * i.qty), 0), b = clean(document.getElementById('i-bayar').value);
-            if (cart.length === 0) { openModal("KOSONG", "", "Keranjang masih kosong!", null, "alert"); return; }
-            if (b < t) { openModal("KURANG", "", `Kurang: Rp ${(t-b).toLocaleString('id-ID')}`, null, "alert"); return; }
-            for (let c of cart) {
-                let sT = 0; db.supplier.forEach(s => s.barang.forEach(brg => { if(brg.nama.toUpperCase() === c.nama.toUpperCase() && brg.harga === c.harga) sT += brg.stok; }));
-                if (c.qty > sT) { openModal("BERUBAH", "", `Stok ${c.nama} berubah!`, () => { cart = []; saveData(); renderCart(); }, "alert"); return; }
-            }
-            cart.forEach(iC => { let sisa = iC.qty; db.supplier.forEach(s => s.barang.forEach(brg => {
-                if (brg.nama.toUpperCase() === iC.nama.toUpperCase() && brg.harga === iC.harga && sisa > 0) {
-                    if (brg.stok >= sisa) { brg.stok -= sisa; sisa = 0; } else { sisa -= brg.stok; brg.stok = 0; }
-                }
-            })); });
+            let t = 0; cart.forEach(k => { if (k.isi > 1 && k.sB && k.qty >= k.isi) { let b = Math.floor(k.qty / k.isi); let e = k.qty % k.isi; let hG = k.hargaG > 0 ? k.hargaG : (k.isi * k.hargaE); t += (b * hG) + (e * k.hargaE); } else t += (k.qty * k.hargaE); }); const b = clean(document.getElementById('i-bayar').value); if (cart.length === 0 || b < t || document.getElementById('i-bayar').value === "") { openModal("CEK LAGI", "", "Data belum lengkap/Bayar kurang.", null, "alert"); return; }
+            cart.forEach(ic => { let sisa = ic.qty; let supObj = db.supplier.find(s => s.nama === ic.sup); if (supObj) { let br = supObj.barang.find(brx => brx.nama.toUpperCase() === ic.nama.toUpperCase()); if (br && sisa > 0) { if (br.stok >= sisa) { br.stok -= sisa; sisa = 0; } else { sisa -= br.stok; br.stok = 0; } } } });
             const trxId = Date.now();
-            db.history.unshift({ id: trxId, waktu: `${getTglStr()}-${getJamStr()}`, items: JSON.parse(JSON.stringify(cart)), total: t, bayar: b, kembali: b-t });
-            if (db.history.length > 500) db.history.pop();
-            if (tipe === 'print') cetakUlang(trxId); else if (tipe === 'wa') waUlang(trxId);
-            cart = []; document.getElementById('i-bayar').value = ""; saveData(); renderCart(); refreshDL();
+            let hi = cart.map(k => { let sub = 0; let dt = ""; if (k.isi > 1 && k.sB && k.qty >= k.isi) { let bcCount = Math.floor(k.qty / k.isi); let e = k.qty % k.isi; let hG = k.hargaG > 0 ? k.hargaG : (k.isi * k.hargaE); sub = (bcCount * hG) + (e * k.hargaE); let prSB = k.sB ? (printMap[k.sB.toLowerCase()] || k.sB) : ''; let prSK = k.sK ? (printMap[k.sK.toLowerCase()] || k.sK) : ''; dt = `${bcCount} ${prSB}` + (e > 0 ? ` ${e.toFixed(2).replace(/\.00$/, "")}${prSK}` : ''); } else { let prSK = k.sK ? (printMap[k.sK.toLowerCase()] || k.sK) : ''; sub = k.qty * k.hargaE; dt = `${k.qty}${prSK}`; } return { nama: k.nama, displayTxt: dt, subTotal: sub }; });
+            db.history.unshift({ id: trxId, waktu: `${getTglStr()}-${getJamStr()}`, items: hi, total: t, bayar: b, kembali: b-t }); if (db.history.length > 500) db.history.pop();
+            let trxCurrent = db.history.find(x => x.id === trxId); if (tipe === 'print') cetakStruk(trxCurrent); else if (tipe === 'wa') waStruk(trxCurrent);
+            cart = []; document.getElementById('i-bayar').value = ""; saveData(); renderCart(); refreshDL(); uploadCloud(true); 
         }
 
-        function bukaHistory() {
-            matikanKamera(); const list = document.getElementById('history-content'); list.innerHTML = '';
-            if (db.history.length === 0) list.innerHTML = `<div class='text-center py-10 font-bold text-white'>BELUM ADA RIWAYAT</div>`;
-            else db.history.forEach(trx => {
-                let itms = ''; trx.items.forEach(i => itms += `<div class="flex justify-between text-[10px] text-white mt-1"><span>${i.qty}x ${escapeHTML(i.nama)}</span><span>Rp ${(i.qty*i.harga).toLocaleString('id-ID')}</span></div>`);
-                list.innerHTML += `<div class="border border-[#2b2d31] rounded-xl p-3 bg-[#131314] mb-3"><div class="flex justify-between mb-2 pb-2 border-b border-[#2b2d31]"><span class="text-[9px] font-bold text-white">${trx.waktu.replace('-', ' ')}</span><span class="text-xs font-black text-[#3b82f6]">Rp ${trx.total.toLocaleString('id-ID')}</span></div>${itms}
-                    <div class="flex gap-2 mt-2 pt-2 border-t border-[#2b2d31]"><button onclick="waUlang(${trx.id})" class="flex-1 bg-[#1e1f22] border border-[#25D366] text-[#25D366] py-1.5 rounded-lg text-[9px] font-bold uppercase"><i class="fab fa-whatsapp"></i> WA</button><button onclick="cetakUlang(${trx.id})" class="flex-1 bg-[#1e1f22] border border-[#3b82f6] text-[#3b82f6] py-1.5 rounded-lg text-[9px] font-bold uppercase"><i class="fas fa-print"></i> Cetak</button></div></div>`;
-            });
-            document.getElementById('modal-history').style.display = 'flex';
-        }
-        function tutupHistory() { document.getElementById('modal-history').style.display = 'none'; }
-        function hapusHistory() { openModal("HAPUS?", "", "Bersihkan semua riwayat?", () => { db.history = []; saveData(); bukaHistory(); }, "confirm"); }
+        async function cariRiwayatCloud() { let tglInput = document.getElementById('input-cari-tanggal').value; if(!tglInput) { openModal("TANGGAL KOSONG", "", "Pilih tanggal dulu!", null, "alert"); return; } let dateObj = new Date(tglInput); let dd = String(dateObj.getDate()).padStart(2, '0'); let mm = String(dateObj.getMonth() + 1).padStart(2, '0'); let yy = String(dateObj.getFullYear()).slice(-2); let tglFormatted = `${dd}.${mm}.${yy}`; openModal("MENCARI DATA", "", `Mencari tanggal ${tglFormatted} di Cloud...`, null, "cloud"); try { const res = await fetch(CLOUD_URL + "?action=loadHistoryByDate&date=" + tglFormatted); const data = await res.json(); closeModal(); if(data && data.history && data.history.length > 0) { tempCloudHistory = data.history; const list = document.getElementById('history-content'); list.innerHTML = `<div class='text-center py-2 text-[10px] text-[#25D366] font-bold uppercase border border-[#25D366] rounded-xl mb-3'>Hasil Cloud: ${tglFormatted}</div>`; let omzetCloud = 0; tempCloudHistory.forEach(trx => { omzetCloud += trx.total; let itms = ''; trx.items.forEach(i => itms += `<div class="flex justify-between text-[10px] text-white mt-1"><span><b class="text-[#3b82f6]">${i.displayTxt}</b> ${escapeHTML(i.nama)}</span><span>Rp ${i.subTotal.toLocaleString('id-ID')}</span></div>`); list.innerHTML += `<div class="border border-[#2b2d31] rounded-xl p-3 bg-[#131314] mb-3"><div class="flex justify-between mb-2 pb-2 border-b border-[#2b2d31]"><span class="text-[9px] font-bold text-white">${trx.waktu.replace('-', ' ')}</span><span class="text-xs font-black text-[#3b82f6]">Rp ${trx.total.toLocaleString('id-ID')}</span></div>${itms}<div class="flex gap-2 mt-2 pt-2 border-t border-[#2b2d31]"><button onclick="waUlang(${trx.id})" class="flex-1 bg-[#1e1f22] border border-[#25D366] text-[#25D366] py-1.5 rounded-lg text-[9px] font-bold uppercase"><i class="fab fa-whatsapp"></i> WA</button><button onclick="cetakUlang(${trx.id})" class="flex-1 bg-[#1e1f22] border border-[#3b82f6] text-[#3b82f6] py-1.5 rounded-lg text-[9px] font-bold uppercase"><i class="fas fa-print"></i> Cetak</button></div></div>`; }); document.getElementById('omzet-hari-ini').innerText = "Rp " + omzetCloud.toLocaleString('id-ID') + " (Cloud)"; } else { openModal("KOSONG", "", `Tidak ada transaksi di Cloud untuk tanggal ${tglFormatted}`, null, "alert"); } } catch(e) { openModal("GAGAL", "", "Gagal mengambil riwayat dari Cloud.", null, "alert"); } }
 
-        function cetakUlang(id) {
-            const trx = db.history.find(x => x.id === id); if (!trx) return;
-            let h = `          BARLA STORE          \n     Ps. Sunggingan Lt. 2      \n        0822-2633-4999         \n-------------------------------\n`;
-            let tStr = `${trx.waktu.replace('-', ' - ')}`.padStart(31, ' ');
-            h += `${tStr}\n-------------------------------\n`;
-            trx.items.forEach(i => {
-                let nm = escapeHTML(i.nama).substring(0, 13).padEnd(14, ' ');
-                let q = i.qty.toString().padStart(2, ' ');
-                let pr = i.harga.toString().padStart(6, ' ');
-                let sub = (i.harga * i.qty).toLocaleString('id-ID').replace(/\./g, '.').padStart(9, ' ');
-                h += `${nm}${q}${pr}${sub}\n`;
-            });
-            h += `-------------------------------\n`;
-            h += `TOTAL`.padEnd(22, ' ') + trx.total.toLocaleString('id-ID').replace(/\./g, '.').padStart(9, ' ') + `\n`;
-            h += `BAYAR`.padEnd(22, ' ') + trx.bayar.toLocaleString('id-ID').replace(/\./g, '.').padStart(9, ' ') + `\n`;
-            h += `KEMBALIAN`.padEnd(22, ' ') + trx.kembali.toLocaleString('id-ID').replace(/\./g, '.').padStart(9, ' ') + `\n`;
-            h += `-------------------------------\n          Terimakasih`;
-            document.getElementById('p-konten').innerHTML = `<pre>${h}</pre>`;
-            window.print();
-        }
-        
-        function waUlang(id) {
-            const trx = db.history.find(x => x.id === id); if (!trx) return;
-            let h = `          BARLA STORE          \n     Ps. Sunggingan Lt. 2      \n-------------------------------\n`;
-            let tStr = `${trx.waktu.replace('-', ' - ')}`.padStart(31, ' ');
-            h += `${tStr}\n-------------------------------\n`;
-            trx.items.forEach(i => {
-                let q = i.qty.toString().padEnd(3, ' ');
-                let nm = escapeHTML(i.nama).substring(0, 12).padEnd(12, ' ');
-                let pr = i.harga.toString().padStart(6, ' ');
-                let sub = (i.harga * i.qty).toLocaleString('id-ID').replace(/\./g, '.').padStart(10, ' ');
-                h += `${q}${nm}${pr}${sub}\n`;
-            });
-            h += `-------------------------------\n`;
-            h += `TOTAL`.padEnd(22, ' ') + trx.total.toLocaleString('id-ID').replace(/\./g, '.').padStart(9, ' ') + `\n`;
-            h += `BAYAR`.padEnd(22, ' ') + trx.bayar.toLocaleString('id-ID').replace(/\./g, '.').padStart(9, ' ') + `\n`;
-            h += `KEMBALIAN`.padEnd(22, ' ') + trx.kembali.toLocaleString('id-ID').replace(/\./g, '.').padStart(9, ' ');
-            let finalStr = "```\n" + h + "\n```";
-            window.open(`https://wa.me/?text=${encodeURIComponent(finalStr)}`);
-        }
+        function bukaHistory() { matikanKamera(); tempCloudHistory = []; document.getElementById('input-cari-tanggal').value = ""; const list = document.getElementById('history-content'); list.innerHTML = ''; let todayStr = getTglStr(); let omzetHariIni = 0; if (db.history.length === 0) list.innerHTML = `<div class='text-center py-10 font-black text-[#6b7280] uppercase'>Belum Ada Riwayat</div>`; else db.history.forEach(trx => { if(trx.waktu.startsWith(todayStr)) omzetHariIni += trx.total; let itms = ''; trx.items.forEach(i => itms += `<div class="flex justify-between text-[10px] text-white mt-1"><span><b class="text-[#3b82f6]">${i.displayTxt}</b> ${escapeHTML(i.nama)}</span><span>Rp ${i.subTotal.toLocaleString('id-ID')}</span></div>`); list.innerHTML += `<div class="border border-[#2b2d31] rounded-xl p-3 bg-[#131314] mb-3"><div class="flex justify-between mb-2 pb-2 border-b border-[#2b2d31]"><span class="text-[9px] font-bold text-white">${trx.waktu.replace('-', ' ')}</span><span class="text-xs font-black text-[#3b82f6]">Rp ${trx.total.toLocaleString('id-ID')}</span></div>${itms}<div class="flex gap-2 mt-2 pt-2 border-t border-[#2b2d31]"><button onclick="waUlang(${trx.id})" class="flex-1 bg-[#1e1f22] border border-[#25D366] text-[#25D366] py-1.5 rounded-lg text-[9px] font-bold uppercase"><i class="fab fa-whatsapp"></i> WA</button><button onclick="cetakUlang(${trx.id})" class="flex-1 bg-[#1e1f22] border border-[#3b82f6] text-[#3b82f6] py-1.5 rounded-lg text-[9px] font-bold uppercase"><i class="fas fa-print"></i> Cetak</button></div></div>`; }); document.getElementById('omzet-hari-ini').innerText = "Rp " + omzetHariIni.toLocaleString('id-ID'); document.getElementById('modal-history').style.display = 'flex'; }
+        function tutupHistory() { document.getElementById('modal-history').style.display = 'none'; } function hapusHistory() { openModal("HAPUS?", "", "Bersihkan riwayat lokal? (Di cloud tetap aman)", () => { db.history = []; saveData(); bukaHistory(); }, "confirm"); }
+        function cetakStruk(trx) { if (!trx) return; let h = `          STORE fam BARLA        \n     Ps. Sunggingan Lt. 2      \n        0822-2633-4999         \n-------------------------------\n`; h += `${trx.waktu.replace('-', ' - ')}`.padStart(31, ' ') + `\n-------------------------------\n`; trx.items.forEach(i => { let nm = escapeHTML(i.nama).substring(0, 11).padEnd(12, ' '); let qu = i.displayTxt.substring(0, 8).padEnd(9, ' '); let sub = i.subTotal.toLocaleString('id-ID').padStart(10, ' '); h += `${nm}${qu}${sub}\n`; }); h += `-------------------------------\nTOTAL`.padEnd(22, ' ') + trx.total.toLocaleString('id-ID').padStart(9, ' ') + `\nBAYAR`.padEnd(22, ' ') + trx.bayar.toLocaleString('id-ID').padStart(9, ' ') + `\nKEMBALIAN`.padEnd(22, ' ') + trx.kembali.toLocaleString('id-ID').padStart(9, ' ') + `\n-------------------------------\n          Terimakasih`; document.getElementById('p-konten').innerHTML = `<pre>${h}</pre>`; window.print(); }
+        function waStruk(trx) { if (!trx) return; let h = `          STORE fam BARLA        \n     Ps. Sunggingan Lt. 2      \n-------------------------------\n`; h += `${trx.waktu.replace('-', ' - ')}`.padStart(31, ' ') + `\n-------------------------------\n`; trx.items.forEach(i => { let qu = i.displayTxt.padEnd(10, ' '); let nm = escapeHTML(i.nama).substring(0, 11).padEnd(12, ' '); let sub = i.subTotal.toLocaleString('id-ID').padStart(9, ' '); h += `${qu}${nm}${sub}\n`; }); h += `-------------------------------\nTOTAL`.padEnd(22, ' ') + trx.total.toLocaleString('id-ID').padStart(9, ' ') + `\nBAYAR`.padEnd(22, ' ') + trx.bayar.toLocaleString('id-ID').padStart(9, ' ') + `\nKEMBALIAN`.padEnd(22, ' ') + trx.kembali.toLocaleString('id-ID').padStart(9, ' '); window.open(`https://wa.me/?text=${encodeURIComponent("```\n" + h + "\n```")}`); }
+        function cetakUlang(id) { let trx = db.history.find(x => x.id === id) || tempCloudHistory.find(x => x.id === id); cetakStruk(trx); } function waUlang(id) { let trx = db.history.find(x => x.id === id) || tempCloudHistory.find(x => x.id === id); waStruk(trx); }
 
-        function toggleStokSearch(show) {
-            const tabs = document.getElementById('stok-tabs');
-            const sIcon = document.getElementById('btn-stok-search');
-            const sBox = document.getElementById('stok-search-box');
-            const sInput = document.getElementById('i-stok-search');
-            
-            if(show) {
-                tabs.classList.add('hidden');
-                sIcon.classList.add('hidden');
-                sBox.classList.remove('hidden');
-                sBox.classList.add('flex');
-                sInput.focus();
-            } else {
-                tabs.classList.remove('hidden');
-                sIcon.classList.remove('hidden');
-                sBox.classList.add('hidden');
-                sBox.classList.remove('flex');
-                sInput.value = '';
-                renderStok(curTab);
-            }
-        }
+        function navMode(m) { if (m === 'stok') curTab = 'sup'; mode(m); } function mode(m) { openIdx = null; matikanKamera(); localStorage.setItem('BARLA_LAST_MODE', m); document.getElementById('section-kasir').classList.toggle('hidden', m!=='kasir'); document.getElementById('section-stok').classList.toggle('hidden', m!=='stok'); document.getElementById('h-kasir').classList.toggle('hidden', m!=='kasir'); document.getElementById('h-stok').classList.toggle('hidden', m!=='stok'); ['n-k','n-s'].forEach(id => document.getElementById(id).classList.toggle('active-nav', id===(m==='kasir'?'n-k':'n-s'))); document.getElementById('fab').style.display = (m==='stok' && curTab==='sup') ? 'flex' : 'none'; if (m === 'kasir') toggleStokSearch(false); if (m === 'stok') tab(curTab); }
+        function tab(t) { openIdx = null; matikanKamera(); curTab = t; localStorage.setItem('BARLA_LAST_TAB', t); ['sup','retur','lap'].forEach(id => document.getElementById('b-'+id).classList.toggle('tab-active', id===t)); document.getElementById('fab').style.display = (t==='sup') ? 'flex' : 'none'; renderStok(t); }
+        function toggleStokSearch(show) { const tabs = document.getElementById('stok-tabs'), sIcon = document.getElementById('btn-stok-search'), sBox = document.getElementById('stok-search-box'), sInput = document.getElementById('i-stok-search'); if(show) { tabs.classList.add('hidden'); sIcon.classList.add('hidden'); sBox.classList.remove('hidden'); sBox.classList.add('flex'); sInput.focus(); } else { tabs.classList.remove('hidden'); sIcon.classList.remove('hidden'); sBox.classList.add('hidden'); sBox.classList.remove('flex'); sInput.value = ''; renderStok(curTab); } }
+        function toggleDropdownSup(tipe, idx) { let idDropdown = `dd-${tipe==='ecer'?'sk':'sb'}-${idx}`; if(curDropdownOpen && curDropdownOpen !== idDropdown) { document.getElementById(curDropdownOpen).classList.add('hidden'); } let curVal = document.getElementById(`ib-${tipe==='ecer'?'sk':'sb'}-${idx}`).value; let list = tipe === 'ecer' ? ecerUnitList : grosirUnitList; let html = ''; list.filter(s => s !== curVal).forEach(s => { html += `<div onclick="setSatuanMain('${tipe}', ${idx}, '${s}')" class="p-3 text-[10px] font-bold text-white uppercase border-b border-[#2b2d31] active:bg-[#3b82f6] transition cursor-pointer">${s}</div>`; }); if(html === '') html = `<div class="p-3 text-[10px] font-bold text-[#6b7280] italic">Habis</div>`; let dropdown = document.getElementById(idDropdown); dropdown.innerHTML = html; dropdown.classList.toggle('hidden'); curDropdownOpen = dropdown.classList.contains('hidden') ? null : idDropdown; }
+        function setSatuanMain(tipe, idx, val) { let idDropdown = `dd-${tipe==='ecer'?'sk':'sb'}-${idx}`; if(!document.getElementById(idDropdown).classList.contains('hidden')) { document.getElementById(idDropdown).classList.add('hidden'); curDropdownOpen = null; } const btn = document.getElementById(`btn-${tipe==='ecer'?'sk':'sb'}-${idx}`), txt = document.getElementById(`txt-${tipe==='ecer'?'sk':'sb'}-${idx}`), inp = document.getElementById(`ib-${tipe==='ecer'?'sk':'sb'}-${idx}`), pHarga = document.getElementById(`ib-h${tipe==='ecer'?'e':'g'}-${idx}`), pStok = document.getElementById(`ib-st-${tipe==='ecer'?'k':'b'}-${idx}`); if (inp.value === val) { inp.value = ""; txt.innerText = tipe === 'ecer' ? "PILIH SATUAN" : "PILIH GROSIR"; txt.style.color = "#6b7280"; btn.style.borderColor = "#4b5563"; pHarga.placeholder = tipe === 'ecer' ? "HARGA SATUAN" : "HARGA GROSIR"; pStok.placeholder = tipe === 'ecer' ? "STOK SATUAN" : "STOK GROSIR"; if (tipe === 'grosir') document.getElementById(`ib-isi-${idx}`).value = "0"; return; } inp.value = val; txt.innerText = val.toUpperCase(); txt.style.color = "#3b82f6"; btn.style.borderColor = "#3b82f6"; pHarga.placeholder = `HARGA PER ${val.toUpperCase()}`; pStok.placeholder = `STOK PER ${val.toUpperCase()}`; if (tipe === 'grosir') { pendingIdxGrosir = idx; document.getElementById('ig-title').innerText = `ISI PER ${val.toUpperCase()}`; document.getElementById('ig-input').value = ""; document.getElementById('b-modal-isi-grosir').style.display = 'flex'; setTimeout(()=> document.getElementById('ig-input').focus(), 300); } }
+        document.getElementById('ig-confirm').onclick = () => { let val = parseInt(document.getElementById('ig-input').value) || 0; if(pendingIdxGrosir !== null) document.getElementById(`ib-isi-${pendingIdxGrosir}`).value = val; document.getElementById('b-modal-isi-grosir').style.display = 'none'; }
 
-        function navMode(m) {
-            if (m === 'stok') curTab = 'sup';
-            mode(m);
-        }
-
-        function mode(m) { 
-            openIdx = null; matikanKamera(); 
-            localStorage.setItem('BARLA_LAST_MODE', m);
-            document.getElementById('section-kasir').classList.toggle('hidden', m!=='kasir'); 
-            document.getElementById('section-stok').classList.toggle('hidden', m!=='stok'); 
-            document.getElementById('h-kasir').classList.toggle('hidden', m!=='kasir'); 
-            document.getElementById('h-stok').classList.toggle('hidden', m!=='stok'); 
-            ['n-k','n-s'].forEach(id => document.getElementById(id).classList.toggle('active-nav', id===(m==='kasir'?'n-k':'n-s'))); 
-            
-            // RESET PENCARIAN STOK KETIKA MENU KASIR DIBUKA
-            if (m === 'kasir') { toggleStokSearch(false); }
-            if (m === 'stok') { tab(curTab); } 
-        }
-        function tab(t) { 
-            openIdx = null; matikanKamera(); curTab = t; 
-            localStorage.setItem('BARLA_LAST_TAB', t);
-            ['sup','retur','lap'].forEach(id => document.getElementById('b-'+id).classList.toggle('tab-active', id===t)); 
-            document.getElementById('fab').style.display = (t==='sup')?'flex':'none'; 
-            renderStok(t); 
-        }
-
-        function renderStok(t) {
-            const c = document.getElementById('stok-content'); c.innerHTML = "";
-            const term = (document.getElementById('i-stok-search')?.value || "").toLowerCase();
-            
-            if (t === 'sup') {
-                if (term !== "") {
-                    // MODE PENCARIAN BERSIH (FLAT SEARCH)
-                    let hasData = false;
-                    let flatHtml = "";
-                    db.supplier.forEach((s, i) => {
-                        let matchSup = s.nama.toLowerCase().includes(term);
-                        s.barang.forEach((b) => {
-                            if (matchSup || b.nama.toLowerCase().includes(term) || (b.bc && b.bc.toLowerCase().includes(term))) {
-                                hasData = true;
-                                let origIndex = s.barang.indexOf(b);
-                                flatHtml += `<div class="bg-[#1e1f22] rounded-xl border border-[#2b2d31] p-3 mb-2 shadow-sm flex justify-between items-center"><div><b class="text-xs text-white">${escapeHTML(b.nama)}</b><br><span class="text-[#3b82f6] text-[10px]">Rp ${b.harga.toLocaleString('id-ID')}</span> <span class="text-[#94a3b8] text-[9px]">| Sisa: ${b.stok} | <i class="text-[#6b7280]">(${escapeHTML(s.nama)})</i></span></div><button onclick="openSheet('sup', ${i}, ${origIndex})" class="text-white hover:text-[#3b82f6] text-lg px-2">⋮</button></div>`;
-                            }
-                        });
-                    });
-                    if(hasData) c.innerHTML = flatHtml;
-                    else c.innerHTML = "<div class='text-center py-20 font-black text-[#6b7280] uppercase'>Tidak Ditemukan</div>";
-                } else {
-                    // MODE NORMAL DENGAN ACCORDION
-                    let hasData = false;
-                    if (db.supplier.length === 0) { c.innerHTML = "<div class='text-center py-20 font-black text-white'>KOSONG</div>"; return; }
-                    
-                    db.supplier.forEach((s, i) => {
-                        hasData = true;
-                        let bl = ""; s.barang.forEach((b) => {
-                            let origIndex = s.barang.indexOf(b);
-                            bl += `<div class="flex justify-between items-center py-2.5 border-b border-[#2b2d31] border-dashed"><div><b class="text-xs text-white">${escapeHTML(b.nama)}</b><br><span class="text-[#3b82f6] text-[10px]">Rp ${b.harga.toLocaleString('id-ID')} | <span class="text-[#94a3b8]">${escapeHTML(b.bc) || '-'}</span></span></div><div class="flex items-center gap-3"><b class="text-sm text-white">${b.stok}</b><button onclick="openSheet('sup', ${i}, ${origIndex})" class="text-white hover:text-white text-lg px-2">⋮</button></div></div>`;
-                        });
-                        let isExpanded = (openIdx === i);
-                        c.innerHTML += `<div class="bg-[#1e1f22] rounded-2xl border border-[#2b2d31] p-4 mb-3 shadow-sm"><div class="flex justify-between items-start" onclick="openIdx=(openIdx===${i}?null:${i});matikanKamera();renderStok('sup')"><b class="uppercase text-[#ffd700] text-sm leading-tight">${escapeHTML(s.nama)}</b><button onclick="event.stopPropagation();openSheet('head', ${i})" class="text-white hover:text-white px-2 font-bold text-lg leading-none">⋮</button></div><div class="${isExpanded ? '' : 'hidden'} mt-3 space-y-2 relative"><div class="flex gap-2"><input id="ib-n-${i}" placeholder="NAMA BARANG" class="flex-1 p-3 rounded-xl text-xs outline-none"><button onclick="bukaKameraPopup('ib-bc-${i}')" class="active:scale-75 transition bg-transparent border-0 rounded-xl px-2"><div class="premium-scan w-7 h-7 border-2 border-white"></div></button></div><input id="ib-bc-${i}" inputmode="numeric" placeholder="BARCODE" class="w-full p-3 rounded-xl text-xs outline-none"><div class="flex gap-2"><input id="ib-h-${i}" inputmode="numeric" oninput="formatRupiah(this)" placeholder="HARGA" class="w-1/2 p-3 rounded-xl text-xs outline-none"><input id="ib-s-${i}" inputmode="numeric" type="number" placeholder="STOK" class="w-1/2 p-3 rounded-xl text-xs outline-none"></div><button onclick="addB(${i})" class="w-full bg-transparent border border-[#3b82f6] text-[#3b82f6] py-3 rounded-xl font-bold uppercase text-xs active:scale-95 transition mt-2">Simpan Barang</button><div class="mt-2 border-t border-[#2b2d31] pt-1">${bl}</div></div></div>`;
-                    });
-                    if(!hasData) c.innerHTML = "<div class='text-center py-20 font-black text-[#6b7280] uppercase'>Tidak Ditemukan</div>";
-                }
-                
-            } else if (t === 'retur') {
-                const g = db.retur.reduce((a, r) => { (a[r.sup] = a[r.sup] || []); a[r.sup].push(r); return a; }, {});
-                if (Object.keys(g).length === 0) { c.innerHTML = "<div class='text-center py-20 font-black text-white'>KOSONG</div>"; return; }
-                
-                let hasData = false;
-                let htmlBuilder = `<button onclick="printReturSemua()" class="w-full bg-transparent border border-[#3b82f6] text-[#3b82f6] py-3 rounded-xl font-bold uppercase text-xs mb-4 active:scale-95 transition">Print Semua Retur</button>`; 
-                for (let s in g) { 
-                    let filteredRetur = g[s].filter(r => r.nama.toLowerCase().includes(term) || s.toLowerCase().includes(term));
-                    if(term && filteredRetur.length === 0 && !s.toLowerCase().includes(term)) continue;
-                    
-                    let itemsToRender = (term && s.toLowerCase().includes(term) && filteredRetur.length===0) ? g[s] : (term ? filteredRetur : g[s]);
-                    if(itemsToRender.length === 0) continue;
-                    
-                    hasData = true;
-                    let its = ""; itemsToRender.forEach(r => its += `<div class="text-[11px] py-2 border-b border-[#2b2d31] border-dashed flex justify-between items-start text-white"><span>• ${escapeHTML(r.nama)}</span><b class="text-[#ff0000]">${r.qty} Pcs</b></div>`); 
-                    htmlBuilder += `<div class="bg-[#1e1f22] p-4 rounded-2xl border border-[#2b2d31] mb-3 shadow-sm"><div class="flex justify-between items-start mb-2"><b class="uppercase text-[#ffd700] text-sm leading-tight">${escapeHTML(s)}</b><button onclick="openSheet('retur', '${escapeHTML(s)}')" class="text-white hover:text-white text-lg px-2 leading-none">⋮</button></div>${its}</div>`; 
-                }
-                if(!hasData) c.innerHTML = "<div class='text-center py-20 font-black text-[#6b7280] uppercase'>Tidak Ditemukan</div>";
-                else c.innerHTML = htmlBuilder;
-                
-            } else if (t === 'lap') {
-                let has = false; let lapH = `<button onclick="printLapSemua()" class="w-full bg-transparent border border-[#3b82f6] text-[#3b82f6] py-3 rounded-xl font-bold uppercase text-xs mb-4 active:scale-95 transition">Print Laporan Stok</button>`;
-                db.supplier.forEach((s, i) => { 
-                    let k = s.barang.filter(x => x.stok < 30 && (x.nama.toLowerCase().includes(term) || s.nama.toLowerCase().includes(term))); 
-                    if (k.length > 0) { 
-                        has = true; let bl = ""; k.forEach(b => bl += `<div class="text-[11px] py-2 border-b border-[#2b2d31] border-dashed flex justify-between items-start text-white"><span>• ${escapeHTML(b.nama)}</span><b class="text-[#ff0000]">${b.stok}</b></div>`); 
-                        lapH += `<div class="bg-[#1e1f22] p-4 rounded-2xl border border-[#2b2d31] mb-3 shadow-sm"><div class="flex justify-between items-start mb-2"><b class="uppercase text-[#ffd700] text-sm leading-tight">${escapeHTML(s.nama)}</b><button onclick="openSheet('lap', ${i})" class="text-white hover:text-white text-lg px-2 leading-none">⋮</button></div>${bl}</div>`; 
-                    } 
-                });
-                c.innerHTML = has ? lapH : "<div class='text-center py-20 font-black text-[#6b7280] uppercase'>Stok Aman / Tidak Ditemukan</div>";
-            }
-        }
-
-        function openSheet(type, i1, i2) {
-            const s = document.getElementById('a-sheet'), o = document.getElementById('sheet-opts'); s.style.display = 'flex'; o.innerHTML = ""; setTimeout(() => s.classList.add('sheet-active'), 10);
-            if (type === 'sup') { selS = i1; selB = i2; o.innerHTML = `<button onclick="action('stok')" class="p-3.5 bg-[#2b2d31] text-[#3b82f6] rounded-xl font-bold text-sm border border-[#3b82f6]">Edit Stok</button><button onclick="action('harga')" class="p-3.5 bg-[#2b2d31] text-[#3b82f6] rounded-xl font-bold text-sm border border-[#3b82f6]">Edit Harga</button><button onclick="action('barcode')" class="p-3.5 bg-[#2b2d31] text-[#ffffff] rounded-xl font-bold text-sm border border-[#ffffff]">Scan / Edit Barcode</button><button onclick="action('retur')" class="p-3.5 bg-[#2b2d31] text-[#facc15] rounded-xl font-bold text-sm border border-[#facc15]">Retur Barang</button><button onclick="action('hapus')" class="p-3.5 bg-[#2b2d31] text-[#ff0000] rounded-xl font-bold text-sm border border-[#ff0000]">Hapus Barang</button>`; }
-            else if (type === 'head') { selS = i1; o.innerHTML = `<button onclick="editSupplier(${i1})" class="p-3.5 bg-[#2b2d31] text-[#ffd700] rounded-xl font-bold text-sm border border-[#ffd700]">Edit Nama Supplier</button><button onclick="delSup('${db.supplier[i1].nama}')" class="p-3.5 bg-[#2b2d31] text-[#ff0000] rounded-xl font-bold text-sm border border-[#ff0000]">Hapus Supplier</button>`; }
-            else if (type === 'retur') { selRetur = i1; o.innerHTML = `<button onclick="closeSheet();waR(selRetur)" class="p-3.5 bg-[#2b2d31] text-[#25D366] rounded-xl font-bold text-sm border border-[#25D366]">WhatsApp Retur</button><button onclick="closeSheet();printReturSup(selRetur)" class="p-3.5 bg-[#2b2d31] text-[#3b82f6] rounded-xl font-bold text-sm border border-[#3b82f6]">Print Struk Retur</button><button onclick="closeSheet();trHR(selRetur)" class="p-3.5 bg-[#2b2d31] text-[#ff0000] rounded-xl font-bold text-sm border border-[#ff0000]">Hapus Data Retur</button>`; }
-            else if (type === 'lap') o.innerHTML = `<button onclick="closeSheet();waO(${i1})" class="p-3.5 bg-[#2b2d31] text-[#25D366] rounded-xl font-bold text-sm border border-[#25D366]">WhatsApp Order</button>`;
-        }
+        function renderStok(t) { const c = document.getElementById('stok-content'); c.innerHTML = ""; const term = (document.getElementById('i-stok-search')?.value || "").toLowerCase(); if (t === 'sup') { if (term !== "") { let has = false; let fh = ""; db.supplier.forEach((s, i) => { let ms = s.nama.toLowerCase().includes(term); s.barang.forEach((b) => { if (ms || b.nama.toLowerCase().includes(term) || (b.bcE && b.bcE.toLowerCase().includes(term)) || (b.bcG && b.bcG.toLowerCase().includes(term))) { has = true; let oi = s.barang.indexOf(b); fh += `<div class="bg-[#1e1f22] rounded-xl border border-[#2b2d31] p-3 mb-2 flex justify-between items-center"><div><b class="text-xs text-white">${escapeHTML(b.nama)}</b><br><span class="text-[#3b82f6] text-[10px]">Rp ${b.hargaE.toLocaleString('id-ID')}</span> <span class="text-[#94a3b8] text-[9px]">| Sisa: ${formatStok(b.stok, b.isi, b.sK, b.sB)} | <i class="text-[#6b7280]">(${escapeHTML(s.nama)})</i></span></div><button onclick="openSheet('sup', ${i}, ${oi})" class="text-white text-lg px-2">⋮</button></div>`; } }); }); c.innerHTML = has ? fh : "<div class='text-center py-20 font-black text-[#6b7280] uppercase'>Kosong</div>"; } else { if (db.supplier.length === 0) { c.innerHTML = "<div class='text-center py-20 font-black text-[#6b7280] uppercase'>Belum Ada Supplier</div>"; return; } db.supplier.forEach((s, i) => { let bl = ""; s.barang.forEach((b, bi) => bl += `<div class="flex justify-between items-center py-2.5 border-b border-[#2b2d31] border-dashed"><div><b class="text-xs text-white">${escapeHTML(b.nama)}</b><br><span class="text-[#3b82f6] text-[10px]">Rp ${b.hargaE.toLocaleString('id-ID')} | <span class="text-[#94a3b8]">${escapeHTML(b.bcE) || '-'}</span></span></div><div class="flex items-center gap-3"><b class="text-[11px] text-white">${formatStok(b.stok, b.isi, b.sK, b.sB)}</b><button onclick="openSheet('sup', ${i}, ${bi})" class="text-white text-lg px-2">⋮</button></div></div>`); let isExp = (openIdx === i); c.innerHTML += `<div class="bg-[#1e1f22] rounded-2xl border border-[#2b2d31] p-4 mb-3 shadow-sm"><div class="flex justify-between items-start" onclick="openIdx=(openIdx===${i}?null:${i});matikanKamera();renderStok('sup')"><b class="uppercase text-[#ffd700] text-sm leading-tight">${escapeHTML(s.nama)}</b><button onclick="event.stopPropagation();openSheet('head', ${i})" class="text-white px-2 font-bold text-lg leading-none">⋮</button></div><div class="${isExp ? '' : 'hidden'} mt-3 space-y-2 relative"><input id="ib-n-${i}" placeholder="NAMA BARANG" class="w-full p-3 rounded-xl text-xs outline-none bg-[#131314] mb-2"><div class="flex gap-2 mb-2"><div class="relative w-1/2 flex items-center bg-[#000] rounded-xl overflow-hidden border border-[#4b5563]"><input id="ib-bce-${i}" inputmode="numeric" placeholder="BC SATUAN" class="w-full p-3 pr-10 bg-transparent border-none text-xs outline-none tracking-widest font-bold text-center"><button onclick="bukaKameraPopup('ib-bce-${i}')" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center z-20"><div class="premium-scan w-6 h-6 border border-white/20"></div></button></div><div class="relative w-1/2 flex items-center bg-[#000] rounded-xl overflow-hidden border border-[#4b5563]"><input id="ib-bcg-${i}" inputmode="numeric" placeholder="BC GROSIR" class="w-full p-3 pr-10 bg-transparent border-none text-xs outline-none tracking-widest font-bold text-center"><button onclick="bukaKameraPopup('ib-bcg-${i}')" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center z-20"><div class="premium-scan w-6 h-6 border border-white/20"></div></button></div></div><div class="flex gap-2 mb-2"><div class="relative w-1/2"><input type="hidden" id="ib-sk-${i}" value=""><button onclick="toggleDropdownSup('ecer', ${i})" id="btn-sk-${i}" class="w-full p-3 rounded-xl text-xs font-bold bg-[#131314] border border-[#4b5563] text-left active:scale-95 transition flex justify-between items-center"><span id="txt-sk-${i}" style="color: #6b7280;">PILIH SATUAN</span> <i class="fas fa-caret-down text-[10px] text-[#6b7280]"></i></button><div id="dd-sk-${i}" class="hidden absolute top-[110%] left-0 w-full bg-[#1e1f22] border border-[#4b5563] rounded-lg shadow-xl z-[300] overflow-hidden"></div></div><div class="relative w-1/2"><input type="hidden" id="ib-sb-${i}" value=""><button onclick="toggleDropdownSup('grosir', ${i})" id="btn-sb-${i}" class="w-full p-3 rounded-xl text-[11px] font-bold bg-[#131314] border border-[#4b5563] text-left active:scale-95 transition flex justify-between items-center"><span id="txt-sb-${i}" style="color: #6b7280;">PILIH GROSIR</span> <i class="fas fa-caret-down text-[10px] text-[#6b7280]"></i></button><div id="dd-sb-${i}" class="hidden absolute top-[110%] left-0 w-full bg-[#1e1f22] border border-[#4b5563] rounded-lg shadow-xl z-[300] overflow-hidden"></div></div></div><div class="flex gap-2 mb-2"><input id="ib-st-k-${i}" type="number" step="0.01" placeholder="STOK SATUAN" class="w-1/2 p-3 rounded-xl text-xs outline-none bg-[#131314]"><input id="ib-st-b-${i}" type="number" step="0.01" placeholder="STOK GROSIR" class="w-1/2 p-3 rounded-xl text-xs outline-none bg-[#131314]"><input type="hidden" id="ib-isi-${i}" value="0"></div><div class="flex gap-2 mb-2"><input id="ib-he-${i}" inputmode="numeric" oninput="formatRupiah(this)" placeholder="HARGA SATUAN" class="w-1/2 p-3 rounded-xl text-xs outline-none bg-[#131314]"><input id="ib-hg-${i}" inputmode="numeric" oninput="formatRupiah(this)" placeholder="HARGA GROSIR" class="w-1/2 p-3 rounded-xl text-xs outline-none bg-[#131314]"></div><button onclick="addB(${i})" class="w-full border border-[#3b82f6] text-[#3b82f6] py-3 rounded-xl font-bold uppercase text-xs active:scale-95 transition mt-2 shadow-lg">Simpan Barang</button><div class="mt-2 border-t border-[#2b2d31] pt-1">${bl}</div></div></div>`; }); } } else if (t === 'retur') { const g = db.retur.reduce((a, r) => { (a[r.sup] = a[r.sup] || []); a[r.sup].push(r); return a; }, {}); if (Object.keys(g).length === 0) { c.innerHTML = "<div class='text-center py-20 font-black text-[#6b7280] uppercase'>Kosong</div>"; return; } let h = `<button onclick="printReturSemua()" class="w-full border border-[#3b82f6] text-[#3b82f6] py-3 rounded-xl font-bold uppercase text-xs mb-4">Print Semua Retur</button>`; for (let s in g) { let inItems = "", outItems = ""; g[s].forEach(r => { let row = `<div class="text-[10px] py-1 border-b border-[#2b2d31] border-dashed flex justify-between items-start text-white"><span>• ${escapeHTML(r.nama)}</span><b class="${r.type==='in'?'text-[#217346]':'text-[#ff0000]'}">${r.type==='in'?'+ ':''}${r.qtyStr}</b></div>`; if(r.type === 'in') inItems += row; else outItems += row; }); h += `<div class="bg-[#1e1f22] p-4 rounded-2xl border border-[#2b2d31] mb-3"><div class="flex justify-between items-start mb-2"><b class="uppercase text-[#ffd700] text-sm leading-tight">${escapeHTML(s)}</b><button onclick="openSheet('retur', '${escapeHTML(s)}')" class="text-white text-lg px-2">⋮</button></div><div class="flex gap-2 w-full"><div class="w-1/2 border border-[#2b2d31] rounded-lg p-2 bg-[#131314]"><h4 class="text-[9px] font-black text-[#facc15] mb-1 uppercase text-center border-b border-[#2b2d31] pb-1">Dari Pembeli</h4>${inItems||'<div class="text-[9px] text-[#6b7280] text-center italic py-2">Kosong</div>'}</div><div class="w-1/2 border border-[#2b2d31] rounded-lg p-2 bg-[#131314]"><h4 class="text-[9px] font-black text-[#6b7280] mb-1 uppercase text-center border-b border-[#2b2d31] pb-1">Ke Supplier</h4>${outItems||'<div class="text-[9px] text-[#6b7280] text-center italic py-2">Kosong</div>'}</div></div></div>`; } c.innerHTML = h; } else if (t === 'lap') { let h = `<button onclick="printLapSemua()" class="w-full border border-[#3b82f6] text-[#3b82f6] py-3 rounded-xl font-bold uppercase text-xs mb-4">Print Laporan Stok</button>`; let has = false; db.supplier.forEach((s, i) => { let k = s.barang.filter(b => { if(b.sB && b.isi > 0) { let krt = Math.floor(b.stok / b.isi); return krt <= getMinLimit(b.sB); } else { return b.stok <= getMinLimit(b.sK); } }); if (k.length > 0) { has = true; let bl = ""; k.forEach(b => bl += `<div class="text-[11px] py-2 border-b border-[#2b2d31] border-dashed flex justify-between items-start text-white"><span>• ${escapeHTML(b.nama)}</span><b class="text-[#ff0000]">${formatStok(b.stok, b.isi, b.sK, b.sB)}</b></div>`); h += `<div class="bg-[#1e1f22] p-4 rounded-2xl border border-[#2b2d31] mb-3"><div class="flex justify-between items-start mb-2"><b class="uppercase text-[#ffd700] text-sm leading-tight">${escapeHTML(s.nama)}</b><button onclick="openSheet('lap', ${i})" class="text-white text-lg px-2">⋮</button></div>${bl}</div>`; } }); c.innerHTML = has ? h : "<div class='text-center py-20 font-black text-[#6b7280] uppercase'>Stok Aman</div>"; } }
+        function openSheet(type, i1, i2) { const s = document.getElementById('a-sheet'), o = document.getElementById('sheet-opts'); s.style.display = 'flex'; o.innerHTML = ""; setTimeout(() => s.classList.add('sheet-active'), 10); if (type === 'sup') { selS = i1; selB = i2; o.innerHTML = `<button onclick="action('nama')" class="p-3.5 bg-[#2b2d31] text-[#10ac84] rounded-xl font-bold text-sm border border-[#10ac84]">Edit Nama Barang</button><button onclick="action('stok')" class="p-3.5 bg-[#2b2d31] text-[#3b82f6] rounded-xl font-bold text-sm border border-[#3b82f6]">Edit Stok</button><button onclick="action('harga')" class="p-3.5 bg-[#2b2d31] text-[#3b82f6] rounded-xl font-bold text-sm border border-[#3b82f6]">Edit Harga</button><button onclick="action('barcode')" class="p-3.5 bg-[#2b2d31] text-[#ffffff] rounded-xl font-bold text-sm border border-[#ffffff]">Edit Barcode</button><button onclick="openModalReturType(${i1}, ${i2})" class="p-3.5 bg-[#2b2d31] text-[#facc15] rounded-xl font-bold text-sm border border-[#facc15]">Retur Barang</button><button onclick="action('hapus')" class="p-3.5 bg-[#2b2d31] text-[#ff0000] rounded-xl font-bold text-sm border border-[#ff0000]">Hapus Barang</button>`; } else if (type === 'head') { selS = i1; o.innerHTML = `<button onclick="editSupplier(${i1})" class="p-3.5 bg-[#2b2d31] text-[#ffd700] rounded-xl font-bold text-sm border border-[#ffd700]">Edit Nama Supplier</button><button onclick="delSup('${db.supplier[i1].nama}')" class="p-3.5 bg-[#2b2d31] text-[#ff0000] rounded-xl font-bold text-sm border border-[#ff0000]">Hapus Supplier</button>`; } else if (type === 'retur') { selRetur = i1; o.innerHTML = `<button onclick="closeSheet();waR(selRetur)" class="p-3.5 bg-[#2b2d31] text-[#25D366] rounded-xl font-bold text-sm border border-[#25D366]">WhatsApp Retur</button><button onclick="closeSheet();printReturSup(selRetur)" class="p-3.5 bg-[#2b2d31] text-[#3b82f6] rounded-xl font-bold text-sm border border-[#3b82f6]">Print Struk Retur</button><button onclick="closeSheet();trHR(selRetur)" class="p-3.5 bg-[#2b2d31] text-[#ff0000] rounded-xl font-bold text-sm border border-[#ff0000]">Hapus Data Retur</button>`; } else if (type === 'lap') o.innerHTML = `<button onclick="closeSheet();waO(${i1})" class="p-3.5 bg-[#2b2d31] text-[#25D366] rounded-xl font-bold text-sm border border-[#25D366]">WhatsApp Order</button>`; }
         function closeSheet(e) { if (e && e.target.id !== 'a-sheet') return; const s = document.getElementById('a-sheet'); s.classList.remove('sheet-active'); setTimeout(() => s.style.display = 'none', 300); }
-
-        function action(type) {
-            closeSheet(); const brg = db.supplier[selS].barang[selB];
-            if (type === 'stok') openModal("EDIT STOK", brg.stok.toString(), brg.nama, (v) => { db.supplier[selS].barang[selB].stok = Math.abs(parseInt(v))||0; cart=[]; saveData(); }, "prompt", "numeric");
-            if (type === 'harga') openModal("EDIT HARGA", brg.harga.toLocaleString('id-ID'), brg.nama, (v) => { 
-                let nH = clean(v); let oH = db.supplier[selS].barang[selB].harga;
-                db.supplier[selS].barang[selB].harga = nH; 
-                let cItem = cart.find(x => x.nama.toUpperCase() === brg.nama.toUpperCase() && x.harga === oH);
-                if (cItem) cItem.harga = nH;
-                saveData(); renderCart(); refreshDL();
-            }, "prompt", "numeric");
-            if (type === 'barcode') openModal("EDIT BARCODE", brg.bc||"", brg.nama, (v) => { if(v && db.supplier.some(s=>s.barang.some(b=>b.bc===v.trim() && b.nama!==brg.nama))) return openModal("DUPLIKAT","","Barcode sudah dipakai!",null,"alert"); db.supplier[selS].barang[selB].bc = v.trim(); saveData(); }, "prompt", "text", true);
-            if (type === 'retur') openModal("RETUR", "", brg.nama, (v) => { let q = Math.abs(parseInt(v))||0; if(q<=0||q>brg.stok) return openModal("GAGAL","","Jumlah tidak valid!",null,"alert"); db.supplier[selS].barang[selB].stok -= q; let ada = db.retur.find(r=>r.sup===db.supplier[selS].nama && r.nama===brg.nama); if(ada) ada.qty+=q; else db.retur.push({sup:db.supplier[selS].nama, nama:brg.nama, qty:q}); cart=[]; saveData(); }, "prompt", "numeric");
-            if (type === 'hapus') openModal("HAPUS?", "", `Hapus ${brg.nama}?`, () => { db.retur=db.retur.filter(r=>!(r.sup===db.supplier[selS].nama && r.nama===brg.nama)); cart=[]; db.supplier[selS].barang.splice(selB,1); saveData(); }, "confirm");
-        }
-
-        function editSupplier(i) { closeSheet(); let old = db.supplier[i].nama; openModal("EDIT NAMA SUPPLIER", old, "", (v) => { let n = v.trim(); if(!n||db.supplier.some(s=>s.nama.toUpperCase()===n.toUpperCase() && s.nama!==old)) return openModal("GAGAL","","Nama sudah ada!",null,"alert"); db.retur.forEach(r=>{if(r.sup===old) r.sup=n;}); db.supplier[i].nama = n; saveData(); }, "prompt"); }
-        function openModalSup() { openModal("TAMBAH SUPPLIER", "", "", (v) => { if(v.trim()) { db.supplier.unshift({nama:v.trim(), barang:[]}); saveData(); } }, "prompt"); }
-        function delSup(n) { closeSheet(); openModal("HAPUS?", "", `Hapus Supplier ${n}?`, () => { db.retur=db.retur.filter(x=>x.sup!==n); db.supplier=db.supplier.filter(x=>x.nama!==n); openIdx=null; cart=[]; saveData(); }, "confirm"); }
+        function action(type) { closeSheet(); const br = db.supplier[selS].barang[selB]; if (type === 'nama') openModal("EDIT NAMA", br.nama, "Ubah nama barang:", (v) => { if(v.trim() && v.trim() !== br.nama) { br.nama = v.trim(); saveData(); renderStok('sup'); } }, "prompt"); if (type === 'stok') openModal("EDIT STOK", 0, br.nama, (v) => { db.supplier[selS].barang[selB].stok = v; cart=[]; saveData(); }, "dual_edit_stok", "numeric", false, br); if (type === 'harga') openModal("EDIT HARGA", "", br.nama, (v) => { br.hargaE = clean(v.val1); br.hargaG = clean(v.val2); saveData(); renderCart(); }, "dual", "numeric", false, {sK: br.sK, sB: br.sB, hargaE: br.hargaE, hargaG: br.hargaG}); if (type === 'barcode') openModal("EDIT BARCODE", "", br.nama, (v) => { br.bcE = v.val1.trim(); br.bcG = v.val2.trim(); saveData(); renderStok('sup'); }, "barcode_dual", "numeric", true, {sK: 'BC SATUAN', sB: 'BC GROSIR', bcE: br.bcE, bcG: br.bcG}); if (type === 'hapus') openModal("HAPUS?", "", `Hapus ${br.nama}?`, () => { cart = cart.filter(c => c.nama.toUpperCase() !== br.nama.toUpperCase()); db.supplier[selS].barang.splice(selB,1); saveData(); renderCart(); }, "confirm"); }
+        function openModalReturType(sIdx, bIdx) { closeSheet(); activeReturItem = { s: sIdx, b: bIdx }; activeReturType = null; document.getElementById('mr-nama-brg').innerText = db.supplier[sIdx].barang[bIdx].nama; document.getElementById('btn-retur-in').className = "w-full p-3 rounded-xl font-bold uppercase text-[11px] border border-[#4b5563] text-[#6b7280] bg-[#2b2d31] transition"; document.getElementById('btn-retur-out').className = "w-full p-3 rounded-xl font-bold uppercase text-[11px] border border-[#4b5563] text-[#6b7280] bg-[#2b2d31] transition"; document.getElementById('modal-retur-step1').style.display = 'flex'; }
+        function selectReturType(type) { activeReturType = type; document.getElementById('btn-retur-in').className = type === 'in' ? "w-full p-3 rounded-xl font-bold uppercase text-[11px] border-2 border-[#facc15] text-[#facc15] bg-[#131314] transition shadow-lg" : "w-full p-3 rounded-xl font-bold uppercase text-[11px] border border-[#4b5563] text-[#6b7280] bg-[#2b2d31] transition"; document.getElementById('btn-retur-out').className = type === 'out' ? "w-full p-3 rounded-xl font-bold uppercase text-[11px] border-2 border-[#facc15] text-[#facc15] bg-[#131314] transition shadow-lg" : "w-full p-3 rounded-xl font-bold uppercase text-[11px] border border-[#4b5563] text-[#6b7280] bg-[#2b2d31] transition"; }
         
-        function addB(i) {
-            const n = document.getElementById(`ib-n-${i}`).value.trim(), bc = document.getElementById(`ib-bc-${i}`).value.trim(), h = clean(document.getElementById(`ib-h-${i}`).value), s = Math.abs(parseInt(document.getElementById(`ib-s-${i}`).value))||0;
-            if(!n||h<=0) return;
-            if(db.supplier.some(sup=>sup.barang.some(b=>b.nama.toUpperCase()===n.toUpperCase()))) return openModal("DUPLIKAT","","Nama barang sudah ada!",null,"alert");
-            if(bc && db.supplier.some(sup=>sup.barang.some(b=>b.bc===bc))) return openModal("DUPLIKAT","","Barcode sudah dipakai!",null,"alert");
-            db.supplier[i].barang.unshift({nama:n, bc, harga:h, stok:s}); saveData(); document.querySelectorAll(`[id^='ib-']`).forEach(inp => inp.value="");
-        }
+        // BUG FIX RETUR: Menambahkan Date.now() sebagai ID Anti-Dobel
+        function confirmReturStep1() { if(!activeReturType) { openModal("PILIH JENIS", "", "Pilih salah satu jenis retur!", null, "alert"); return; } document.getElementById('modal-retur-step1').style.display = 'none'; const br = db.supplier[activeReturItem.s].barang[activeReturItem.b]; openModal(activeReturType === 'in' ? "RETUR DARI PEMBELI" : "RETUR KE SUPPLIER", 0, br.nama, (v) => { if(v <= 0) return; let sign = activeReturType === 'in' ? 1 : -1; if(activeReturType === 'out' && v > br.stok) { openModal("RETUR MELEBIHI STOK!", "", `Stok cuma sisa: ${br.stok}`, null, "alert"); return; } br.stok += (v * sign); let qs = formatStok(v, br.isi, br.sK, br.sB); db.retur.push({id: Date.now(), sup: db.supplier[activeReturItem.s].nama, nama: br.nama, qty: v, qtyStr: qs, type: activeReturType}); cart=[]; saveData(); }, "dual", "numeric", false, br, true); }
+        
+        function backToStep1() { document.getElementById('b-modal').style.display = 'none'; document.getElementById('modal-retur-step1').style.display = 'flex'; } function konfirmasiDownload() { openModal("PERINGATAN!", "", "DATA STOK AKAN MENIMPA", () => downloadCloud(), "danger_confirm"); } function editSupplier(i) { closeSheet(); let on = db.supplier[i].nama; openModal("EDIT SUPPLIER", on, "", (v) => { let n = v.trim(); if (!n) return; db.supplier[i].nama = n; saveData(); }, "prompt"); } function openModalSup() { openModal("TAMBAH SUPPLIER", "", "", (v) => { if(v.trim()) { db.supplier.unshift({nama:v.trim(), barang:[]}); saveData(); renderStok(curTab); } }, "prompt"); } function delSup(n) { closeSheet(); openModal("HAPUS?", "", `Hapus Supplier ${n}?`, () => { db.supplier=db.supplier.filter(x=>x.nama!==n); db.retur=db.retur.filter(x=>x.sup!==n); saveData(); }, "confirm"); }
+        function addB(i) { const n = document.getElementById(`ib-n-${i}`).value.trim(), bce = document.getElementById(`ib-bce-${i}`).value.trim(), bcg = document.getElementById(`ib-bcg-${i}`).value.trim(); const he = clean(document.getElementById(`ib-he-${i}`).value), hg = clean(document.getElementById(`ib-hg-${i}`).value); const sk = document.getElementById(`ib-sk-${i}`).value, sb = document.getElementById(`ib-sb-${i}`).value, isi = Math.abs(parseInt(document.getElementById(`ib-isi-${i}`).value)) || 0; const se = Math.abs(parseFloat(document.getElementById(`ib-st-k-${i}`).value)) || 0, sg = Math.abs(parseFloat(document.getElementById(`ib-st-b-${i}`).value)) || 0, st = (sg * (isi || 0)) + se; if(!n || (he <= 0 && hg <= 0)) { openModal("GAGAL", "", "Nama dan minimal 1 Harga harus diisi!", null, "alert"); return; } if(sb !== "" && sg > 0 && isi <= 0) { openModal("GAGAL", "", "Isi Per Grosir belum diatur (Pilih ulang grosirnya)", null, "alert"); return; } db.supplier[i].barang.unshift({ nama:n, bcE:bce, bcG:bcg, hargaE:he, hargaG:hg, stok:st, sK:sk, sB:sb, isi:isi }); saveData(); renderStok('sup'); }
 
-        function openModal(t, v, d, cb, mode='alert', type='text', withScan=false) {
-            const m = document.getElementById('b-modal'), inpBox = document.getElementById('m-input-box'), inp = document.getElementById('m-input'), btnC = document.getElementById('m-cancel'), btnOk = document.getElementById('m-confirm'), btnS = document.getElementById('m-scan-btn'), mBrd = document.getElementById('m-border');
-            document.getElementById('m-title').innerText = t; document.getElementById('m-desc').innerText = d; inp.value = v; inp.inputMode = type==="numeric"?"numeric":"text";
-            inpBox.style.display = (mode==='prompt')?'flex':'none'; btnC.style.display = (mode!=='alert')?'block':'none'; btnS.style.display = withScan?'flex':'none';
-            
-            let btnColor = "bg-[#3b82f6]"; let textColor = "text-white"; let bColor = "#3b82f6";
-            
-            if (t.includes("HAPUS?")) { btnColor = "bg-[#ff0000]"; bColor = "#ff0000"; } 
-            else if (t.includes("RETUR")) { btnColor = "bg-[#facc15]"; bColor = "#facc15"; textColor = "text-black"; }
-            else if (t.includes("SUPPLIER")) { btnColor = "bg-[#ffd700]"; bColor = "#ffd700"; textColor = "text-black"; }
-            else if (t.includes("EDIT BARCODE")) { btnColor = "bg-[#ffffff]"; bColor = "#ffffff"; textColor = "text-black"; }
-            else if (d.includes("EXCEL")) { btnColor = "bg-[#217346]"; bColor = "#217346"; textColor = "text-white"; }
-            else if (t.includes("SUKSES") || t.includes("UPLOADING") || t.includes("DOWNLOADING")) { btnColor = "bg-[#38bdf8]"; bColor = "#38bdf8"; textColor = "text-black"; }
-            else if (t.includes("EDIT HARGA") || t.includes("EDIT STOK")) { btnColor = "bg-[#3b82f6]"; bColor = "#3b82f6"; }
-            else { btnColor = "bg-[#3b82f6]"; bColor = "#3b82f6"; }
-            
-            if(!t.includes("UPLOADING") && !t.includes("DOWNLOADING")) btnOk.style.display = "block"; else btnOk.style.display = "none";
-            btnOk.className = `flex-1 py-3 ${btnColor} ${textColor} rounded-xl text-xs font-black shadow-sm uppercase active:scale-95 transition`;
-            mBrd.style.borderTopColor = bColor;
-            inpBox.style.borderColor = bColor;
-            
-            btnS.onclick = () => bukaKameraPopup('modal');
-            btnOk.onclick = () => { if(cb) mode==='prompt'?cb(inp.value):cb(); closeModal(); };
-            m.style.display = 'flex'; if(mode==='prompt') setTimeout(()=>inp.focus(),300);
-        }
+        async function uploadCloud(silent = false) { if(!silent) openModal("UPLOADING", "", "Mengirim data ke Cloud...", null, "cloud"); try { const res = await fetch(CLOUD_URL, { method: 'POST', body: JSON.stringify(db) }); if(res.ok) { unuploadedData = false; document.getElementById('sync-indicator').style.display = 'none'; if(!silent) openModal("SUKSES", "", "Upload berhasil!", null, "alert"); } else throw new Error(); } catch(e) { if(!silent) openModal("GAGAL", "", "Gagal kirim data ke Cloud.", null, "alert"); } }
+        async function downloadCloud() { openModal("DOWNLOADING", "", "Mengambil stok...", null, "cloud"); try { const res = await fetch(CLOUD_URL + "?action=loadStok"); const data = await res.json(); if(data && data.supplier) { let savedHistory = db.history || []; db = data; db.history = savedHistory; unuploadedData = false; document.getElementById('sync-indicator').style.display = 'none'; saveData(); openModal("SUKSES", "", "LOAD BERHASIL!", () => { renderStok(curTab); refreshDL(); }, "alert"); } } catch(e) { openModal("GAGAL", "", "Gagal ambil data.", null, "alert"); } }
+
+        function setupDropdown(idLabel, idDropdown, tipe, brObj) { const label = document.getElementById(idLabel); const dropdown = document.getElementById(idDropdown); label.onclick = (e) => { e.stopPropagation(); if(curDropdownOpen && curDropdownOpen !== idDropdown) { document.getElementById(curDropdownOpen).classList.add('hidden'); } let curVal = tipe === 'ecer' ? brObj.sK : brObj.sB; let list = tipe === 'ecer' ? ecerUnitList : grosirUnitList; let html = ''; list.filter(s => s !== curVal).forEach(s => { html += `<div onclick="selectDropdownVal('${tipe}', '${s}', '${idLabel}', '${idDropdown}')" class="p-3 text-[10px] font-bold text-white uppercase border-b border-[#2b2d31] active:bg-[#3b82f6] transition">${s}</div>`; }); if(html === '') html = `<div class="p-3 text-[10px] font-bold text-[#6b7280] italic">Habis</div>`; dropdown.innerHTML = html; dropdown.classList.toggle('hidden'); curDropdownOpen = dropdown.classList.contains('hidden') ? null : idDropdown; }; }
+        function selectDropdownVal(tipe, val, idLabel, idDropdown) { document.getElementById(idDropdown).classList.add('hidden'); curDropdownOpen = null; const targetId = idLabel === 'm-lb-ecer' ? 'm-label-kecil' : 'm-label-besar'; document.getElementById(targetId).innerHTML = val.toUpperCase() + ' <i class="fas fa-caret-down text-[8px] ml-1"></i>'; if(activeDropdownCallback) activeDropdownCallback(tipe, val); }
+
+        function openModal(t, v, d, cb, mode='alert', type='text', withScan=false, brObj=null, isWipe=false) { const m = document.getElementById('b-modal'), dbx = document.getElementById('m-dual-input'), sbx = document.getElementById('m-single-input-box'), bcbx = document.getElementById('m-dual-barcode'), inp = document.getElementById('m-input'), bok = document.getElementById('m-confirm'), mt = document.getElementById('m-title'); mt.innerText = t; document.getElementById('m-desc').innerText = d; dbx.style.display = (mode==='dual' || mode==='dual_edit_stok') ? 'block' : 'none'; bcbx.style.display = (mode==='barcode_dual') ? 'block' : 'none'; sbx.style.display = (mode!=='dual' && mode!=='dual_edit_stok' && mode!=='barcode_dual' && mode!=='confirm' && mode!=='cloud' && mode!=='alert' && mode!=='danger_confirm') ? 'flex' : 'none'; document.getElementById('m-cancel').style.display = (mode!=='alert' && mode!=='cloud' && mode!=='danger_confirm') ? 'block' : 'none'; document.getElementById('m-back').style.display = (t.includes("RETUR") && (mode==='dual' || mode==='dual_edit_stok')) ? 'block' : 'none'; document.getElementById('m-scan-btn').style.display = withScan ? 'flex' : 'none'; let bc = "#3b82f6", tc = "text-white"; if (t.includes("HAPUS") || t.includes("GAGAL") || t.includes("KOSONG") || t.includes("KURANG") || t.includes("RETUR MELEBIHI")) { bc = "#ff0000"; } else if (t.includes("RETUR") || t.includes("SUPPLIER") || t.includes("NAMA")) { bc = "#facc15"; tc="text-black"; } else if (t.includes("BARCODE")) { bc = "#ffffff"; tc="text-black"; } else if (t.includes("PERINGATAN") || mode==='danger_confirm') { bc = "#ff0000"; tc="text-white"; } document.getElementById('m-border').style.borderTopColor = bc; mt.style.color = bc; sbx.style.borderColor = bc; if (document.getElementById('m-cancel').style.display === 'block' && mode !== 'danger_confirm') { document.getElementById('m-cancel').style.borderColor = bc; } bok.style.display = mode==='cloud' ? "none" : "block"; bok.className = `flex-1 py-3 ${tc} rounded-xl text-xs font-black shadow-sm uppercase active:scale-95 transition z-[2300] relative`; bok.style.backgroundColor = bc; if(mode === 'danger_confirm') { document.getElementById('m-cancel').style.display = 'block'; document.getElementById('m-cancel').className = "flex-1 py-3 bg-[#ff0000] text-white rounded-xl text-xs font-black uppercase transition"; bok.style.backgroundColor = "transparent"; bok.style.border = "2px solid #ff0000"; bok.style.color = "#ff0000"; } if(document.getElementById('m-lb-ecer')) document.getElementById('m-lb-ecer').onclick = null; if(document.getElementById('m-lb-grosir')) document.getElementById('m-lb-grosir').onclick = null; if(document.getElementById('m-dd-ecer')) document.getElementById('m-dd-ecer').classList.add('hidden'); if(document.getElementById('m-dd-grosir')) document.getElementById('m-dd-grosir').classList.add('hidden'); if ((mode === 'dual' || mode === 'dual_edit_stok') && brObj) { let bCls = `m-dual-wrapper border-[${bc}]`; document.getElementById('m-dw-ecer').className = bCls; document.getElementById('m-dw-grosir').className = bCls; document.getElementById('m-lb-ecer').style.backgroundColor = bc; document.getElementById('m-lb-grosir').style.backgroundColor = bc; let lKecil = document.getElementById('m-label-kecil'); lKecil.innerHTML = (brObj.sK || 'SATUAN').toUpperCase() + (mode==='dual_edit_stok' ? ' <i class="fas fa-caret-down text-[8px] ml-1"></i>' : ''); lKecil.style.color = (tc === "text-white") ? "#ffffff" : "#000000"; if(mode === 'dual_edit_stok') { activeDropdownCallback = (tipe, val) => { if(tipe==='ecer') brObj.sK = val; else brObj.sB = val; }; setupDropdown('m-lb-ecer', 'm-dd-ecer', 'ecer', brObj); } document.getElementById('m-input-kecil').value = isWipe ? "" : (t.includes("HARGA") ? (brObj.hargaE ? brObj.hargaE.toLocaleString('id-ID') : "") : (brObj.stok % brObj.isi).toFixed(2).replace(/\.00$/, "")); if (brObj.sB && (brObj.isi > 0 || t.includes("HARGA") || t.includes("RETUR"))) { document.getElementById('m-dw-grosir').style.display = 'flex'; let lBesar = document.getElementById('m-label-besar'); lBesar.innerHTML = brObj.sB.toUpperCase() + (mode==='dual_edit_stok' ? ' <i class="fas fa-caret-down text-[8px] ml-1"></i>' : ''); lBesar.style.color = (tc === "text-white") ? "#ffffff" : "#000000"; if(mode === 'dual_edit_stok') { setupDropdown('m-lb-grosir', 'm-dd-grosir', 'grosir', brObj); } document.getElementById('m-input-besar').value = isWipe ? "" : (t.includes("HARGA") ? (brObj.hargaG ? brObj.hargaG.toLocaleString('id-ID') : "") : Math.floor(brObj.stok / brObj.isi)); } else { document.getElementById('m-dw-grosir').style.display = 'none'; if(!t.includes("HARGA")) document.getElementById('m-input-kecil').value = isWipe ? "" : brObj.stok; } } else if (mode === 'barcode_dual' && brObj) { document.getElementById('mb-input-kecil').value = brObj.bcE || ""; document.getElementById('mb-input-besar').value = brObj.bcG || ""; } else { inp.value = v; inp.inputMode = type==="numeric"?"numeric":"text"; } bok.onclick = () => { if ((mode === 'dual' || mode === 'dual_edit_stok') && !t.includes("HARGA")) { let bVal = parseFloat(document.getElementById('m-input-besar').value) || 0, kVal = parseFloat(document.getElementById('m-input-kecil').value) || 0; cb((bVal * (brObj.isi || 0)) + kVal); } else if (mode === 'dual' || mode === 'dual_edit_stok') { cb({ val1: document.getElementById('m-input-kecil').value, val2: document.getElementById('m-input-besar').value }); } else if (mode === 'barcode_dual') { cb({ val1: document.getElementById('mb-input-kecil').value, val2: document.getElementById('mb-input-besar').value }); } else cb(inp.value); closeModal(); }; m.style.display = 'flex'; if(mode==='prompt') setTimeout(()=>inp.focus(),300); }
         function closeModal() { document.getElementById('b-modal').style.display = 'none'; }
         
-        function exportData() { 
-            let dStok = []; 
-            db.supplier.forEach(s=>s.barang.forEach(b=>dStok.push({"Supplier":s.nama,"Barang":b.nama,"Barcode":b.bc||"","Harga":b.harga,"Stok":b.stok}))); 
-            const wsStok = XLSX.utils.json_to_sheet(dStok); 
-            
-            let dHist = [];
-            db.history.forEach(trx => {
-                trx.items.forEach(i => {
-                    dHist.push({
-                        "Waktu": trx.waktu,
-                        "ID Transaksi": trx.id,
-                        "Barang": i.nama,
-                        "Qty": i.qty,
-                        "Harga Satuan": i.harga,
-                        "Total Harga": i.harga * i.qty
-                    });
-                });
-            });
-            const wsHist = XLSX.utils.json_to_sheet(dHist);
-
-            let dRet = [];
-            db.retur.forEach(r => {
-                dRet.push({
-                    "Supplier": r.sup,
-                    "Barang": r.nama,
-                    "Qty Retur": r.qty
-                });
-            });
-            const wsRet = XLSX.utils.json_to_sheet(dRet);
-
-            const wb = XLSX.utils.book_new(); 
-            XLSX.utils.book_append_sheet(wb, wsStok, "Stok"); 
-            XLSX.utils.book_append_sheet(wb, wsHist, "History"); 
-            XLSX.utils.book_append_sheet(wb, wsRet, "Retur"); 
-            XLSX.writeFile(wb, "DATA_BARLA.xlsx"); 
-        }
-
-        function importData(input) { if(!input.files[0]) return; const reader = new FileReader(); reader.readAsArrayBuffer(input.files[0]); reader.onload = (e) => { try { const workbook = XLSX.read(new Uint8Array(e.target.result), {type:'array'}); const json = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]]); json.forEach(row => { const sN = (row["Supplier"]||"").toString().trim(), bN = (row["Barang"]||"").toString().trim(), bc = (row["Barcode"]||"").toString().trim(), pr = clean(row["Harga"]||"0"), st = Math.abs(parseInt(row["Stok"]||"0"))||0; if(sN && bN) { let sup = db.supplier.find(x=>x.nama.toLowerCase()===sN.toLowerCase()); if(!sup){ sup={nama:sN, barang:[]}; db.supplier.unshift(sup); } let brg = sup.barang.find(x=>x.nama.toLowerCase()===bN.toLowerCase()); if(brg){ brg.bc=bc; brg.harga=pr; brg.stok=st; } else sup.barang.unshift({nama:bN, bc, harga:pr, stok:st}); } }); saveData(); openModal("SUKSES","","LOAD DARI EXCEL!",()=>{ renderStok(curTab); refreshDL(); },"alert"); } catch(err) { openModal("ERROR","","Format salah!",null,"alert"); } input.value = ""; }; }
-        
-        function printReturSemua() { 
-            let h = `          BARLA STORE          \n     Ps. Sunggingan Lt. 2      \n        0822-2633-4999         \n-------------------------------\n`; 
-            let tStr = `Semua Data Retur - ${getTglStr()}`.padEnd(31, ' ');
-            h += `${tStr}\n-------------------------------\n`; 
-            const g = db.retur.reduce((a,r)=>{(a[r.sup]=a[r.sup]||[]);a[r.sup].push(r);return a;},{}); 
-            let first = true;
-            for(let s in g){ 
-                if(!first) h += `\n`;
-                h += `• ${escapeHTML(s).toUpperCase().substring(0,29)}\n\n`; 
-                g[s].forEach(r=> { 
-                    let nm = escapeHTML(r.nama).substring(0, 18).padEnd(18, ' '); 
-                    let q = r.qty.toString().padStart(4, ' ') + " pcs"; 
-                    h += `${nm} ${q}\n`; 
-                }); 
-                first = false;
-            } 
-            h += `-------------------------------\n`;
-            document.getElementById('p-konten').innerHTML = `<pre>${h}</pre>`; window.print(); 
-        }
-        
-        function printReturSup(sn) { 
-            let h = `          BARLA STORE          \n     Ps. Sunggingan Lt. 2      \n        0822-2633-4999         \n-------------------------------\n`; 
-            let tStr = `Data Retur - ${getTglStr()}`.padEnd(31, ' ');
-            h += `${tStr}\n-------------------------------\n`; 
-            h += `• ${escapeHTML(sn).toUpperCase().substring(0,29)}\n\n`; 
-            db.retur.filter(x=>x.sup===sn).forEach(r=> { 
-                let nm = escapeHTML(r.nama).substring(0, 18).padEnd(18, ' '); 
-                let q = r.qty.toString().padStart(4, ' ') + " pcs"; 
-                h += `${nm} ${q}\n`; 
-            }); 
-            h += `-------------------------------\n`;
-            document.getElementById('p-konten').innerHTML = `<pre>${h}</pre>`; window.print(); 
-        }
-        
-        function printLapSemua() { 
-            let h = `          BARLA STORE          \n     Ps. Sunggingan Lt. 2      \n        0822-2633-4999         \n-------------------------------\n`; 
-            let tStr = `Semua Laporan - ${getTglStr()}`.padEnd(31, ' ');
-            h += `${tStr}\n-------------------------------\n`; 
-            let has = false; let first = true;
-            db.supplier.forEach(s=>{ 
-                const k=s.barang.filter(b=>b.stok<30); 
-                if(k.length>0){ 
-                    has=true; 
-                    if(!first) h += `\n`;
-                    h += `• ${escapeHTML(s.nama).toUpperCase().substring(0,29)}\n\n`; 
-                    k.forEach(b=>{ 
-                        let nm = escapeHTML(b.nama).substring(0, 18).padEnd(18, ' '); 
-                        let sisa = `Sisa: ${b.stok}`.padStart(9, ' '); 
-                        h += `${nm} ${sisa}\n`; 
-                    }); 
-                    first = false;
-                } 
-            }); 
-            h += `-------------------------------\n`;
-            if(!has) return openModal("AMAN","","Semua stok cukup.",null,"alert"); 
-            document.getElementById('p-konten').innerHTML=`<pre>${h}</pre>`; window.print(); 
-        }
-        
-        function waR(sn) { 
-            let h = `          BARLA STORE          \n     Ps. Sunggingan Lt. 2      \n-------------------------------\n`; 
-            let tStr = `Data Retur - ${getTglStr()}`.padEnd(31, ' ');
-            h += `${tStr}\n-------------------------------\n`; 
-            h += `• ${sn.toUpperCase().substring(0,29)}\n\n`; 
-            db.retur.filter(x=>x.sup===sn).forEach(r=> { 
-                let nm = r.nama.substring(0, 18).padEnd(18, ' '); 
-                let q = r.qty.toString().padStart(4, ' ') + " pcs"; 
-                h += `${nm} ${q}\n`; 
-            }); 
-            window.open(`https://wa.me/?text=${encodeURIComponent("```\n" + h + "```")}`); 
-        }
-        
-        function waO(i) { 
-            let s=db.supplier[i]; 
-            let h = `          BARLA STORE          \n     Ps. Sunggingan Lt. 2      \n-------------------------------\n`; 
-            let tStr = `Order - ${getTglStr()}`.padEnd(31, ' ');
-            h += `${tStr}\n-------------------------------\n`; 
-            h += `• ${s.nama.toUpperCase().substring(0,29)}\n\n`; 
-            s.barang.filter(b=>b.stok<30).forEach(b=> { 
-                let nm = b.nama.substring(0, 18).padEnd(18, ' '); 
-                h += `${nm}: \n`; 
-            }); 
-            window.open(`https://wa.me/?text=${encodeURIComponent("```\n" + h + "```")}`); 
-        }
-        
-        function trHR(sn) { openModal("HAPUS?", "", `Data retur ${sn} dihapus?`, () => { db.retur=db.retur.filter(x=>x.sup!==sn); saveData(); renderStok('retur'); }, "confirm"); }
+        function exportData() { let ds = []; db.supplier.forEach(s=>s.barang.forEach(b=>ds.push({"Supplier":s.nama,"Barang":b.nama,"BC Satuan":b.bcE||"","BC Grosir":b.bcG||"","Harga Satuan":b.hargaE||0,"Harga Grosir":b.hargaG||0,"Stok":b.stok,"Satuan":b.sK||'pcs',"Grosir":b.sB||'',"Isi":b.isi||0,"Batas Laporan":getMinLimit(b.sB||b.sK)}))); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(ds), "Stok"); XLSX.writeFile(wb, "DATA_STORE_FAM_BARLA.xlsx"); }
+        function importData(inp) { if(!inp.files[0]) return; const r = new FileReader(); r.readAsArrayBuffer(inp.files[0]); r.onload = (e) => { try { const wb = XLSX.read(new Uint8Array(e.target.result), {type:'array'}); const json = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]); json.forEach(row => { const sn = (row["Supplier"]||"").toString().trim(), bn = (row["Barang"]||"").toString().trim(); if(sn && bn) { let s = db.supplier.find(x=>x.nama.toLowerCase()===sn.toLowerCase()) || {nama:sn, barang:[]}; if(!db.supplier.includes(s)) db.supplier.unshift(s); let b = s.barang.find(x=>x.nama.toLowerCase()===bn.toLowerCase()); if(b) { b.stok = parseFloat(row["Stok"])||0; b.hargaE = parseInt(row["Harga Satuan"])||0; b.hargaG = parseInt(row["Harga Grosir"])||0; b.bcE = (row["BC Satuan"]||'').toString().trim(); b.bcG = (row["BC Grosir"]||'').toString().trim(); b.sK = (row["Satuan"]||'pcs').toString().toLowerCase().trim(); b.sB = (row["Grosir"]||'').toString().toLowerCase().trim(); b.isi = parseInt(row["Isi"])||0; } else s.barang.unshift({nama:bn, bcE:(row["BC Satuan"]||"").toString().trim(), bcG:(row["BC Grosir"]||"").toString().trim(), hargaE:parseInt(row["Harga Satuan"])||0, hargaG:parseInt(row["Harga Grosir"])||0, stok:parseFloat(row["Stok"])||0, sK:(row["Satuan"]||'pcs').toString().toLowerCase().trim(), sB:(row["Grosir"]||'').toString().toLowerCase().trim(), isi:parseInt(row["Isi"])||0}); } }); saveData(); renderStok(curTab); } catch(err) { openModal("ERROR","","Format salah!",null,"alert"); } }; }
+        function printReturSemua() { let h = `          STORE famBARLA         \n     Ps. Sunggingan Lt. 2      \n-------------------------------\nREKAP RETUR - ${getTglStr()}\n-------------------------------\n`; const g = db.retur.reduce((a,r)=>{(a[r.sup]=a[r.sup]||[]);a[r.sup].push(r);return a;},{}); for(let s in g){ h += `• ${s.toUpperCase()}\n`; g[s].forEach(r=> h += `  ${r.nama.substring(0,18).padEnd(19)} ${r.type==='in'?'+':'-'}${r.qtyStr}\n`); h += `\n`; } document.getElementById('p-konten').innerHTML = `<pre>${h}</pre>`; window.print(); }
+        function printReturSup(sn) { let h = `          STORE famBARLA         \n     Ps. Sunggingan Lt. 2      \n-------------------------------\nRETUR: ${sn.toUpperCase()}\n-------------------------------\n`; db.retur.filter(x=>x.sup===sn).forEach(r=> h += `${r.nama.substring(0,18).padEnd(19)} ${r.type==='in'?'+':'-'}${r.qtyStr}\n`); document.getElementById('p-konten').innerHTML = `<pre>${h}</pre>`; window.print(); }
+        function printLapSemua() { let h = `          STORE famBARLA         \n     Ps. Sunggingan Lt. 2      \n-------------------------------\nLAPORAN STOK - ${getTglStr()}\n-------------------------------\n`; db.supplier.forEach(s=>{ const k=s.barang.filter(b=>{ if(b.sB && b.isi > 0) { let krt = Math.floor(b.stok / b.isi); return krt <= getMinLimit(b.sB); } else { return b.stok <= getMinLimit(b.sK); }}); if(k.length>0){ h += `• ${s.nama.toUpperCase()}\n`; k.forEach(b=> h += `  ${b.nama.substring(0,18).padEnd(19)} ${formatStok(b.stok, b.isi, b.sK, b.sB)}\n`); h += `\n`; } }); document.getElementById('p-konten').innerHTML=`<pre>${h}</pre>`; window.print(); }
+        function waR(sn) { let h = `*RETUR famBARLA*\nSupplier: ${sn}\n-------------------\n`; db.retur.filter(x=>x.sup===sn).forEach(r=> h += `• ${r.nama}: ${r.type==='in'?'+':'-'}${r.qtyStr}\n`); window.open(`https://wa.me/?text=${encodeURIComponent(h)}`); }
+        function waO(i) { let s=db.supplier[i], h = `*ORDER famBARLA*\nSupplier: ${s.nama}\n-------------------\n`; s.barang.filter(b=>{ if(b.sB && b.isi > 0) { let krt = Math.floor(b.stok / b.isi); return krt <= getMinLimit(b.sB); } else { return b.stok <= getMinLimit(b.sK); }}).forEach(b=> h += `• ${b.nama}: (Sisa ${formatStok(b.stok, b.isi, b.sK, b.sB)})\n`); window.open(`https://wa.me/?text=${encodeURIComponent(h)}`); }
+        function trHR(sn) { openModal("HAPUS?", "", `Hapus data retur ${sn}?`, () => { db.retur=db.retur.filter(x=>x.sup!==sn); saveData(); renderStok('retur'); }, "confirm"); }
     </script>
 </body>
 </html>
