@@ -32,6 +32,17 @@
             20%, 90% { color: #333333; text-shadow: none; }
         }
 
+        /* ANIMASI MENU GARIS TIGA BERURUTAN */
+        .menu-lines { display: flex; flex-direction: column; gap: 3px; justify-content: center; align-items: center; width: 14px; height: 12px; }
+        .menu-line { height: 2px; width: 100%; background-color: #808080; border-radius: 2px; animation: laser-run 1.5s infinite; }
+        .menu-line:nth-child(1) { animation-delay: 0s; }
+        .menu-line:nth-child(2) { animation-delay: 0.5s; }
+        .menu-line:nth-child(3) { animation-delay: 1.0s; }
+        @keyframes laser-run {
+            0%, 100% { background-color: #808080; box-shadow: none; }
+            50% { background-color: #ff0000; box-shadow: 0 0 2px #ff0000, 0 0 6px #ff0000; }
+        }
+
         @media print {
             @page { margin: 0; size: auto; }
             body { background: white; margin: 0; padding: 0; }
@@ -46,38 +57,24 @@
         .sheet-content { background: var(--gemini-grey); width: 100%; border-radius: 2rem 2rem 0 0; padding: 2rem; transform: translateY(100%); transition: transform 0.3s; border-top: 1px solid #666666;}
         .sheet-active .sheet-content { transform: translateY(0); }
         .modal-bg { background: rgba(0, 0, 0, 0.9); position: fixed; inset: 0; display: none; align-items: center; justify-content: center; padding: 20px; z-index: 1500; }
-        
-        .nav-btn { transition: color 0.2s; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; background: transparent; border: none; padding-top: 15px; padding-bottom: 10px; }
-        .nav-btn i { font-size: 16px; color: #666666; transition: color 0.2s; } 
-        .nav-btn span { font-size: 9px; font-weight: 700; text-transform: uppercase; color: #666666; } 
-        .active-nav i, .active-nav span { color: #ffffff !important; }
 
-        .premium-scan { border-radius: 6px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000000; border: 1px solid #ffffff;}
+        .premium-scan { border-radius: 6px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000000; border: 1px solid #ffffff !important; }
         .premium-scan::before { content: ""; width: 85%; height: 2px; background: #ff0000; position: absolute; animation: laser 1.8s infinite ease-in-out; z-index: 10; }
         @keyframes laser { 0%, 100% { top: 15%; } 50% { top: 80%; } }
 
         #scanner-modal-layer video { object-fit: cover !important; }
-        input { background-color: var(--gemini-bg) !important; color: #ffffff !important; border: 1px solid #666666 !important; }
         
-        .m-dual-wrapper { border-width: 1px; border-radius: 1rem; overflow: hidden; background: #000000; display: flex; align-items: stretch; margin-bottom: 10px; border-color: #666666; }
+        input:not(.border-none) { background-color: var(--gemini-bg) !important; color: #ffffff !important; border: 1px solid #666666 !important; }
+        input.border-none { background-color: transparent !important; color: #ffffff !important; border: none !important; outline: none !important; }
+        
+        .m-dual-wrapper { border-width: 1px; border-radius: 1rem; background: #000000; display: flex; align-items: stretch; margin-bottom: 10px; border-color: #666666; position: relative; }
         .m-label-box { width: 85px; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 10px; text-transform: uppercase; cursor: pointer; transition: background-color 0.2s; background: transparent; border-left: 1px solid #666666; color: #808080;}
         button:focus { outline: none; box-shadow: none; }
         
         .sync-dot { display: none; width: 6px; height: 6px; background-color: #ff0000; border-radius: 50%; position: absolute; top: -2px; right: -2px; }
-        
-        /* Kustomisasi Kalender */
-        input[type="date"] {
-            color-scheme: dark;
-            background-color: #000000 !important;
-            border: 1px solid #ff0000 !important;
-            color: #ffffff !important;
-        }
-        input[type="date"]::-webkit-calendar-picker-indicator {
-            filter: invert(0.5) sepia(1) saturate(5) hue-rotate(330deg); /* Membuat ikon mendekati merah */
-        }
     </style>
 </head>
-<body class="pb-24">
+<body class="pb-6">
 
     <header class="bg-[#000000] p-3 text-white sticky top-0 z-50 flex justify-between items-center no-print border-b border-[#666666]">
         <div>
@@ -106,25 +103,35 @@
             </h1>
             <p id="h-time" class="text-[8px] mt-1 uppercase font-bold text-[#808080]"><span class="text-[#808080]" id="date-part"></span> <span class="text-[#ff0000] font-black ml-1" id="time-part"></span></p>
         </div>
+        
+        <button onclick="openMenuModal()" class="border border-[#666666] text-[#808080] font-bold text-[10px] px-4 py-2 rounded-full uppercase tracking-widest transition-colors active:text-white active:border-white bg-[#1a1a1a] mx-2 flex-shrink-0 flex items-center gap-1.5 shadow-sm">
+            <div class="menu-lines">
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+                <div class="menu-line"></div>
+            </div>
+            <span class="audiowide-regular">MENU</span>
+        </button>
+
         <div class="flex items-center gap-4">
             <div id="h-kasir" class="flex gap-4 items-center">
                 <button onclick="bukaHistory()" class="transition-colors active:text-white"><i class="fas fa-history text-[18px] text-[#808080]"></i></button>
-                <button onclick="bukaKameraPopup('auto')" class="transition-colors"><div class="premium-scan w-7 h-7"></div></button>
+                <button onclick="bukaKameraPopup('auto')" class="transition-colors"><div class="premium-scan w-7 h-7 border border-[#ffffff]"></div></button>
             </div>
             <div id="h-stok" class="hidden flex items-center gap-3">
                 <button onclick="uploadCloud(false)" class="text-[#38bdf8] transition-colors active:text-white flex flex-col items-center mt-0.5 relative">
                     <i class="fas fa-cloud-upload-alt text-lg"></i>
-                    <span class="text-[7px] font-bold mt-0.5 uppercase text-[#38bdf8]">UPLOAD</span>
+                    <span class="text-[7px] font-bold mt-0.5 uppercase text-[#38bdf8] audiowide-regular">UPLOAD</span>
                     <div id="sync-indicator" class="sync-dot"></div>
                 </button>
                 <div class="relative flex items-center h-full">
                     <button onclick="toggleMenu('floatingStokMenu')" class="text-[#808080] transition-colors active:text-white px-2 py-1"><i class="fas fa-ellipsis-v text-sm"></i></button>
                     <div id="floatingStokMenu" class="hidden absolute right-0 top-full mt-3 w-40 p-2 bg-[#000000] border border-[#666666] rounded-xl z-[300] space-y-1.5">
-                        <button onclick="toggleMenu('floatingStokMenu'); exportData();" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg border border-[#217346] text-[#217346] transition-colors bg-transparent active:text-white active:border-white"><i class="fas fa-file-export text-base w-5 text-center"></i><span class="text-[10px] font-bold uppercase tracking-wide">Save Excel</span></button>
-                        <button onclick="toggleMenu('floatingStokMenu'); document.getElementById('fIn').click();" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg border border-[#217346] text-[#217346] transition-colors bg-transparent active:text-white active:border-white"><i class="fas fa-file-import text-base w-5 text-center"></i><span class="text-[10px] font-bold uppercase tracking-wide">Load Excel</span></button>
+                        <button onclick="toggleMenu('floatingStokMenu'); exportData();" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg border border-[#217346] text-[#217346] transition-colors bg-transparent active:text-white active:border-white"><i class="fas fa-file-export text-base w-5 text-center"></i><span class="text-[10px] font-bold uppercase tracking-wide audiowide-regular">Save Excel</span></button>
+                        <button onclick="toggleMenu('floatingStokMenu'); document.getElementById('fIn').click();" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg border border-[#217346] text-[#217346] transition-colors bg-transparent active:text-white active:border-white"><i class="fas fa-file-import text-base w-5 text-center"></i><span class="text-[10px] font-bold uppercase tracking-wide audiowide-regular">Load Excel</span></button>
                         <input type="file" id="fIn" class="hidden" accept=".csv, .xlsx, .xls" onchange="importData(this)">
                         <div class="border-t border-[#666666] my-1"></div>
-                        <button onclick="toggleMenu('floatingStokMenu'); konfirmasiDownload();" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg border border-[#38bdf8] text-[#38bdf8] transition-colors bg-transparent active:text-white active:border-white"><i class="fas fa-cloud-download-alt text-base w-5 text-center"></i><span class="text-[10px] font-bold uppercase tracking-wide">Load Cloud</span></button>
+                        <button onclick="toggleMenu('floatingStokMenu'); konfirmasiDownload();" class="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-lg border border-[#38bdf8] text-[#38bdf8] transition-colors bg-transparent active:text-white active:border-white"><i class="fas fa-cloud-download-alt text-base w-5 text-center"></i><span class="text-[10px] font-bold uppercase tracking-wide audiowide-regular">Load Cloud</span></button>
                     </div>
                 </div>
             </div>
@@ -138,8 +145,23 @@
         </div>
     </div>
 
+    <div id="modal-menu-nav" class="modal-bg z-[2000]">
+        <div class="bg-[#000000] w-full max-w-xs rounded-3xl p-6 space-y-4 border border-[#666666]">
+            <h3 class="font-black text-center uppercase text-lg italic text-[#ffffff] border-b border-[#666666] pb-3 audiowide-regular">PILIH MENU</h3>
+            <div class="space-y-3 pt-2">
+                <button onclick="pilihMenu('kasir')" class="w-full flex items-center justify-center gap-3 p-4 rounded-xl font-bold uppercase text-xs border border-[#3b82f6] text-[#3b82f6] bg-transparent transition-colors active:text-white active:border-white audiowide-regular">
+                    <i class="fas fa-store text-lg"></i> KASIR
+                </button>
+                <button onclick="pilihMenu('stok')" class="w-full flex items-center justify-center gap-3 p-4 rounded-xl font-bold uppercase text-xs border border-[#facc15] text-[#facc15] bg-transparent transition-colors active:text-white active:border-white audiowide-regular">
+                    <i class="fas fa-box-open text-lg"></i> STOK
+                </button>
+            </div>
+            <button onclick="document.getElementById('modal-menu-nav').style.display='none'; activeModalId = null;" class="w-full mt-3 py-3 text-xs font-black text-[#ff0000] uppercase rounded-xl border border-[#ff0000] transition-colors active:text-white active:border-white bg-transparent audiowide-regular">Batal</button>
+        </div>
+    </div>
+
     <main class="max-w-md mx-auto p-2 no-print bg-[#000000]" id="m-content">
-        <div id="section-kasir" class="pb-64 pt-1 bg-[#000000]"> 
+        <div id="section-kasir" class="pb-32 pt-1 bg-[#000000]"> 
             <div class="bg-[#000000] p-3 rounded-xl border border-[#666666] mb-2">
                 <div class="flex gap-2 mb-2">
                     <div class="relative flex-1">
@@ -151,20 +173,20 @@
                 <div class="flex gap-2">
                     <div class="relative w-2/5"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-[9px] font-black text-[#808080] z-10">Rp</span><input type="text" id="k-harga" inputmode="numeric" oninput="formatRupiah(this)" placeholder="Harga" class="w-full pl-7 pr-2 py-2 rounded-lg font-bold text-xs outline-none transition-colors placeholder-[#808080] text-[#ffffff] bg-[#000000]"></div>
                     <input type="number" step="0.01" id="k-qty" inputmode="decimal" placeholder="Qty" class="w-1/5 px-1 py-2 rounded-lg font-bold text-xs text-center outline-none transition-colors placeholder-[#808080] text-[#ffffff] bg-[#000000]">
-                    <button onclick="tambahItem()" class="w-2/5 bg-transparent border border-[#3b82f6] text-[#3b82f6] font-bold text-xs rounded-lg transition-colors active:text-white active:border-white flex items-center justify-center gap-1 uppercase"><i class="fas fa-plus"></i> ADD</button>
+                    <button onclick="tambahItem()" class="w-2/5 bg-transparent border border-[#3b82f6] text-[#3b82f6] font-bold text-xs rounded-lg transition-colors active:text-white active:border-white flex items-center justify-center gap-1 uppercase audiowide-regular"><i class="fas fa-plus"></i> ADD</button>
                 </div>
             </div>
             <div id="list-cart" class="space-y-1.5 bg-[#000000]"></div>
-            <div id="p-bayar" class="fixed bottom-[48px] left-0 w-full bg-[#000000] px-4 py-3 border-t border-[#666666] z-30">
+            <div id="p-bayar" class="fixed bottom-0 left-0 w-full bg-[#000000] px-4 py-3 border-t border-[#666666] z-30">
                 <div class="flex justify-between items-center mb-2 gap-3 max-w-md mx-auto">
-                    <div class="flex flex-col"><span class="text-[9px] font-black text-[#808080] uppercase tracking-wide">Total</span><span id="t-total" class="text-2xl font-black text-[#ff0000] leading-none tracking-tighter">Rp 0</span></div>
+                    <div class="flex flex-col"><span class="text-[9px] font-black text-[#808080] uppercase tracking-wide audiowide-regular">Total</span><span id="t-total" class="text-2xl font-black text-[#ff0000] leading-none tracking-tighter">Rp 0</span></div>
                     <div class="w-1/2"><input type="text" id="i-bayar" inputmode="numeric" oninput="formatRupiah(this)" placeholder="Bayar" class="w-full text-right text-base font-black px-3 py-1.5 rounded-lg outline-none placeholder-[#808080] text-[#ffffff] bg-[#000000]"></div>
                 </div>
                 <div class="max-w-md mx-auto">
-                    <div id="b-kembali" class="hidden flex justify-between items-center bg-[#000000] border border-[#666666] rounded-lg p-1.5 px-3 mb-2 transition-colors"><span class="text-[10px] font-bold text-[#808080] uppercase">Kembalian</span><span id="t-kembali" class="text-sm font-black">Rp 0</span></div>
+                    <div id="b-kembali" class="hidden flex justify-between items-center bg-[#000000] border border-[#666666] rounded-lg p-1.5 px-3 mb-2 transition-colors"><span class="text-[10px] font-bold text-[#808080] uppercase audiowide-regular">Kembalian</span><span id="t-kembali" class="text-sm font-black">Rp 0</span></div>
                     <div class="flex gap-2">
-                        <button onclick="checkout('wa')" class="flex-1 bg-transparent border border-[#25D366] text-[#25D366] font-bold py-2.5 rounded-lg uppercase text-[11px] transition-colors active:text-white active:border-white flex justify-center items-center gap-1.5"><i class="fab fa-whatsapp text-sm"></i> WhatsApp</button>
-                        <button onclick="checkout('print')" class="flex-1 bg-transparent border border-[#3b82f6] text-[#3b82f6] font-bold py-2.5 rounded-lg uppercase text-[11px] transition-colors active:text-white active:border-white flex justify-center items-center gap-1.5"><i class="fas fa-print text-sm"></i> Cetak</button>
+                        <button onclick="checkout('wa')" class="flex-1 bg-transparent border border-[#25D366] text-[#25D366] font-bold py-2.5 rounded-lg uppercase text-[11px] transition-colors active:text-white active:border-white flex justify-center items-center gap-1.5 audiowide-regular"><i class="fab fa-whatsapp text-sm"></i> WhatsApp</button>
+                        <button onclick="checkout('print')" class="flex-1 bg-transparent border border-[#3b82f6] text-[#3b82f6] font-bold py-2.5 rounded-lg uppercase text-[11px] transition-colors active:text-white active:border-white flex justify-center items-center gap-1.5 audiowide-regular"><i class="fas fa-print text-sm"></i> Cetak</button>
                     </div>
                 </div>
             </div>
@@ -174,18 +196,18 @@
             <div id="stok-tabs-container" class="flex bg-[#000000] rounded-xl p-1 border border-[#666666] mb-4 mt-1 items-center">
                 <button onclick="toggleStokSearch(true)" id="btn-stok-search" class="px-3 text-[#808080] transition-colors active:text-white"><i class="fas fa-search text-sm"></i></button>
                 <div id="stok-tabs" class="flex flex-1 gap-1">
-                    <button onclick="tab('sup')" id="b-sup" class="flex-1 py-2 text-[10px] font-black uppercase rounded-lg tab-active transition-colors text-[#808080] bg-transparent border-b-2 border-transparent">Supplier</button>
-                    <button onclick="tab('retur')" id="b-retur" class="flex-1 py-2 text-[10px] font-black uppercase rounded-lg transition-colors text-[#808080] bg-transparent border-b-2 border-transparent">Retur</button>
-                    <button onclick="tab('lap')" id="b-lap" class="flex-1 py-2 text-[10px] font-black uppercase rounded-lg transition-colors text-[#808080] bg-transparent border-b-2 border-transparent">Laporan</button>
+                    <button onclick="tab('sup')" id="b-sup" class="audiowide-regular flex-1 py-2 text-[10px] uppercase rounded-lg tab-active transition-colors text-[#808080] bg-transparent border-b-2 border-transparent">Supplier</button>
+                    <button onclick="tab('retur')" id="b-retur" class="audiowide-regular flex-1 py-2 text-[10px] uppercase rounded-lg transition-colors text-[#808080] bg-transparent border-b-2 border-transparent">Retur</button>
+                    <button onclick="tab('lap')" id="b-lap" class="audiowide-regular flex-1 py-2 text-[10px] uppercase rounded-lg transition-colors text-[#808080] bg-transparent border-b-2 border-transparent">Laporan</button>
                 </div>
                 <div id="stok-search-box" class="hidden flex-1 relative items-center">
-                    <input type="text" id="i-stok-search" oninput="renderStok(curTab)" placeholder="Cari..." class="w-full py-2 pl-3 pr-8 rounded-lg font-bold text-xs outline-none bg-transparent text-[#ffffff] border-none focus:ring-0 placeholder-[#808080]">
+                    <input type="text" id="i-stok-search" oninput="renderStok(curTab)" placeholder="Cari..." class="border-none w-full py-2 pl-3 pr-8 rounded-lg font-bold text-xs outline-none bg-transparent text-[#ffffff] focus:ring-0 placeholder-[#808080]">
                     <button onclick="toggleStokSearch(false)" class="absolute right-2 top-1/2 -translate-y-1/2 text-[#ff0000] font-black text-sm p-1 transition-colors active:text-white"><i class="fas fa-times"></i></button>
                 </div>
             </div>
             <div id="stok-content" class="space-y-3 pb-24"></div>
             
-            <button onclick="openModalSup()" id="fab" class="fixed right-5 bottom-[100px] w-[56px] h-[56px] bg-transparent text-[#facc15] rounded-[16px] flex items-center justify-center text-2xl z-50 transition-colors active:text-white active:border-white border border-[#facc15]">
+            <button onclick="openModalSup()" id="fab" class="fixed right-5 bottom-5 w-[56px] h-[56px] bg-transparent text-[#facc15] rounded-[16px] flex items-center justify-center text-2xl z-50 transition-colors active:text-white active:border-white border border-[#facc15]">
                 <i class="fas fa-plus"></i>
             </button>
         </div>
@@ -193,7 +215,7 @@
 
     <div id="modal-history" class="modal-bg z-[1600]">
         <div class="bg-[#000000] w-full max-w-sm rounded-3xl p-5 flex flex-col border border-[#666666]" style="max-height: 85vh;">
-            <div class="flex justify-between items-center mb-3 border-b border-[#666666] pb-2"><h3 class="font-black text-[#ffffff] text-lg uppercase italic"><i class="fas fa-history mr-2 text-[#808080]"></i>Riwayat Jual</h3><button onclick="tutupHistory()" class="text-[#808080] font-bold text-2xl leading-none transition-colors active:text-white">&times;</button></div>
+            <div class="flex justify-between items-center mb-3 border-b border-[#666666] pb-2"><h3 class="font-black text-[#ffffff] text-lg uppercase italic audiowide-regular"><i class="fas fa-history mr-2 text-[#808080]"></i>Riwayat Jual</h3><button onclick="tutupHistory()" class="text-[#808080] font-bold text-2xl leading-none transition-colors active:text-white">&times;</button></div>
             
             <div class="flex flex-col gap-2 mb-3 border-b border-[#666666] pb-3">
                 <div class="flex justify-between items-center">
@@ -201,40 +223,64 @@
                     <span id="omzet-hari-ini" class="text-sm font-black text-[#ffffff]">Rp 0</span>
                 </div>
                 <div class="flex gap-2 items-center mt-1">
-                    <input type="date" id="input-cari-tanggal" class="flex-1 text-xs font-bold p-2 rounded-lg outline-none">
-                    <button onclick="cariRiwayatCloud()" class="bg-transparent border border-[#38bdf8] text-[#38bdf8] px-3 py-2.5 rounded-lg text-[10px] font-bold uppercase transition-colors active:text-white active:border-white whitespace-nowrap"><i class="fas fa-cloud-download-alt mr-1"></i> Cari Cloud</button>
+                    <input type="text" readonly id="input-cari-tanggal" onclick="openCalendar('input-cari-tanggal')" placeholder="Pilih Tanggal..." class="flex-1 text-xs font-bold p-2.5 rounded-lg outline-none bg-[#000000] border border-[#666666] text-[#ffffff] text-center cursor-pointer">
+                    <button onclick="cariRiwayatCloud()" class="bg-transparent border border-[#38bdf8] text-[#38bdf8] px-3 py-2.5 rounded-lg text-[10px] font-bold uppercase transition-colors active:text-white active:border-white whitespace-nowrap audiowide-regular"><i class="fas fa-cloud-download-alt mr-1"></i> Cari Cloud</button>
                 </div>
             </div>
 
             <div id="history-content" class="overflow-y-auto flex-1 space-y-3 pr-1"></div>
-            <button onclick="hapusHistory()" class="mt-3 w-full py-3 bg-transparent border border-[#ff0000] text-[#ff0000] rounded-xl text-xs font-black uppercase transition-colors active:text-white active:border-white">Bersihkan Riwayat Lokal</button>
+            <button onclick="hapusHistory()" class="mt-3 w-full py-3 bg-transparent border border-[#ff0000] text-[#ff0000] rounded-xl text-xs font-black uppercase transition-colors active:text-white active:border-white audiowide-regular">Bersihkan Riwayat Lokal</button>
+        </div>
+    </div>
+
+    <div id="modal-calendar" class="modal-bg z-[2500]">
+        <div class="bg-[#111111] w-full max-w-[280px] rounded-3xl overflow-hidden border border-[#666666] shadow-2xl">
+            <div class="bg-[#1f1f1f] p-4 text-[#ffffff] border-b border-[#666666]">
+                <div id="cal-year" class="text-xs text-[#808080] font-bold audiowide-regular">2026</div>
+                <div id="cal-date-display" class="text-2xl font-black mt-1 tracking-tight audiowide-regular">Sel, 21 Apr</div>
+            </div>
+            <div class="p-4 bg-[#000000]">
+                <div class="flex justify-between items-center mb-4 px-2">
+                    <button onclick="changeMonth(-1)" class="text-[#808080] text-lg active:text-[#ff0000] transition-colors"><i class="fas fa-chevron-left"></i></button>
+                    <span id="cal-month-year" class="font-bold text-xs text-[#ffffff] uppercase tracking-wider audiowide-regular">April 2026</span>
+                    <button onclick="changeMonth(1)" class="text-[#808080] text-lg active:text-[#ff0000] transition-colors"><i class="fas fa-chevron-right"></i></button>
+                </div>
+                <div class="grid grid-cols-7 gap-1 text-center text-[9px] font-black text-[#808080] mb-2 uppercase audiowide-regular">
+                    <div>M</div><div>S</div><div>S</div><div>R</div><div>K</div><div>J</div><div>S</div>
+                </div>
+                <div id="cal-grid" class="grid grid-cols-7 gap-1 text-center text-xs font-bold mb-4 audiowide-regular"></div>
+                <div class="flex justify-end gap-5 mt-2 pt-3 border-t border-[#666666]">
+                    <button onclick="closeCalendar()" class="text-[#808080] font-black text-[11px] uppercase tracking-widest active:text-white transition-colors audiowide-regular">Batal</button>
+                    <button onclick="setCalendar()" class="text-[#ff0000] font-black text-[11px] uppercase tracking-widest active:text-white transition-colors audiowide-regular">Setel</button>
+                </div>
+            </div>
         </div>
     </div>
 
     <div id="b-modal-isi-grosir" class="modal-bg z-[2200]">
         <div class="bg-[#000000] w-full max-w-xs rounded-3xl p-6 space-y-4 border border-[#666666]">
-            <h3 id="ig-title" class="font-black text-center uppercase text-lg italic text-[#ffffff]">ISI PER GROSIR</h3>
+            <h3 id="ig-title" class="font-black text-center uppercase text-lg italic text-[#ffffff] audiowide-regular">ISI PER GROSIR</h3>
             <div class="flex gap-2 items-center rounded-2xl border overflow-hidden bg-[#000000] border-[#666666]">
-                <input type="number" id="ig-input" placeholder="0" class="flex-1 w-0 p-3 bg-transparent border-none text-center text-xl font-black outline-none text-[#ffffff]">
+                <input type="number" id="ig-input" placeholder="0" class="border-none flex-1 w-0 p-3 bg-transparent text-center text-xl font-black outline-none text-[#ffffff]">
             </div>
             <div class="flex gap-2 pt-1">
-                <button onclick="document.getElementById('b-modal-isi-grosir').style.display='none'" class="flex-1 py-3 text-xs font-black text-[#808080] uppercase rounded-xl border border-[#808080] transition-colors active:text-white active:border-white bg-transparent">Batal</button>
-                <button id="ig-confirm" tabindex="-1" class="flex-1 py-3 text-[#666666] rounded-xl text-xs font-black uppercase transition-colors active:text-white active:border-white bg-transparent border border-[#666666]">Oke</button>
+                <button onclick="document.getElementById('b-modal-isi-grosir').style.display='none'" class="flex-1 py-3 text-xs font-black text-[#facc15] uppercase rounded-xl border border-[#facc15] transition-colors active:text-white active:border-white bg-transparent audiowide-regular">Batal</button>
+                <button id="ig-confirm" tabindex="-1" class="flex-1 py-3 text-[#808080] rounded-xl text-xs font-black uppercase transition-colors active:text-white active:border-white bg-transparent border border-[#666666] audiowide-regular">Oke</button>
             </div>
         </div>
     </div>
 
     <div id="modal-retur-step1" class="modal-bg z-[1600]">
         <div class="bg-[#000000] w-full max-w-xs rounded-3xl p-6 space-y-4 border border-[#facc15]">
-            <h3 class="font-black text-center uppercase text-lg italic text-[#ffffff]">RETUR BARANG</h3>
+            <h3 class="font-black text-center uppercase text-lg italic text-[#ffffff] audiowide-regular">RETUR BARANG</h3>
             <p id="mr-nama-brg" class="text-[11px] text-[#ffffff] font-bold text-center uppercase whitespace-pre-wrap"></p>
             <div class="space-y-2 mt-4">
                 <button id="btn-retur-in" onclick="selectReturType('in')" class="w-full p-3 rounded-xl font-bold uppercase text-[11px] border border-[#666666] text-[#808080] bg-transparent transition-colors active:text-white active:border-white">RETUR DARI PEMBELI</button>
                 <button id="btn-retur-out" onclick="selectReturType('out')" class="w-full p-3 rounded-xl font-bold uppercase text-[11px] border border-[#666666] text-[#808080] bg-transparent transition-colors active:text-white active:border-white">RETUR KE SUPPLIER</button>
             </div>
             <div class="flex gap-2 pt-2">
-                <button onclick="document.getElementById('modal-retur-step1').style.display='none'" class="flex-1 py-3 text-xs font-black text-[#808080] uppercase rounded-xl border border-[#808080] transition-colors active:text-white active:border-white bg-transparent">Batal</button>
-                <button onclick="confirmReturStep1()" tabindex="-1" id="btn-retur-confirm" class="flex-1 py-3 text-[#facc15] border border-[#facc15] bg-transparent rounded-xl text-xs font-black uppercase transition-colors active:text-white active:border-white">OK</button>
+                <button onclick="document.getElementById('modal-retur-step1').style.display='none'" class="flex-1 py-3 text-xs font-black text-[#facc15] uppercase rounded-xl border border-[#facc15] transition-colors active:text-white active:border-white bg-transparent audiowide-regular">Batal</button>
+                <button onclick="confirmReturStep1()" tabindex="-1" id="btn-retur-confirm" class="flex-1 py-3 text-[#808080] border border-[#666666] bg-transparent rounded-xl text-xs font-black uppercase transition-colors active:text-white active:border-white audiowide-regular">OK</button>
             </div>
         </div>
     </div>
@@ -243,19 +289,19 @@
     
     <div id="b-modal" class="modal-bg z-[1800]">
         <div class="bg-[#000000] w-full max-w-xs rounded-3xl p-6 space-y-4 border" id="m-border">
-            <h3 id="m-title" class="font-black text-center uppercase text-lg italic transition-colors text-[#ffffff]"></h3>
+            <h3 id="m-title" class="font-black text-center uppercase text-lg italic transition-colors text-[#ffffff] audiowide-regular"></h3>
             <p id="m-desc" class="text-[11px] text-[#808080] font-bold text-center uppercase whitespace-pre-wrap"></p>
             
             <div id="m-dual-input" style="display:none;" class="space-y-0">
                 <div class="m-dual-wrapper" id="m-dw-ecer">
-                    <input type="text" inputmode="decimal" id="m-input-kecil" placeholder="0" class="flex-1 w-0 p-3 bg-transparent border-none text-center text-xl font-black outline-none text-[#ffffff]">
+                    <input type="text" inputmode="decimal" id="m-input-kecil" placeholder="0" class="border-none flex-1 w-0 p-3 bg-transparent text-center text-xl font-black outline-none text-[#ffffff]">
                     <div class="m-label-box relative" id="m-lb-ecer">
                         <span id="m-label-kecil" class="m-auto text-[#ffffff] flex items-center gap-1"></span>
                         <div id="m-dd-ecer" class="hidden absolute top-[110%] left-0 w-full min-w-[100px] bg-[#000000] border border-[#666666] rounded-lg z-[3000] overflow-hidden"></div>
                     </div>
                 </div>
                 <div class="m-dual-wrapper" id="m-dw-grosir">
-                    <input type="text" inputmode="decimal" id="m-input-besar" placeholder="0" class="flex-1 w-0 p-3 bg-transparent border-none text-center text-xl font-black outline-none text-[#ffffff]">
+                    <input type="text" inputmode="decimal" id="m-input-besar" placeholder="0" class="border-none flex-1 w-0 p-3 bg-transparent text-center text-xl font-black outline-none text-[#ffffff]">
                     <div class="m-label-box relative" id="m-lb-grosir">
                         <span id="m-label-besar" class="m-auto text-[#ffffff] flex items-center gap-1"></span>
                         <div id="m-dd-grosir" class="hidden absolute top-[110%] left-0 w-full min-w-[100px] bg-[#000000] border border-[#666666] rounded-lg z-[3000] overflow-hidden"></div>
@@ -264,41 +310,35 @@
             </div>
 
             <div id="m-dual-barcode" style="display:none;" class="space-y-2">
-                <div class="relative flex items-center bg-[#000000] rounded-xl overflow-hidden border border-[#666666]">
-                    <input id="mb-input-kecil" inputmode="numeric" placeholder="BC SATUAN" class="w-full p-3 bg-transparent border-none text-xs outline-none text-[#ffffff] font-bold tracking-widest text-center placeholder-[#808080]">
-                    <div class="premium-scan absolute right-2 w-6 h-6 border border-[#ffffff]"></div>
-                    <button onclick="bukaKameraPopup('mb-input-kecil')" class="absolute inset-0 z-20"></button>
+                <div class="relative flex items-center bg-[#000000] rounded-xl overflow-hidden border border-[#ffffff]">
+                    <input id="mb-input-kecil" inputmode="numeric" placeholder="BC SATUAN" class="border-none w-full p-3 pr-10 bg-transparent text-xs outline-none text-[#ffffff] font-bold tracking-widest text-center placeholder-[#808080]">
+                    <button onclick="bukaKameraPopup('mb-input-kecil')" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center z-20 transition-colors"><div class="premium-scan w-6 h-6 border border-[#ffffff]"></div></button>
                 </div>
-                <div class="relative flex items-center bg-[#000000] rounded-xl overflow-hidden border border-[#666666]">
-                    <input id="mb-input-besar" inputmode="numeric" placeholder="BC GROSIR" class="w-full p-3 bg-transparent border-none text-xs outline-none text-[#ffffff] font-bold tracking-widest text-center placeholder-[#808080]">
-                    <div class="premium-scan absolute right-2 w-6 h-6 border border-[#ffffff]"></div>
-                    <button onclick="bukaKameraPopup('mb-input-besar')" class="absolute inset-0 z-20"></button>
+                <div class="relative flex items-center bg-[#000000] rounded-xl overflow-hidden border border-[#ffffff]">
+                    <input id="mb-input-besar" inputmode="numeric" placeholder="BC GROSIR" class="border-none w-full p-3 pr-10 bg-transparent text-xs outline-none text-[#ffffff] font-bold tracking-widest text-center placeholder-[#808080]">
+                    <button onclick="bukaKameraPopup('mb-input-besar')" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center z-20 transition-colors"><div class="premium-scan w-6 h-6 border border-[#ffffff]"></div></button>
                 </div>
             </div>
 
-            <div id="m-single-input-box" style="display:none;" class="flex gap-2 items-center rounded-2xl border overflow-hidden transition-colors bg-[#000000]">
-                <input type="text" id="m-input" class="flex-1 w-0 p-3 bg-transparent border-none text-center text-xl font-black outline-none text-[#ffffff]">
+            <div id="m-single-input-box" style="display:none;" class="flex gap-2 items-center rounded-2xl border border-[#666666] overflow-hidden transition-colors bg-[#000000]">
+                <input type="text" id="m-input" class="border-none flex-1 w-0 p-3 bg-transparent text-center text-xl font-black outline-none text-[#ffffff]">
             </div>
             
             <div class="flex gap-2 pt-1" id="m-btn-container">
-                <button id="m-cancel" onclick="closeModal()" style="display:none;" class="flex-1 py-3 text-xs font-black text-[#808080] uppercase rounded-xl bg-transparent border border-[#808080] transition-colors active:text-white active:border-white">Batal</button>
-                <button id="m-back" onclick="backToStep1()" style="display:none;" class="flex-1 py-3 text-xs font-black text-[#808080] uppercase rounded-xl bg-transparent border border-[#808080] transition-colors active:text-white active:border-white">Kembali</button>
-                <button id="m-confirm" tabindex="-1" class="flex-1 py-3 text-[#666666] bg-transparent border border-[#666666] rounded-xl text-xs font-black uppercase transition-colors active:text-white active:border-white z-[2300] relative">Oke</button>
+                <button id="m-cancel" onclick="closeModal()" style="display:none;" class="flex-1 py-3 text-xs font-black text-[#808080] uppercase rounded-xl bg-transparent border border-[#808080] transition-colors active:text-white active:border-white audiowide-regular">Batal</button>
+                <button id="m-back" onclick="backToStep1()" style="display:none;" class="flex-1 py-3 text-xs font-black text-[#facc15] uppercase rounded-xl bg-transparent border border-[#facc15] transition-colors active:text-white active:border-white audiowide-regular">Kembali</button>
+                <button id="m-confirm" tabindex="-1" class="flex-1 py-3 text-[#666666] bg-transparent border border-[#666666] rounded-xl text-xs font-black uppercase transition-colors active:text-white active:border-white z-[2300] relative audiowide-regular">Oke</button>
             </div>
         </div>
     </div>
 
-    <nav class="fixed bottom-0 w-full bg-[#000000] border-t border-[#666666] flex justify-around no-print z-50">
-        <button onclick="navMode('kasir')" id="n-k" class="nav-btn active-nav"><i class="fas fa-store"></i><span>Kasir</span></button>
-        <button onclick="navMode('stok')" id="n-s" class="nav-btn"><i class="fas fa-box-open"></i><span>Stok</span></button>
-    </nav>
     <div id="areaStruk" class="hidden"><div id="p-konten"></div></div>
 
     <script>
         const KEY = 'STORE_FAM_BARLA_V1_0';
-        const CLOUD_URL = "https://script.google.com/macros/s/AKfycbxP4pVQ_jPO9DnhVKeUJmhLQoWxhcczSEm_sribwTg_B9HOZ-tUKKfCDuIAPVwiSwJd/exec"; 
+        const CLOUD_URL = "https://script.google.com/macros/s/AKfycbzanKn8eURncFQ1KszSW1JWew9B_xCEa2O1v1uk1Vk_IWa5IQaZt8GsVtYy-lTbt_w6/exec"; 
 
-        let db = { supplier: [], retur: [], history: [] }; 
+        let db = { supplier: [], retur: [], history: [], deletedItems: [] }; 
         let cart = []; let tempCloudHistory = [];
         let isScanning = false, html5QrCode = null, curTab = 'sup', selS = null, selB = null, openIdx = null, pendingIdxGrosir = null; 
         let isKasirGrosir = false, selKasirSup = null, activeReturType = null, activeReturItem = null, curDropdownOpen = null, activeDropdownCallback = null;
@@ -306,6 +346,7 @@
         let lastBackupDate = ""; 
         let isProcessingCheckout = false; 
         let activeModalId = null;
+        let currentMainMode = 'kasir';
 
         const ecerUnitList = ['pcs', 'renceng', 'botol', 'kg', 'bungkus', 'kaleng', 'sachet', 'strip'];
         const grosirUnitList = ['karton', 'lusin', 'slop', 'pack'];
@@ -314,11 +355,11 @@
         function getMinLimit(unit) { const u = (unit || '').toLowerCase(); const limits = { 'karton':2, 'lusin':1, 'slop':1, 'pack':3, 'renceng':5, 'botol':10, 'kg':5, 'bungkus':15, 'kaleng':10, 'pcs':10, 'strip':15, 'sachet':12 }; return limits[u] || 0; }
 
         window.onload = () => { 
-            try { const data = localStorage.getItem(KEY); if (data) db = JSON.parse(data); if (!db.history) db.history = []; if(!db.retur) db.retur = [];
+            try { const data = localStorage.getItem(KEY); if (data) db = JSON.parse(data); if (!db.history) db.history = []; if(!db.retur) db.retur = []; if(!db.deletedItems) db.deletedItems = [];
                 const savedCart = localStorage.getItem('BARLA_CART_' + KEY); if (savedCart) cart = JSON.parse(savedCart);
-            } catch(e) { db = { supplier: [], retur: [], history: [] }; }
+            } catch(e) { db = { supplier: [], retur: [], history: [], deletedItems: [] }; }
             html5QrCode = new Html5Qrcode("scanner-modal-layer"); refreshClock(); setInterval(refreshClock, 60000); refreshDL(); renderCart(); setupScannerEvents();
-            mode('kasir'); 
+            navMode('kasir'); 
         };
 
         document.addEventListener('keydown', (e) => { 
@@ -326,6 +367,7 @@
                 if (activeModalId === 'b-modal' && document.getElementById('m-confirm').style.display !== 'none') { e.preventDefault(); document.getElementById('m-confirm').click(); }
                 else if (activeModalId === 'modal-retur-step1') { e.preventDefault(); document.getElementById('btn-retur-confirm').click(); }
                 else if (activeModalId === 'b-modal-isi-grosir') { e.preventDefault(); document.getElementById('ig-confirm').click(); }
+                else if (activeModalId === 'modal-calendar') { e.preventDefault(); setCalendar(); }
             } 
         });
         document.addEventListener('click', (e) => { const sm = document.getElementById('floatingStokMenu'); if (sm && !sm.classList.contains('hidden') && !e.target.closest('[onclick*="toggleMenu"]') && !e.target.closest('#floatingStokMenu')) sm.classList.add('hidden'); if(curDropdownOpen && !e.target.closest(`#${curDropdownOpen.replace('dd', 'lb')}`) && !e.target.closest(`#${curDropdownOpen.replace('dd', 'btn')}`)) { document.getElementById(curDropdownOpen).classList.add('hidden'); curDropdownOpen = null; } });
@@ -335,6 +377,16 @@
         function clearKasir() { document.getElementById('k-nama').value = ""; document.getElementById('k-harga').value = ""; document.getElementById('k-qty').value = ""; document.getElementById('k-qty').blur(); isKasirGrosir = false; selKasirSup = null; }
         function escapeHTML(str) { return str ? String(str).replace(/[&<>'"]/g, tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag])) : ""; }
         
+        function autoKapital(el) {
+            let val = el.value;
+            if(!val) return;
+            let start = el.selectionStart;
+            let end = el.selectionEnd;
+            let formatted = val.split(' ').map(w => /^(PVC|SNI|P\/C)$/i.test(w) ? w.toUpperCase() : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+            if (el.value !== formatted) el.value = formatted;
+            try { el.setSelectionRange(start, end); } catch(e){} 
+        }
+
         function saveData() { 
             try {
                 localStorage.setItem(KEY, JSON.stringify(db)); 
@@ -357,7 +409,7 @@
             document.getElementById('date-part').innerText = now.toLocaleDateString('id-ID', {day:'2-digit', month:'short', year:'numeric'});
             document.getElementById('time-part').innerText = now.toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}).replace(/\./g, ':'); 
             let currentDateStr = now.toLocaleDateString('id-ID');
-            if (now.getHours() === 12 && now.getMinutes() === 0 && lastBackupDate !== currentDateStr) {
+            if (now.getHours() >= 12 && lastBackupDate !== currentDateStr) {
                 lastBackupDate = currentDateStr; 
                 if (navigator.onLine && unuploadedData && (Date.now() - lastSyncAttempt > 60000)) {
                     lastSyncAttempt = Date.now();
@@ -372,7 +424,23 @@
         async function matikanKamera() { if (isScanning && html5QrCode) { try { await html5QrCode.stop(); } catch(e) {} try { html5QrCode.clear(); } catch(e) {} isScanning = false; } document.getElementById('modal-kamera').style.display = 'none'; activeModalId = null; }
         
         async function bukaKameraPopup(target = 'auto') { if (isScanning) return; document.getElementById('modal-kamera').style.display = 'flex'; activeModalId = 'modal-kamera'; isScanning = true; try { await html5QrCode.start({ facingMode: "environment" }, { fps: 30 }, (decoded) => { const code = decoded.trim(); matikanKamera(); if (target === 'auto') { let f = null; let isG = false; let fSup = null; for (let s of db.supplier) { for (let b of s.barang) { if (b.bcE === code) { f = b; isG = false; fSup = s.nama; break; } if (b.bcG === code && code !== "") { f = b; isG = true; fSup = s.nama; break; } } if(f) break; } isKasirGrosir = isG; selKasirSup = fSup; if (f) { document.getElementById('k-nama').value = f.nama; document.getElementById('k-harga').value = (isG && f.hargaG > 0) ? f.hargaG.toLocaleString('id-ID') : f.hargaE.toLocaleString('id-ID'); document.getElementById('k-qty').value = 1; tambahItem(); } else openModal("TIDAK ADA", "", "Produk belum terdaftar.", null, "alert"); } else if (target === 'modal') document.getElementById('m-input').value = code; else { document.getElementById(target).value = code; } }); } catch (err) { matikanKamera(); } }
-        function handleInputNama(el) { let val = el.value.trim(); if (!val) { document.getElementById('k-harga').value = ""; return; } el.value = val.split(' ').map(w => /^(PVC|SNI|P\/C)$/i.test(w) ? w.toUpperCase() : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' '); let f = null; let isG = false; let fSup = null; db.supplier.forEach(s => s.barang.forEach(b => { if (b.nama.toUpperCase() === el.value.toUpperCase() || b.bcE === el.value) { f = b; isG = false; fSup = s.nama; } if (b.bcG === el.value && el.value !== "") { f = b; isG = true; fSup = s.nama; } })); isKasirGrosir = isG; selKasirSup = fSup; if (f) { document.getElementById('k-nama').value = f.nama; document.getElementById('k-harga').value = (isG && f.hargaG > 0) ? f.hargaG.toLocaleString('id-ID') : f.hargaE.toLocaleString('id-ID'); document.getElementById('k-qty').value = 1; document.getElementById('k-qty').focus(); } }
+        
+        function handleInputNama(el) { 
+            autoKapital(el);
+            let val = el.value.trim(); 
+            if (!val) { document.getElementById('k-harga').value = ""; return; } 
+            let f = null; let isG = false; let fSup = null; 
+            db.supplier.forEach(s => s.barang.forEach(b => { 
+                if (b.nama.toUpperCase() === val.toUpperCase() || b.bcE === val) { f = b; isG = false; fSup = s.nama; } 
+                if (b.bcG === val && val !== "") { f = b; isG = true; fSup = s.nama; } 
+            })); 
+            isKasirGrosir = isG; selKasirSup = fSup; 
+            if (f) { 
+                document.getElementById('k-nama').value = f.nama; 
+                document.getElementById('k-harga').value = (isG && f.hargaG > 0) ? f.hargaG.toLocaleString('id-ID') : f.hargaE.toLocaleString('id-ID'); 
+                document.getElementById('k-qty').value = 1; document.getElementById('k-qty').focus(); 
+            } 
+        }
 
         function refreshDL() { const dl = document.getElementById('db-list'); dl.innerHTML = ""; db.supplier.forEach(s => s.barang.forEach(b => { const inC = cart.find(x => x.nama.toUpperCase() === b.nama.toUpperCase() && x.sup === s.nama); if (b.stok > 0 && (!inC || inC.qty < b.stok)) { let o = document.createElement('option'); o.value = b.nama; o.innerText = `Sisa: ${formatStok(b.stok, b.isi, b.sK, b.sB)}`; dl.appendChild(o); } })); }
         function formatStok(total, isi, sK, sB) { if (!sB || !isi || isi <= 1) return `${total} ${sK || 'satuan'}`; let besar = isi > 0 ? Math.floor(total / isi) : 0; let kecil = parseFloat((total % isi).toFixed(2)); let res = []; if (besar > 0) res.push(`${besar} ${sB}`); if (kecil > 0 || besar === 0) res.push(`${kecil} ${sK || 'satuan'}`); return res.join(' '); }
@@ -383,7 +451,7 @@
             let qInput = Math.max(0, parseFloat(qInputStr)) || 1; 
             let pInput = clean(document.getElementById('k-harga').value); 
             
-            if (!n || pInput <= 0 || qInput <= 0) { openModal("GAGAL", "", "Barang dan Harga harus diisi dengan benar!", null, "alert"); return; }
+            if (!n || pInput <= 0 || isNaN(qInput) || qInput <= 0) { openModal("GAGAL", "", "Barang dan Harga harus diisi dengan benar!", null, "alert"); return; }
             
             let fb = null; let fbSup = null; 
             if (selKasirSup) { let s = db.supplier.find(x => x.nama === selKasirSup); if (s) { fb = s.barang.find(b => b.nama.toUpperCase() === n.toUpperCase()); fbSup = s; } } 
@@ -445,7 +513,7 @@
                     if (nQ === 0) cart.splice(idx, 1); 
                     else { if ((currentTotalInCart + nQ) > fb.stok) { openModal("KURANG", "", `Sisa yg bisa ditambah: ${fb.stok - currentTotalInCart}`, null, "alert"); return; } it.qty = nQ; } 
                     saveData(); renderCart(); refreshDL(); 
-                }, "dual_edit_stok", "numeric", brObj={sK: fb.sK, sB: fb.sB, stok: it.qty, isi: fb.isi}); 
+                }, "dual_edit_stok", "numeric", {sK: fb.sK, sB: fb.sB, stok: it.qty, isi: fb.isi}); 
             } else { 
                 openModal("EDIT QTY", it.qty.toString(), it.nama, (v) => { 
                     let nQ = Math.max(0, parseFloat(String(v).replace(/,/g, '.'))) || 0; 
@@ -488,6 +556,7 @@
                     if (br && sisa > 0) { 
                         if (br.stok >= sisa) { br.stok = parseFloat((br.stok - sisa).toFixed(2)); sisa = 0; } 
                         else { sisa -= br.stok; br.stok = 0; } 
+                        br.lastModified = Date.now(); 
                     } 
                 } 
             });
@@ -503,27 +572,89 @@
             setTimeout(() => { isProcessingCheckout = false; }, 1000);
         }
 
-        async function cariRiwayatCloud() { let tglInput = document.getElementById('input-cari-tanggal').value; if(!tglInput) { openModal("TANGGAL KOSONG", "", "Pilih tanggal dulu!", null, "alert"); return; } let pParts = tglInput.split('-'); let tglFormatted = `${pParts[2]}.${pParts[1]}.${pParts[0].slice(-2)}`; openModal("MENCARI DATA", "", `Mencari tanggal ${tglFormatted} di Cloud...`, null, "cloud"); try { const res = await fetch(CLOUD_URL + "?action=loadHistoryByDate&date=" + tglFormatted); const data = await res.json(); closeModal(); if(data && data.history && data.history.length > 0) { tempCloudHistory = data.history; const list = document.getElementById('history-content'); list.innerHTML = `<div class='text-center py-2 text-[10px] text-[#25D366] font-bold uppercase border border-[#25D366] rounded-xl mb-3'>Hasil Cloud: ${tglFormatted}</div>`; let omzetCloud = 0; tempCloudHistory.forEach(trx => { omzetCloud += trx.total; let itms = ''; trx.items.forEach(i => itms += `<div class="flex justify-between text-[10px] text-[#ffffff] mt-1"><span><b class="text-[#808080]">${escapeHTML(i.displayTxt)}</b> ${escapeHTML(i.nama)}</span><span>Rp ${i.subTotal.toLocaleString('id-ID')}</span></div>`); list.innerHTML += `<div class="border border-[#666666] rounded-xl p-3 bg-[#000000] mb-3"><div class="flex justify-between mb-2 pb-2 border-b border-[#666666]"><span class="text-[9px] font-bold text-[#808080]">${trx.waktu.replace('-', ' ')}</span><span class="text-xs font-black text-[#ffffff]">Rp ${trx.total.toLocaleString('id-ID')}</span></div>${itms}<div class="flex gap-2 mt-2 pt-2 border-t border-[#666666]"><button onclick="waUlang(${trx.id})" class="flex-1 bg-transparent border border-[#25D366] text-[#25D366] py-1.5 rounded-lg text-[9px] font-bold uppercase transition-colors active:text-white active:border-white"><i class="fab fa-whatsapp"></i> WA</button><button onclick="cetakUlang(${trx.id})" class="flex-1 bg-transparent border border-[#808080] text-[#808080] py-1.5 rounded-lg text-[9px] font-bold uppercase transition-colors active:text-white active:border-white"><i class="fas fa-print"></i> Cetak</button></div></div>`; }); document.getElementById('omzet-hari-ini').innerText = "Rp " + omzetCloud.toLocaleString('id-ID') + " (Cloud)"; } else { openModal("KOSONG", "", `Tidak ada transaksi di Cloud untuk tanggal ${tglFormatted}`, null, "alert"); } } catch(e) { openModal("GAGAL", "", "Gagal mengambil riwayat dari Cloud.", null, "alert"); } }
+        async function cariRiwayatCloud() { let tglInput = document.getElementById('input-cari-tanggal').value; if(!tglInput) { openModal("TANGGAL KOSONG", "", "Pilih tanggal dulu!", null, "alert"); return; } let pParts = tglInput.split('-'); let tglFormatted = `${pParts[2]}.${pParts[1]}.${pParts[0].slice(-2)}`; openModal("MENCARI DATA", "", `Mencari tanggal ${tglFormatted} di Cloud...`, null, "cloud"); try { const res = await fetch(CLOUD_URL + "?action=loadHistoryByDate&date=" + tglFormatted); const data = await res.json(); closeModal(); if(data && data.history && data.history.length > 0) { tempCloudHistory = data.history; const list = document.getElementById('history-content'); list.innerHTML = `<div class='text-center py-2 text-[10px] text-[#25D366] font-bold uppercase border border-[#25D366] rounded-xl mb-3'>Hasil Cloud: ${tglFormatted}</div>`; let omzetCloud = 0; tempCloudHistory.forEach(trx => { omzetCloud += trx.total; let itms = ''; trx.items.forEach(i => itms += `<div class="flex justify-between text-[10px] text-[#ffffff] mt-1"><span><b class="text-[#808080]">${escapeHTML(i.displayTxt)}</b> ${escapeHTML(i.nama)}</span><span>Rp ${i.subTotal.toLocaleString('id-ID')}</span></div>`); list.innerHTML += `<div class="border border-[#666666] rounded-xl p-3 bg-[#000000] mb-3"><div class="flex justify-between mb-2 pb-2 border-b border-[#666666]"><span class="text-[9px] font-bold text-[#808080]">${trx.waktu.replace('-', ' ')}</span><span class="text-xs font-black text-[#ffffff]">Rp ${trx.total.toLocaleString('id-ID')}</span></div>${itms}<div class="flex gap-2 mt-2 pt-2 border-t border-[#666666]"><button onclick="waUlang(${trx.id})" class="flex-1 bg-transparent border border-[#25D366] text-[#25D366] py-1.5 rounded-lg text-[9px] font-bold uppercase transition-colors active:text-white active:border-white audiowide-regular"><i class="fab fa-whatsapp"></i> WA</button><button onclick="cetakUlang(${trx.id})" class="flex-1 bg-transparent border border-[#808080] text-[#808080] py-1.5 rounded-lg text-[9px] font-bold uppercase transition-colors active:text-white active:border-white audiowide-regular"><i class="fas fa-print"></i> Cetak</button></div></div>`; }); document.getElementById('omzet-hari-ini').innerText = "Rp " + omzetCloud.toLocaleString('id-ID') + " (Cloud)"; } else { openModal("KOSONG", "", `Tidak ada transaksi di Cloud untuk tanggal ${tglFormatted}`, null, "alert"); } } catch(e) { openModal("GAGAL", "", "Gagal mengambil riwayat dari Cloud.", null, "alert"); } }
 
-        function bukaHistory() { matikanKamera(); tempCloudHistory = []; document.getElementById('input-cari-tanggal').value = ""; const list = document.getElementById('history-content'); list.innerHTML = ''; let todayStr = getTglStr(); let omzetHariIni = 0; if (db.history.length === 0) list.innerHTML = `<div class='text-center py-10 font-black text-[#666666] uppercase'>Belum Ada Riwayat</div>`; else db.history.forEach(trx => { if(trx.waktu.startsWith(todayStr)) omzetHariIni += trx.total; let itms = ''; trx.items.forEach(i => itms += `<div class="flex justify-between text-[10px] text-[#ffffff] mt-1"><span><b class="text-[#808080]">${escapeHTML(i.displayTxt)}</b> ${escapeHTML(i.nama)}</span><span>Rp ${i.subTotal.toLocaleString('id-ID')}</span></div>`); list.innerHTML += `<div class="border border-[#666666] rounded-xl p-3 bg-[#000000] mb-3"><div class="flex justify-between mb-2 pb-2 border-b border-[#666666]"><span class="text-[9px] font-bold text-[#808080]">${trx.waktu.replace('-', ' ')}</span><span class="text-xs font-black text-[#ffffff]">Rp ${trx.total.toLocaleString('id-ID')}</span></div>${itms}<div class="flex gap-2 mt-2 pt-2 border-t border-[#666666]"><button onclick="waUlang(${trx.id})" class="flex-1 bg-transparent border border-[#25D366] text-[#25D366] py-1.5 rounded-lg text-[9px] font-bold uppercase transition-colors active:text-white active:border-white"><i class="fab fa-whatsapp"></i> WA</button><button onclick="cetakUlang(${trx.id})" class="flex-1 bg-transparent border border-[#808080] text-[#808080] py-1.5 rounded-lg text-[9px] font-bold uppercase transition-colors active:text-white active:border-white"><i class="fas fa-print"></i> Cetak</button></div></div>`; }); document.getElementById('omzet-hari-ini').innerText = "Rp " + omzetHariIni.toLocaleString('id-ID'); document.getElementById('modal-history').style.display = 'flex'; activeModalId = 'modal-history'; }
+        function bukaHistory() { matikanKamera(); tempCloudHistory = []; document.getElementById('input-cari-tanggal').value = ""; const list = document.getElementById('history-content'); list.innerHTML = ''; let todayStr = getTglStr(); let omzetHariIni = 0; if (db.history.length === 0) list.innerHTML = `<div class='text-center py-10 font-black text-[#666666] uppercase'>Belum Ada Riwayat</div>`; else db.history.forEach(trx => { if(trx.waktu.startsWith(todayStr)) omzetHariIni += trx.total; let itms = ''; trx.items.forEach(i => itms += `<div class="flex justify-between text-[10px] text-[#ffffff] mt-1"><span><b class="text-[#808080]">${escapeHTML(i.displayTxt)}</b> ${escapeHTML(i.nama)}</span><span>Rp ${i.subTotal.toLocaleString('id-ID')}</span></div>`); list.innerHTML += `<div class="border border-[#666666] rounded-xl p-3 bg-[#000000] mb-3"><div class="flex justify-between mb-2 pb-2 border-b border-[#666666]"><span class="text-[9px] font-bold text-[#808080]">${trx.waktu.replace('-', ' ')}</span><span class="text-xs font-black text-[#ffffff]">Rp ${trx.total.toLocaleString('id-ID')}</span></div>${itms}<div class="flex gap-2 mt-2 pt-2 border-t border-[#666666]"><button onclick="waUlang(${trx.id})" class="flex-1 bg-transparent border border-[#25D366] text-[#25D366] py-1.5 rounded-lg text-[9px] font-bold uppercase transition-colors active:text-white active:border-white audiowide-regular"><i class="fab fa-whatsapp"></i> WA</button><button onclick="cetakUlang(${trx.id})" class="flex-1 bg-transparent border border-[#808080] text-[#808080] py-1.5 rounded-lg text-[9px] font-bold uppercase transition-colors active:text-white active:border-white audiowide-regular"><i class="fas fa-print"></i> Cetak</button></div></div>`; }); document.getElementById('omzet-hari-ini').innerText = "Rp " + omzetHariIni.toLocaleString('id-ID'); document.getElementById('modal-history').style.display = 'flex'; activeModalId = 'modal-history'; }
         function tutupHistory() { document.getElementById('modal-history').style.display = 'none'; activeModalId = null; } 
         function hapusHistory() { openModal("HAPUS?", "", "Bersihkan riwayat lokal? (Di cloud tetap aman)", () => { db.history = []; saveData(); bukaHistory(); }, "confirm"); }
         function cetakStruk(trx) { if (!trx) return; let h = `          STORE fam BARLA        \n     Ps. Sunggingan Lt. 2      \n        0822-2633-4999         \n-------------------------------\n`; h += `${trx.waktu.replace('-', ' - ')}`.padStart(31, ' ') + `\n-------------------------------\n`; trx.items.forEach(i => { let nm = escapeHTML(i.nama).substring(0, 11).padEnd(12, ' '); let qu = escapeHTML(i.displayTxt).substring(0, 8).padEnd(9, ' '); let sub = i.subTotal.toLocaleString('id-ID').padStart(10, ' '); h += `${nm}${qu}${sub}\n`; }); h += `-------------------------------\nTOTAL`.padEnd(22, ' ') + trx.total.toLocaleString('id-ID').padStart(9, ' ') + `\nBAYAR`.padEnd(22, ' ') + trx.bayar.toLocaleString('id-ID').padStart(9, ' ') + `\nKEMBALIAN`.padEnd(22, ' ') + trx.kembali.toLocaleString('id-ID').padStart(9, ' ') + `\n-------------------------------\n          Terimakasih`; document.getElementById('p-konten').innerHTML = `<pre>${h}</pre>`; window.print(); }
         function waStruk(trx) { if (!trx) return; let h = `          STORE fam BARLA        \n     Ps. Sunggingan Lt. 2      \n-------------------------------\n`; h += `${trx.waktu.replace('-', ' - ')}`.padStart(31, ' ') + `\n-------------------------------\n`; trx.items.forEach(i => { let qu = escapeHTML(i.displayTxt).padEnd(10, ' '); let nm = escapeHTML(i.nama).substring(0, 11).padEnd(12, ' '); let sub = i.subTotal.toLocaleString('id-ID').padStart(9, ' '); h += `${qu}${nm}${sub}\n`; }); h += `-------------------------------\nTOTAL`.padEnd(22, ' ') + trx.total.toLocaleString('id-ID').padStart(9, ' ') + `\nBAYAR`.padEnd(22, ' ') + trx.bayar.toLocaleString('id-ID').padStart(9, ' ') + `\nKEMBALIAN`.padEnd(22, ' ') + trx.kembali.toLocaleString('id-ID').padStart(9, ' '); window.open(`https://wa.me/?text=${encodeURIComponent("```\n" + h + "\n```")}`); }
         function cetakUlang(id) { let trx = db.history.find(x => x.id === id) || tempCloudHistory.find(x => x.id === id); cetakStruk(trx); } function waUlang(id) { let trx = db.history.find(x => x.id === id) || tempCloudHistory.find(x => x.id === id); waStruk(trx); }
 
-        function navMode(m) { if (m === 'stok') curTab = 'sup'; mode(m); } function mode(m) { openIdx = null; matikanKamera(); document.getElementById('section-kasir').classList.toggle('hidden', m!=='kasir'); document.getElementById('section-stok').classList.toggle('hidden', m!=='stok'); document.getElementById('h-kasir').classList.toggle('hidden', m!=='kasir'); document.getElementById('h-stok').classList.toggle('hidden', m!=='stok'); ['n-k','n-s'].forEach(id => document.getElementById(id).classList.toggle('active-nav', id===(m==='kasir'?'n-k':'n-s'))); document.getElementById('fab').style.display = (m==='stok' && curTab==='sup') ? 'flex' : 'none'; if (m === 'kasir') toggleStokSearch(false); if (m === 'stok') tab(curTab); }
+        function openMenuModal() { document.getElementById('modal-menu-nav').style.display = 'flex'; activeModalId = 'modal-menu-nav'; }
+        function pilihMenu(modeStr) { document.getElementById('modal-menu-nav').style.display = 'none'; activeModalId = null; if (currentMainMode !== modeStr) { navMode(modeStr); currentMainMode = modeStr; } }
+
+        function navMode(m) { if (m === 'stok') curTab = 'sup'; mode(m); } 
+        function mode(m) { openIdx = null; matikanKamera(); document.getElementById('section-kasir').classList.toggle('hidden', m!=='kasir'); document.getElementById('section-stok').classList.toggle('hidden', m!=='stok'); document.getElementById('h-kasir').classList.toggle('hidden', m!=='kasir'); document.getElementById('h-stok').classList.toggle('hidden', m!=='stok'); document.getElementById('fab').style.display = (m==='stok' && curTab==='sup') ? 'flex' : 'none'; if (m === 'kasir') toggleStokSearch(false); if (m === 'stok') tab(curTab); }
         function tab(t) { openIdx = null; matikanKamera(); curTab = t; ['sup','retur','lap'].forEach(id => document.getElementById('b-'+id).classList.toggle('tab-active', id===t)); document.getElementById('fab').style.display = (t==='sup') ? 'flex' : 'none'; renderStok(t); }
         function toggleStokSearch(show) { const tabs = document.getElementById('stok-tabs'), sIcon = document.getElementById('btn-stok-search'), sBox = document.getElementById('stok-search-box'), sInput = document.getElementById('i-stok-search'); if(show) { tabs.classList.add('hidden'); sIcon.classList.add('hidden'); sBox.classList.remove('hidden'); sBox.classList.add('flex'); sInput.focus(); } else { tabs.classList.remove('hidden'); sIcon.classList.remove('hidden'); sBox.classList.add('hidden'); sBox.classList.remove('flex'); sInput.value = ''; renderStok(curTab); } }
         function toggleDropdownSup(tipe, idx) { let idDropdown = `dd-${tipe==='ecer'?'sk':'sb'}-${idx}`; if(curDropdownOpen && curDropdownOpen !== idDropdown) { document.getElementById(curDropdownOpen).classList.add('hidden'); } let curVal = document.getElementById(`ib-${tipe==='ecer'?'sk':'sb'}-${idx}`).value; let list = tipe === 'ecer' ? ecerUnitList : grosirUnitList; let html = ''; list.filter(s => s !== curVal).forEach(s => { html += `<div onclick="setSatuanMain('${tipe}', ${idx}, '${s}')" class="p-3 text-[10px] font-bold text-[#ffffff] uppercase border-b border-[#666666] transition-colors active:text-white active:border-white bg-transparent cursor-pointer">${s}</div>`; }); if(html === '') html = `<div class="p-3 text-[10px] font-bold text-[#808080] italic">Habis</div>`; let dropdown = document.getElementById(idDropdown); dropdown.innerHTML = html; dropdown.classList.toggle('hidden'); curDropdownOpen = dropdown.classList.contains('hidden') ? null : idDropdown; }
         function setSatuanMain(tipe, idx, val) { let idDropdown = `dd-${tipe==='ecer'?'sk':'sb'}-${idx}`; if(!document.getElementById(idDropdown).classList.contains('hidden')) { document.getElementById(idDropdown).classList.add('hidden'); curDropdownOpen = null; } const btn = document.getElementById(`btn-${tipe==='ecer'?'sk':'sb'}-${idx}`), txt = document.getElementById(`txt-${tipe==='ecer'?'sk':'sb'}-${idx}`), inp = document.getElementById(`ib-${tipe==='ecer'?'sk':'sb'}-${idx}`), pHarga = document.getElementById(`ib-h${tipe==='ecer'?'e':'g'}-${idx}`), pStok = document.getElementById(`ib-st-${tipe==='ecer'?'k':'b'}-${idx}`); if (inp.value === val) { inp.value = ""; txt.innerText = tipe === 'ecer' ? "PILIH SATUAN" : "PILIH GROSIR"; txt.style.color = "#808080"; btn.style.borderColor = "#666666"; pHarga.placeholder = tipe === 'ecer' ? "HARGA SATUAN" : "HARGA GROSIR"; pStok.placeholder = tipe === 'ecer' ? "STOK SATUAN" : "STOK GROSIR"; if (tipe === 'grosir') document.getElementById(`ib-isi-${idx}`).value = "0"; return; } inp.value = val; txt.innerText = val.toUpperCase(); txt.style.color = "#ffffff"; btn.style.borderColor = "#ffffff"; pHarga.placeholder = `HARGA PER ${val.toUpperCase()}`; pStok.placeholder = `STOK PER ${val.toUpperCase()}`; if (tipe === 'grosir') { pendingIdxGrosir = idx; document.getElementById('ig-title').innerText = `ISI PER ${val.toUpperCase()}`; document.getElementById('ig-input').value = ""; document.getElementById('b-modal-isi-grosir').style.display = 'flex'; activeModalId = 'b-modal-isi-grosir'; setTimeout(()=> document.getElementById('ig-input').focus(), 300); } }
         document.getElementById('ig-confirm').onclick = () => { let val = parseInt(document.getElementById('ig-input').value) || 0; if(pendingIdxGrosir !== null) document.getElementById(`ib-isi-${pendingIdxGrosir}`).value = val; document.getElementById('b-modal-isi-grosir').style.display = 'none'; activeModalId = null; }
 
-        function renderStok(t) { const c = document.getElementById('stok-content'); c.innerHTML = ""; const term = (document.getElementById('i-stok-search')?.value || "").toLowerCase(); if (t === 'sup') { if (term !== "") { let has = false; let fh = ""; db.supplier.forEach((s, i) => { let ms = s.nama.toLowerCase().includes(term); s.barang.forEach((b) => { if (ms || b.nama.toLowerCase().includes(term) || (b.bcE && b.bcE.toLowerCase().includes(term)) || (b.bcG && b.bcG.toLowerCase().includes(term))) { has = true; let oi = s.barang.indexOf(b); fh += `<div class="bg-[#000000] rounded-xl border border-[#666666] p-3 mb-2 flex justify-between items-center"><div><b class="text-xs text-[#ffffff]">${escapeHTML(b.nama)}</b><br><span class="text-[#808080] text-[10px]">Rp ${b.hargaE.toLocaleString('id-ID')}</span> <span class="text-[#808080] text-[9px]">| Sisa: ${formatStok(b.stok, b.isi, b.sK, b.sB)} | <i class="text-[#808080]">(${escapeHTML(s.nama)})</i></span></div><button onclick="openSheet('sup', ${i}, ${oi})" class="text-[#808080] text-lg px-2 transition-colors active:text-white">⋮</button></div>`; } }); }); c.innerHTML = has ? fh : "<div class='text-center py-20 font-black text-[#808080] uppercase'>Kosong</div>"; } else { if (db.supplier.length === 0) { c.innerHTML = "<div class='text-center py-20 font-black text-[#808080] uppercase'>Belum Ada Supplier</div>"; return; } db.supplier.forEach((s, i) => { let bl = ""; s.barang.forEach((b, bi) => bl += `<div class="flex justify-between items-center py-2.5 border-b border-[#666666] border-dashed"><div><b class="text-xs text-[#ffffff]">${escapeHTML(b.nama)}</b><br><span class="text-[#808080] text-[10px]">Rp ${b.hargaE.toLocaleString('id-ID')} | <span class="text-[#808080]">${escapeHTML(b.bcE) || '-'}</span></span></div><div class="flex items-center gap-3"><b class="text-[11px] text-[#ffffff]">${formatStok(b.stok, b.isi, b.sK, b.sB)}</b><button onclick="openSheet('sup', ${i}, ${bi})" class="text-[#808080] text-lg px-2 transition-colors active:text-white">⋮</button></div></div>`); let isExp = (openIdx === i); c.innerHTML += `<div class="bg-[#000000] rounded-2xl border border-[#666666] p-4 mb-3 shadow-none"><div class="flex justify-between items-start" onclick="openIdx=(openIdx===${i}?null:${i});matikanKamera();renderStok('sup')"><b class="uppercase text-[#ffffff] text-sm leading-tight">${escapeHTML(s.nama)}</b><button onclick="event.stopPropagation();openSheet('head', ${i})" class="text-[#808080] px-2 font-bold text-lg leading-none transition-colors active:text-white">⋮</button></div><div class="${isExp ? '' : 'hidden'} mt-3 space-y-2 relative"><input id="ib-n-${i}" placeholder="NAMA BARANG" class="w-full p-3 rounded-xl text-xs outline-none bg-[#000000] mb-2 border border-[#666666] placeholder-[#808080] text-[#ffffff]"><div class="flex gap-2 mb-2"><div class="relative w-1/2 flex items-center bg-[#000000] rounded-xl overflow-hidden border border-[#666666]"><input id="ib-bce-${i}" inputmode="numeric" placeholder="BC SATUAN" class="w-full p-3 pr-10 bg-transparent border-none text-xs outline-none tracking-widest font-bold text-center placeholder-[#808080] text-[#ffffff]"><button onclick="bukaKameraPopup('ib-bce-${i}')" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center z-20 transition-colors active:border-white"><div class="premium-scan w-6 h-6 border border-[#ffffff]"></div></button></div><div class="relative w-1/2 flex items-center bg-[#000000] rounded-xl overflow-hidden border border-[#666666]"><input id="ib-bcg-${i}" inputmode="numeric" placeholder="BC GROSIR" class="w-full p-3 pr-10 bg-transparent border-none text-xs outline-none tracking-widest font-bold text-center placeholder-[#808080] text-[#ffffff]"><button onclick="bukaKameraPopup('ib-bcg-${i}')" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center z-20 transition-colors active:border-white"><div class="premium-scan w-6 h-6 border border-[#ffffff]"></div></button></div></div><div class="flex gap-2 mb-2"><div class="relative w-1/2"><input type="hidden" id="ib-sk-${i}" value=""><button onclick="toggleDropdownSup('ecer', ${i})" id="btn-sk-${i}" class="w-full p-3 rounded-xl text-xs font-bold bg-[#000000] border border-[#666666] text-left transition-colors active:text-white active:border-white flex justify-between items-center"><span id="txt-sk-${i}" style="color: #808080;">PILIH SATUAN</span> <i class="fas fa-caret-down text-[10px] text-[#808080]"></i></button><div id="dd-sk-${i}" class="hidden absolute top-[110%] left-0 w-full bg-[#000000] border border-[#666666] rounded-lg z-[300] overflow-hidden"></div></div><div class="relative w-1/2"><input type="hidden" id="ib-sb-${i}" value=""><button onclick="toggleDropdownSup('grosir', ${i})" id="btn-sb-${i}" class="w-full p-3 rounded-xl text-[11px] font-bold bg-[#000000] border border-[#666666] text-left transition-colors active:text-white active:border-white flex justify-between items-center"><span id="txt-sb-${i}" style="color: #808080;">PILIH GROSIR</span> <i class="fas fa-caret-down text-[10px] text-[#808080]"></i></button><div id="dd-sb-${i}" class="hidden absolute top-[110%] left-0 w-full bg-[#000000] border border-[#666666] rounded-lg z-[300] overflow-hidden"></div></div></div><div class="flex gap-2 mb-2"><input id="ib-st-k-${i}" type="number" step="0.01" placeholder="STOK SATUAN" class="w-1/2 p-3 rounded-xl text-xs outline-none bg-[#000000] border border-[#666666] placeholder-[#808080] text-[#ffffff]"><input id="ib-st-b-${i}" type="number" step="0.01" placeholder="STOK GROSIR" class="w-1/2 p-3 rounded-xl text-xs outline-none bg-[#000000] border border-[#666666] placeholder-[#808080] text-[#ffffff]"><input type="hidden" id="ib-isi-${i}" value="0"></div><div class="flex gap-2 mb-2"><input id="ib-he-${i}" inputmode="numeric" oninput="formatRupiah(this)" placeholder="HARGA SATUAN" class="w-1/2 p-3 rounded-xl text-xs outline-none bg-[#000000] border border-[#666666] placeholder-[#808080] text-[#ffffff]"><input id="ib-hg-${i}" inputmode="numeric" oninput="formatRupiah(this)" placeholder="HARGA GROSIR" class="w-1/2 p-3 rounded-xl text-xs outline-none bg-[#000000] border border-[#666666] placeholder-[#808080] text-[#ffffff]"></div><button onclick="addB(${i})" class="w-full bg-transparent border border-[#666666] text-[#666666] py-3 rounded-xl font-bold uppercase text-xs transition-colors active:text-white active:border-white mt-2">Simpan Barang</button><div class="mt-2 border-t border-[#666666] pt-1">${bl}</div></div></div>`; }); } } else if (t === 'retur') { const g = db.retur.reduce((a, r) => { (a[r.sup] = a[r.sup] || []); a[r.sup].push(r); return a; }, {}); if (Object.keys(g).length === 0) { c.innerHTML = "<div class='text-center py-20 font-black text-[#808080] uppercase'>Kosong</div>"; return; } let h = `<button onclick="printReturSemua()" class="w-full bg-transparent border border-[#808080] text-[#808080] py-3 rounded-xl font-bold uppercase text-xs mb-4 transition-colors active:text-white active:border-white">Print Semua Retur</button>`; for (let s in g) { let inItems = "", outItems = ""; g[s].forEach(r => { let row = `<div class="text-[10px] py-1 border-b border-[#666666] border-dashed flex justify-between items-start text-[#ffffff]"><span>• ${escapeHTML(r.nama)}</span><b class="${r.type==='in'?'text-[#217346]':'text-[#ff0000]'}">${r.type==='in'?'+ ':''}${escapeHTML(r.qtyStr)}</b></div>`; if(r.type === 'in') inItems += row; else outItems += row; }); h += `<div class="bg-[#000000] p-4 rounded-2xl border border-[#666666] mb-3"><div class="flex justify-between items-start mb-2"><b class="uppercase text-[#ffffff] text-sm leading-tight">${escapeHTML(s)}</b><button onclick="openSheet('retur', '${escapeHTML(s)}')" class="text-[#808080] text-lg px-2 transition-colors active:text-white">⋮</button></div><div class="flex gap-2 w-full"><div class="w-1/2 border border-[#666666] rounded-lg p-2 bg-[#000000]"><h4 class="text-[9px] font-black text-[#808080] mb-1 uppercase text-center border-b border-[#666666] pb-1">Dari Pembeli</h4>${inItems||'<div class="text-[9px] text-[#808080] text-center italic py-2">Kosong</div>'}</div><div class="w-1/2 border border-[#666666] rounded-lg p-2 bg-[#000000]"><h4 class="text-[9px] font-black text-[#808080] mb-1 uppercase text-center border-b border-[#666666] pb-1">Ke Supplier</h4>${outItems||'<div class="text-[9px] text-[#808080] text-center italic py-2">Kosong</div>'}</div></div></div>`; } c.innerHTML = h; } else if (t === 'lap') { let h = `<button onclick="printLapSemua()" class="w-full bg-transparent border border-[#808080] text-[#808080] py-3 rounded-xl font-bold uppercase text-xs mb-4 transition-colors active:text-white active:border-white">Print Laporan Stok</button>`; let has = false; db.supplier.forEach((s, i) => { let k = s.barang.filter(b => { if(b.sB && b.isi > 0) { let krt = Math.floor(b.stok / b.isi); return krt <= getMinLimit(b.sB); } else { return b.stok <= getMinLimit(b.sK); } }); if (k.length > 0) { has = true; let bl = ""; k.forEach(b => bl += `<div class="text-[11px] py-2 border-b border-[#666666] border-dashed flex justify-between items-start text-[#ffffff]"><span>• ${escapeHTML(b.nama)}</span><b class="text-[#ff0000]">${formatStok(b.stok, b.isi, b.sK, b.sB)}</b></div>`); h += `<div class="bg-[#000000] p-4 rounded-2xl border border-[#666666] mb-3"><div class="flex justify-between items-start mb-2"><b class="uppercase text-[#ffffff] text-sm leading-tight">${escapeHTML(s.nama)}</b><button onclick="openSheet('lap', ${i})" class="text-[#808080] text-lg px-2 transition-colors active:text-white">⋮</button></div>${bl}</div>`; } }); c.innerHTML = has ? h : "<div class='text-center py-20 font-black text-[#808080] uppercase'>Stok Aman</div>"; } }
-        function openSheet(type, i1, i2) { const s = document.getElementById('a-sheet'), o = document.getElementById('sheet-opts'); s.style.display = 'flex'; o.innerHTML = ""; setTimeout(() => s.classList.add('sheet-active'), 10); if (type === 'sup') { selS = i1; selB = i2; o.innerHTML = `<button onclick="action('nama')" class="p-3.5 bg-transparent text-[#3b82f6] rounded-xl font-bold text-sm border border-[#3b82f6] transition-colors active:text-white active:border-white">Edit Nama Barang</button><button onclick="action('stok')" class="p-3.5 bg-transparent text-[#3b82f6] rounded-xl font-bold text-sm border border-[#3b82f6] transition-colors active:text-white active:border-white">Edit Stok</button><button onclick="action('harga')" class="p-3.5 bg-transparent text-[#3b82f6] rounded-xl font-bold text-sm border border-[#3b82f6] transition-colors active:text-white active:border-white">Edit Harga</button><button onclick="action('barcode')" class="p-3.5 bg-transparent text-[#ffffff] rounded-xl font-bold text-sm border border-[#ffffff] transition-colors active:text-white active:border-white">Edit Barcode</button><button onclick="openModalReturType(${i1}, ${i2})" class="p-3.5 bg-transparent text-[#facc15] rounded-xl font-bold text-sm border border-[#facc15] transition-colors active:text-white active:border-white">Retur Barang</button><button onclick="action('hapus')" class="p-3.5 bg-transparent text-[#ff0000] rounded-xl font-bold text-sm border border-[#ff0000] transition-colors active:text-white active:border-white">Hapus Barang</button>`; } else if (type === 'head') { selS = i1; o.innerHTML = `<button onclick="editSupplier(${i1})" class="p-3.5 bg-transparent text-[#3b82f6] rounded-xl font-bold text-sm border border-[#3b82f6] transition-colors active:text-white active:border-white">Edit Nama Supplier</button><button onclick="delSup('${escapeHTML(db.supplier[i1].nama)}')" class="p-3.5 bg-transparent text-[#ff0000] rounded-xl font-bold text-sm border border-[#ff0000] transition-colors active:text-white active:border-white">Hapus Supplier</button>`; } else if (type === 'retur') { o.innerHTML = `<button onclick="closeSheet();waR('${escapeHTML(i1)}')" class="p-3.5 bg-transparent text-[#25D366] rounded-xl font-bold text-sm border border-[#25D366] transition-colors active:text-white active:border-white">WhatsApp Retur</button><button onclick="closeSheet();printReturSup('${escapeHTML(i1)}')" class="p-3.5 bg-transparent text-[#808080] rounded-xl font-bold text-sm border border-[#808080] transition-colors active:text-white active:border-white">Print Struk Retur</button><button onclick="closeSheet();trHR('${escapeHTML(i1)}')" class="p-3.5 bg-transparent text-[#ff0000] rounded-xl font-bold text-sm border border-[#ff0000] transition-colors active:text-white active:border-white">Hapus Data Retur</button>`; } else if (type === 'lap') o.innerHTML = `<button onclick="closeSheet();waO(${i1})" class="p-3.5 bg-transparent text-[#25D366] rounded-xl font-bold text-sm border border-[#25D366] transition-colors active:text-white active:border-white">WhatsApp Order</button>`; }
+        function renderStok(t) { 
+            const c = document.getElementById('stok-content'); 
+            const term = (document.getElementById('i-stok-search')?.value || "").toLowerCase(); 
+            let outHtml = "";
+
+            if (t === 'sup') { 
+                if (term !== "") { 
+                    let has = false; 
+                    db.supplier.forEach((s, i) => { 
+                        let ms = s.nama.toLowerCase().includes(term); 
+                        s.barang.forEach((b) => { 
+                            if (ms || b.nama.toLowerCase().includes(term) || (b.bcE && b.bcE.toLowerCase().includes(term)) || (b.bcG && b.bcG.toLowerCase().includes(term))) { 
+                                has = true; let oi = s.barang.indexOf(b); 
+                                outHtml += `<div class="bg-[#000000] rounded-xl border border-[#666666] p-3 mb-2 flex justify-between items-center"><div><b class="text-xs text-[#ffffff]">${escapeHTML(b.nama)}</b><br><span class="text-[#808080] text-[10px]">Rp ${b.hargaE.toLocaleString('id-ID')}</span> <span class="text-[#808080] text-[9px]">| Sisa: ${formatStok(b.stok, b.isi, b.sK, b.sB)} | <i class="text-[#808080]">(${escapeHTML(s.nama)})</i></span></div><button onclick="openSheet('sup', ${i}, ${oi})" class="text-[#808080] text-lg px-2 transition-colors active:text-white">⋮</button></div>`; 
+                            } 
+                        }); 
+                    }); 
+                    c.innerHTML = has ? outHtml : "<div class='text-center py-20 font-black text-[#808080] uppercase'>Kosong</div>"; 
+                } else { 
+                    if (db.supplier.length === 0) { c.innerHTML = "<div class='text-center py-20 font-black text-[#808080] uppercase'>Belum Ada Supplier</div>"; return; } 
+                    db.supplier.forEach((s, i) => { 
+                        let bl = ""; 
+                        s.barang.forEach((b, bi) => bl += `<div class="flex justify-between items-center py-2.5 border-b border-[#666666] border-dashed"><div><b class="text-xs text-[#ffffff]">${escapeHTML(b.nama)}</b><br><span class="text-[#808080] text-[10px]">Rp ${b.hargaE.toLocaleString('id-ID')} | <span class="text-[#808080]">${escapeHTML(b.bcE) || '-'}</span></span></div><div class="flex items-center gap-3"><b class="text-[11px] text-[#ffffff]">${formatStok(b.stok, b.isi, b.sK, b.sB)}</b><button onclick="openSheet('sup', ${i}, ${bi})" class="text-[#808080] text-lg px-2 transition-colors active:text-white">⋮</button></div></div>`); 
+                        let isExp = (openIdx === i); 
+                        outHtml += `<div class="bg-[#000000] rounded-2xl border border-[#666666] p-4 mb-3 shadow-none"><div class="flex justify-between items-start" onclick="openIdx=(openIdx===${i}?null:${i});matikanKamera();renderStok('sup')"><b class="uppercase text-[#ffffff] text-sm leading-tight audiowide-regular">${escapeHTML(s.nama)}</b><button onclick="event.stopPropagation();openSheet('head', ${i})" class="text-[#808080] px-2 font-bold text-lg leading-none transition-colors active:text-white">⋮</button></div><div class="${isExp ? '' : 'hidden'} mt-3 space-y-2 relative"><input id="ib-n-${i}" oninput="autoKapital(this)" placeholder="NAMA BARANG" class="w-full p-3 rounded-xl text-xs outline-none bg-[#000000] mb-2 border border-[#666666] placeholder-[#808080] text-[#ffffff]"><div class="flex gap-2 mb-2"><div class="relative w-1/2 flex items-center bg-[#000000] rounded-xl overflow-hidden border border-[#ffffff]"><input id="ib-bce-${i}" inputmode="numeric" placeholder="BC SATUAN" class="border-none w-full p-3 pr-10 bg-transparent text-xs outline-none tracking-widest font-bold text-center placeholder-[#808080] text-[#ffffff]"><button onclick="bukaKameraPopup('ib-bce-${i}')" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center z-20 transition-colors active:border-white"><div class="premium-scan w-6 h-6 border border-[#ffffff]"></div></button></div><div class="relative w-1/2 flex items-center bg-[#000000] rounded-xl overflow-hidden border border-[#ffffff]"><input id="ib-bcg-${i}" inputmode="numeric" placeholder="BC GROSIR" class="border-none w-full p-3 pr-10 bg-transparent text-xs outline-none tracking-widest font-bold text-center placeholder-[#808080] text-[#ffffff]"><button onclick="bukaKameraPopup('ib-bcg-${i}')" class="absolute right-0 top-0 bottom-0 w-10 flex items-center justify-center z-20 transition-colors active:border-white"><div class="premium-scan w-6 h-6 border border-[#ffffff]"></div></button></div></div><div class="flex gap-2 mb-2"><div class="relative w-1/2"><input type="hidden" id="ib-sk-${i}" value=""><button onclick="toggleDropdownSup('ecer', ${i})" id="btn-sk-${i}" class="w-full p-3 rounded-xl text-xs font-bold bg-[#000000] border border-[#666666] text-left transition-colors active:text-white active:border-white flex justify-between items-center"><span id="txt-sk-${i}" style="color: #808080;">PILIH SATUAN</span> <i class="fas fa-caret-down text-[10px] text-[#808080]"></i></button><div id="dd-sk-${i}" class="hidden absolute top-[110%] left-0 w-full bg-[#000000] border border-[#666666] rounded-lg z-[300] overflow-hidden"></div></div><div class="relative w-1/2"><input type="hidden" id="ib-sb-${i}" value=""><button onclick="toggleDropdownSup('grosir', ${i})" id="btn-sb-${i}" class="w-full p-3 rounded-xl text-[11px] font-bold bg-[#000000] border border-[#666666] text-left transition-colors active:text-white active:border-white flex justify-between items-center"><span id="txt-sb-${i}" style="color: #808080;">PILIH GROSIR</span> <i class="fas fa-caret-down text-[10px] text-[#808080]"></i></button><div id="dd-sb-${i}" class="hidden absolute top-[110%] left-0 w-full bg-[#000000] border border-[#666666] rounded-lg z-[300] overflow-hidden"></div></div></div><div class="flex gap-2 mb-2"><input id="ib-st-k-${i}" type="number" step="0.01" placeholder="STOK SATUAN" class="w-1/2 p-3 rounded-xl text-xs outline-none bg-[#000000] border border-[#666666] placeholder-[#808080] text-[#ffffff]"><input id="ib-st-b-${i}" type="number" step="0.01" placeholder="STOK GROSIR" class="w-1/2 p-3 rounded-xl text-xs outline-none bg-[#000000] border border-[#666666] placeholder-[#808080] text-[#ffffff]"><input type="hidden" id="ib-isi-${i}" value="0"></div><div class="flex gap-2 mb-2"><input id="ib-he-${i}" inputmode="numeric" oninput="formatRupiah(this)" placeholder="HARGA SATUAN" class="w-1/2 p-3 rounded-xl text-xs outline-none bg-[#000000] border border-[#666666] placeholder-[#808080] text-[#ffffff]"><input id="ib-hg-${i}" inputmode="numeric" oninput="formatRupiah(this)" placeholder="HARGA GROSIR" class="w-1/2 p-3 rounded-xl text-xs outline-none bg-[#000000] border border-[#666666] placeholder-[#808080] text-[#ffffff]"></div><button onclick="addB(${i})" class="w-full bg-transparent border border-[#ff0000] text-[#ff0000] py-3 rounded-xl font-bold uppercase text-xs transition-colors active:text-white active:border-white mt-2 audiowide-regular">Simpan Barang</button><div class="mt-2 border-t border-[#666666] pt-1">${bl}</div></div></div>`; 
+                    }); 
+                    c.innerHTML = outHtml;
+                } 
+            } else if (t === 'retur') { 
+                const g = db.retur.reduce((a, r) => { (a[r.sup] = a[r.sup] || []); a[r.sup].push(r); return a; }, {}); 
+                if (Object.keys(g).length === 0) { c.innerHTML = "<div class='text-center py-20 font-black text-[#808080] uppercase'>Kosong</div>"; return; } 
+                outHtml = `<button onclick="printReturSemua()" class="w-full bg-transparent border border-[#808080] text-[#808080] py-3 rounded-xl font-bold uppercase text-xs mb-4 transition-colors active:text-white active:border-white audiowide-regular">Print Semua Retur</button>`; 
+                for (let s in g) { 
+                    let inItems = "", outItems = ""; 
+                    g[s].forEach(r => { 
+                        let row = `<div class="text-[10px] py-1 border-b border-[#666666] border-dashed flex justify-between items-start text-[#ffffff]"><span>• ${escapeHTML(r.nama)}</span><b class="${r.type==='in'?'text-[#217346]':'text-[#ff0000]'}">${r.type==='in'?'+ ':''}${escapeHTML(r.qtyStr)}</b></div>`; 
+                        if(r.type === 'in') inItems += row; else outItems += row; 
+                    }); 
+                    outHtml += `<div class="bg-[#000000] p-4 rounded-2xl border border-[#666666] mb-3"><div class="flex justify-between items-start mb-2"><b class="uppercase text-[#ffffff] text-sm leading-tight audiowide-regular">${escapeHTML(s)}</b><button onclick="openSheet('retur', '${escapeHTML(s)}')" class="text-[#808080] text-lg px-2 transition-colors active:text-white">⋮</button></div><div class="flex gap-2 w-full"><div class="w-1/2 border border-[#666666] rounded-lg p-2 bg-[#000000]"><h4 class="text-[9px] font-black text-[#808080] mb-1 uppercase text-center border-b border-[#666666] pb-1">Dari Pembeli</h4>${inItems||'<div class="text-[9px] text-[#808080] text-center italic py-2">Kosong</div>'}</div><div class="w-1/2 border border-[#666666] rounded-lg p-2 bg-[#000000]"><h4 class="text-[9px] font-black text-[#808080] mb-1 uppercase text-center border-b border-[#666666] pb-1">Ke Supplier</h4>${outItems||'<div class="text-[9px] text-[#808080] text-center italic py-2">Kosong</div>'}</div></div></div>`; 
+                } 
+                c.innerHTML = outHtml; 
+            } else if (t === 'lap') { 
+                outHtml = `<button onclick="printLapSemua()" class="w-full bg-transparent border border-[#808080] text-[#808080] py-3 rounded-xl font-bold uppercase text-xs mb-4 transition-colors active:text-white active:border-white audiowide-regular">Print Laporan Stok</button>`; 
+                let has = false; 
+                db.supplier.forEach((s, i) => { 
+                    let k = s.barang.filter(b => { 
+                        if(b.sB && b.isi > 0) { let krt = Math.floor(b.stok / b.isi); return krt <= getMinLimit(b.sB); } 
+                        else { return b.stok <= getMinLimit(b.sK); }
+                    }); 
+                    if (k.length > 0) { 
+                        has = true; let bl = ""; 
+                        k.forEach(b => bl += `<div class="text-[11px] py-2 border-b border-[#666666] border-dashed flex justify-between items-start text-[#ffffff]"><span>• ${escapeHTML(b.nama)}</span><b class="text-[#ff0000]">${formatStok(b.stok, b.isi, b.sK, b.sB)}</b></div>`); 
+                        outHtml += `<div class="bg-[#000000] p-4 rounded-2xl border border-[#666666] mb-3"><div class="flex justify-between items-start mb-2"><b class="uppercase text-[#ffffff] text-sm leading-tight audiowide-regular">${escapeHTML(s.nama)}</b><button onclick="openSheet('lap', ${i})" class="text-[#808080] text-lg px-2 transition-colors active:text-white">⋮</button></div>${bl}</div>`; 
+                    } 
+                }); 
+                c.innerHTML = has ? outHtml : "<div class='text-center py-20 font-black text-[#808080] uppercase'>Stok Aman</div>"; 
+            } 
+        }
+
+        function openSheet(type, i1, i2) { const s = document.getElementById('a-sheet'), o = document.getElementById('sheet-opts'); s.style.display = 'flex'; o.innerHTML = ""; setTimeout(() => s.classList.add('sheet-active'), 10); if (type === 'sup') { selS = i1; selB = i2; o.innerHTML = `<button onclick="action('nama')" class="p-3.5 bg-transparent text-[#3b82f6] rounded-xl font-bold text-sm border border-[#3b82f6] transition-colors active:text-white active:border-white audiowide-regular">Edit Nama Barang</button><button onclick="action('stok')" class="p-3.5 bg-transparent text-[#3b82f6] rounded-xl font-bold text-sm border border-[#3b82f6] transition-colors active:text-white active:border-white audiowide-regular">Edit Stok</button><button onclick="action('harga')" class="p-3.5 bg-transparent text-[#3b82f6] rounded-xl font-bold text-sm border border-[#3b82f6] transition-colors active:text-white active:border-white audiowide-regular">Edit Harga</button><button onclick="action('barcode')" class="p-3.5 bg-transparent text-[#ffffff] rounded-xl font-bold text-sm border border-[#ffffff] transition-colors active:text-white active:border-white audiowide-regular">Edit Barcode</button><button onclick="openModalReturType(${i1}, ${i2})" class="p-3.5 bg-transparent text-[#facc15] rounded-xl font-bold text-sm border border-[#facc15] transition-colors active:text-white active:border-white audiowide-regular">Retur Barang</button><button onclick="action('hapus')" class="p-3.5 bg-transparent text-[#ff0000] rounded-xl font-bold text-sm border border-[#ff0000] transition-colors active:text-white active:border-white audiowide-regular">Hapus Barang</button>`; } else if (type === 'head') { selS = i1; o.innerHTML = `<button onclick="editSupplier(${i1})" class="p-3.5 bg-transparent text-[#3b82f6] rounded-xl font-bold text-sm border border-[#3b82f6] transition-colors active:text-white active:border-white audiowide-regular">Edit Nama Supplier</button><button onclick="delSup('${escapeHTML(db.supplier[i1].nama)}')" class="p-3.5 bg-transparent text-[#ff0000] rounded-xl font-bold text-sm border border-[#ff0000] transition-colors active:text-white active:border-white audiowide-regular">Hapus Supplier</button>`; } else if (type === 'retur') { o.innerHTML = `<button onclick="closeSheet();waR('${escapeHTML(i1)}')" class="p-3.5 bg-transparent text-[#25D366] rounded-xl font-bold text-sm border border-[#25D366] transition-colors active:text-white active:border-white audiowide-regular">WhatsApp Retur</button><button onclick="closeSheet();printReturSup('${escapeHTML(i1)}')" class="p-3.5 bg-transparent text-[#808080] rounded-xl font-bold text-sm border border-[#808080] transition-colors active:text-white active:border-white audiowide-regular">Print Struk Retur</button><button onclick="closeSheet();trHR('${escapeHTML(i1)}')" class="p-3.5 bg-transparent text-[#ff0000] rounded-xl font-bold text-sm border border-[#ff0000] transition-colors active:text-white active:border-white audiowide-regular">Hapus Data Retur</button>`; } else if (type === 'lap') o.innerHTML = `<button onclick="closeSheet();waO(${i1})" class="p-3.5 bg-transparent text-[#25D366] rounded-xl font-bold text-sm border border-[#25D366] transition-colors active:text-white active:border-white audiowide-regular">WhatsApp Order</button>`; }
         function closeSheet(e) { if (e && e.target.id !== 'a-sheet') return; const s = document.getElementById('a-sheet'); s.classList.remove('sheet-active'); setTimeout(() => s.style.display = 'none', 300); }
         
-        function action(type) { closeSheet(); const br = db.supplier[selS].barang[selB]; if (type === 'nama') openModal("EDIT NAMA", br.nama, "Ubah nama barang:", (v) => { if(v.trim() && v.trim() !== br.nama) { br.nama = v.trim(); saveData(); renderStok('sup'); } }, "prompt"); if (type === 'stok') openModal("EDIT STOK", 0, br.nama, (v) => { db.supplier[selS].barang[selB].stok = v; cart=[]; saveData(); }, "dual_edit_stok", "numeric", brObj=br); if (type === 'harga') openModal("EDIT HARGA", "", br.nama, (v) => { br.hargaE = v.val1; br.hargaG = v.val2; saveData(); renderCart(); }, "dual", "numeric", brObj={sK: br.sK, sB: br.sB, hargaE: br.hargaE, hargaG: br.hargaG}); if (type === 'barcode') openModal("EDIT BARCODE", "", br.nama, (v) => { br.bcE = v.val1.trim(); br.bcG = v.val2.trim(); saveData(); renderStok('sup'); }, "barcode_dual", "numeric", brObj={sK: 'BC SATUAN', sB: 'BC GROSIR', bcE: br.bcE, bcG: br.bcG}); if (type === 'hapus') openModal("HAPUS?", "", `Hapus ${br.nama}?`, () => { cart = cart.filter(c => !(c.nama.toUpperCase() === br.nama.toUpperCase() && c.sup === db.supplier[selS].nama)); db.supplier[selS].barang.splice(selB,1); saveData(); renderCart(); renderStok('sup'); }, "confirm"); }
+        function action(type) { closeSheet(); const br = db.supplier[selS].barang[selB]; if (type === 'nama') openModal("EDIT NAMA", br.nama, "Ubah nama barang:", (v) => { if(v.trim() && v.trim() !== br.nama) { br.nama = v.trim(); br.lastModified = Date.now(); saveData(); renderStok('sup'); } }, "prompt"); if (type === 'stok') openModal("EDIT STOK", 0, br.nama, (v) => { db.supplier[selS].barang[selB].stok = v; br.lastModified = Date.now(); cart=[]; saveData(); }, "dual_edit_stok", "numeric", br); if (type === 'harga') openModal("EDIT HARGA", "", br.nama, (v) => { br.hargaE = v.val1; br.hargaG = v.val2; br.lastModified = Date.now(); saveData(); renderCart(); }, "dual", "numeric", {sK: br.sK, sB: br.sB, hargaE: br.hargaE, hargaG: br.hargaG}); if (type === 'barcode') openModal("EDIT BARCODE", "", br.nama, (v) => { br.bcE = v.val1.trim(); br.bcG = v.val2.trim(); br.lastModified = Date.now(); saveData(); renderStok('sup'); }, "barcode_dual", "numeric", {sK: 'BC SATUAN', sB: 'BC GROSIR', bcE: br.bcE, bcG: br.bcG}); if (type === 'hapus') openModal("HAPUS?", "", `Hapus ${br.nama}?`, () => { db.deletedItems.push(db.supplier[selS].nama + "|" + br.nama); cart = cart.filter(c => !(c.nama.toUpperCase() === br.nama.toUpperCase() && c.sup === db.supplier[selS].nama)); db.supplier[selS].barang.splice(selB,1); saveData(); renderCart(); renderStok('sup'); }, "confirm"); }
         function openModalReturType(sIdx, bIdx) { closeSheet(); activeReturItem = { s: sIdx, b: bIdx }; activeReturType = null; document.getElementById('mr-nama-brg').innerText = db.supplier[sIdx].barang[bIdx].nama; document.getElementById('btn-retur-in').className = "w-full p-3 rounded-xl font-bold uppercase text-[11px] border border-[#666666] text-[#808080] bg-transparent transition-colors active:text-white active:border-white"; document.getElementById('btn-retur-out').className = "w-full p-3 rounded-xl font-bold uppercase text-[11px] border border-[#666666] text-[#808080] bg-transparent transition-colors active:text-white active:border-white"; document.getElementById('modal-retur-step1').style.display = 'flex'; activeModalId = 'modal-retur-step1'; }
         function selectReturType(type) { activeReturType = type; document.getElementById('btn-retur-in').className = type === 'in' ? "w-full p-3 rounded-xl font-bold uppercase text-[11px] border border-[#facc15] text-[#facc15] bg-transparent transition-colors" : "w-full p-3 rounded-xl font-bold uppercase text-[11px] border border-[#666666] text-[#808080] bg-transparent transition-colors active:text-white active:border-white"; document.getElementById('btn-retur-out').className = type === 'out' ? "w-full p-3 rounded-xl font-bold uppercase text-[11px] border border-[#facc15] text-[#facc15] bg-transparent transition-colors" : "w-full p-3 rounded-xl font-bold uppercase text-[11px] border border-[#666666] text-[#808080] bg-transparent transition-colors active:text-white active:border-white"; }
         
@@ -536,129 +667,188 @@
                 let sign = activeReturType === 'in' ? 1 : -1; 
                 if(activeReturType === 'out' && v > br.stok) { openModal("RETUR MELEBIHI STOK!", "", `Stok cuma sisa: ${br.stok}`, null, "alert"); return; } 
                 br.stok += (v * sign); 
+                br.lastModified = Date.now();
                 let qs = formatStok(v, br.isi, br.sK, br.sB); 
                 db.retur.push({id: Date.now(), sup: db.supplier[activeReturItem.s].nama, nama: br.nama, qty: v, qtyStr: qs, type: activeReturType}); 
                 if (db.retur.length > 100) db.retur.shift(); 
                 cart=[]; saveData(); 
-            }, "dual_edit_stok", "numeric", brObj=br, isWipe=true); 
+            }, "dual_edit_stok", "numeric", br, true); 
         }
         
-        function konfirmasiDownload() { 
-            if (unuploadedData) {
-                openModal("TIDAK BISA DOWNLOAD", "", "Ada data yang belum terkirim ke Cloud!\n\nSilakan tekan tombol UPLOAD (Awan biru) terlebih dahulu.", null, "alert");
-            } else {
-                openModal("PERINGATAN!", "", "DATA STOK DI HP AKAN DITIMPA OLEH DATA CLOUD.\n\nLanjutkan?", () => downloadCloud(), "danger_confirm"); 
-            }
-        } 
+        function konfirmasiDownload() { if (unuploadedData) { openModal("TIDAK BISA DOWNLOAD", "", "Ada data yang belum terkirim ke Cloud!\n\nSilakan tekan tombol UPLOAD (Awan biru) terlebih dahulu.", null, "alert"); } else { openModal("PERINGATAN!", "", "DATA STOK DI HP AKAN DITIMPA OLEH DATA CLOUD.\n\nLanjutkan?", () => downloadCloud(), "danger_confirm"); } } 
+        function backToStep1() { document.getElementById('b-modal').style.display = 'none'; document.getElementById('modal-retur-step1').style.display = 'flex'; activeModalId = 'modal-retur-step1'; } 
+        function editSupplier(i) { closeSheet(); let on = db.supplier[i].nama; openModal("EDIT SUPPLIER", on, "", (v) => { let n = v.trim(); if (!n) return; db.supplier[i].nama = n; saveData(); }, "prompt"); } 
+        function openModalSup() { openModal("TAMBAH SUPPLIER", "", "", (v) => { if(v.trim()) { db.supplier.unshift({nama:v.trim(), barang:[]}); saveData(); renderStok(curTab); } }, "prompt"); } 
+        function delSup(n) { closeSheet(); openModal("HAPUS?", "", `Hapus Supplier ${n}?`, () => { db.supplier.find(x=>x.nama===n)?.barang.forEach(b => db.deletedItems.push(n + "|" + b.nama)); db.supplier=db.supplier.filter(x=>x.nama!==n); db.retur=db.retur.filter(x=>x.sup!==n); cart=cart.filter(x=>x.sup!==n); saveData(); renderCart(); renderStok(curTab); }, "confirm"); }
         
-        function backToStep1() { document.getElementById('b-modal').style.display = 'none'; document.getElementById('modal-retur-step1').style.display = 'flex'; activeModalId = 'modal-retur-step1'; } function editSupplier(i) { closeSheet(); let on = db.supplier[i].nama; openModal("EDIT SUPPLIER", on, "", (v) => { let n = v.trim(); if (!n) return; db.supplier[i].nama = n; saveData(); }, "prompt"); } function openModalSup() { openModal("TAMBAH SUPPLIER", "", "", (v) => { if(v.trim()) { db.supplier.unshift({nama:v.trim(), barang:[]}); saveData(); renderStok(curTab); } }, "prompt"); } 
-        function delSup(n) { closeSheet(); openModal("HAPUS?", "", `Hapus Supplier ${n}?`, () => { db.supplier=db.supplier.filter(x=>x.nama!==n); db.retur=db.retur.filter(x=>x.sup!==n); cart=cart.filter(x=>x.sup!==n); saveData(); renderCart(); renderStok(curTab); }, "confirm"); }
-        
-        function addB(i) { const n = document.getElementById(`ib-n-${i}`).value.trim(), bce = document.getElementById(`ib-bce-${i}`).value.trim(), bcg = document.getElementById(`ib-bcg-${i}`).value.trim(); const he = clean(document.getElementById(`ib-he-${i}`).value), hg = clean(document.getElementById(`ib-hg-${i}`).value); const sk = document.getElementById(`ib-sk-${i}`).value, sb = document.getElementById(`ib-sb-${i}`).value, isi = Math.abs(parseInt(document.getElementById(`ib-isi-${i}`).value)) || 0; const se = Math.max(0, parseFloat(document.getElementById(`ib-st-k-${i}`).value.replace(/,/g, '.'))) || 0, sg = Math.max(0, parseFloat(document.getElementById(`ib-st-b-${i}`).value.replace(/,/g, '.'))) || 0, st = (sg * (isi || 0)) + se; if(!n || (he <= 0 && hg <= 0)) { openModal("GAGAL", "", "Nama dan minimal 1 Harga harus diisi!", null, "alert"); return; } if(sb !== "" && hg > 0 && isi <= 0) { openModal("GAGAL", "", "Isi Per Grosir belum diatur (Pilih ulang grosirnya)", null, "alert"); return; } db.supplier[i].barang.unshift({ nama:n, bcE:bce, bcG:bcg, hargaE:he, hargaG:hg, stok:st, sK:sk, sB:sb, isi:isi }); saveData(); renderStok('sup'); }
+        function addB(i) { const n = document.getElementById(`ib-n-${i}`).value.trim(), bce = document.getElementById(`ib-bce-${i}`).value.trim(), bcg = document.getElementById(`ib-bcg-${i}`).value.trim(); const he = clean(document.getElementById(`ib-he-${i}`).value), hg = clean(document.getElementById(`ib-hg-${i}`).value); const sk = document.getElementById(`ib-sk-${i}`).value, sb = document.getElementById(`ib-sb-${i}`).value, isi = Math.abs(parseInt(document.getElementById(`ib-isi-${i}`).value)) || 0; const se = Math.max(0, parseFloat(document.getElementById(`ib-st-k-${i}`).value.replace(/,/g, '.'))) || 0, sg = Math.max(0, parseFloat(document.getElementById(`ib-st-b-${i}`).value.replace(/,/g, '.'))) || 0, st = (sg * (isi || 0)) + se; if(!n || (he <= 0 && hg <= 0)) { openModal("GAGAL", "", "Nama dan minimal 1 Harga harus diisi!", null, "alert"); return; } if(sb !== "" && hg > 0 && isi <= 0) { openModal("GAGAL", "", "Isi Per Grosir belum diatur (Pilih ulang grosirnya)", null, "alert"); return; } db.supplier[i].barang.unshift({ nama:n, bcE:bce, bcG:bcg, hargaE:he, hargaG:hg, stok:st, sK:sk, sB:sb, isi:isi, lastModified: Date.now() }); saveData(); renderStok('sup'); }
 
-        async function uploadCloud(silent = false) { if(!silent) openModal("UPLOADING", "", "Mengirim data ke Cloud...", null, "cloud"); try { const res = await fetch(CLOUD_URL, { method: 'POST', body: JSON.stringify(db) }); if(res.ok) { const resText = await res.text(); if(!resText.includes("Error") && !resText.includes("<html")) { unuploadedData = false; document.getElementById('sync-indicator').style.display = 'none'; if(!silent) openModal("SUKSES", "", "Upload berhasil!", null, "alert"); } else throw new Error(); } else throw new Error(); } catch(e) { if(!silent) openModal("GAGAL", "", "Gagal kirim data ke Cloud.", null, "alert"); } }
-        async function downloadCloud() { openModal("DOWNLOADING", "", "Mengambil stok...", null, "cloud"); try { const res = await fetch(CLOUD_URL + "?action=loadStok"); const data = await res.json(); if(data && data.supplier) { let savedHistory = db.history || []; let savedRetur = db.retur || []; db = data; db.history = savedHistory; db.retur = savedRetur.length > 0 ? savedRetur : (data.retur || []); unuploadedData = false; document.getElementById('sync-indicator').style.display = 'none'; saveData(); openModal("SUKSES", "", "LOAD BERHASIL!", () => { renderStok(curTab); refreshDL(); }, "alert"); } } catch(e) { openModal("GAGAL", "", "Gagal ambil data.", null, "alert"); } }
+        async function uploadCloud(silent = false) { 
+            if(!silent) openModal("UPLOADING", "", "Mengirim data ke Cloud...", null, "cloud"); 
+            try { 
+                const payload = {
+                    supplier: db.supplier,
+                    retur: db.retur.filter(r => !r.isUploaded),
+                    history: db.history.filter(h => !h.isUploaded),
+                    deletedItems: db.deletedItems
+                };
+                const res = await fetch(CLOUD_URL, { method: 'POST', redirect: "follow", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) }); 
+                if(res.ok) { 
+                    const resText = await res.text(); 
+                    if(!resText.includes("Error") && !resText.includes("<html")) { 
+                        db.history.forEach(h => h.isUploaded = true);
+                        db.retur.forEach(r => r.isUploaded = true);
+                        db.deletedItems = [];
+                        unuploadedData = false; 
+                        saveData();
+                        document.getElementById('sync-indicator').style.display = 'none'; 
+                        if(!silent) openModal("SUKSES", "", "Upload berhasil!", null, "alert"); 
+                    } else throw new Error(); 
+                } else throw new Error(); 
+            } catch(e) { 
+                if(!silent) openModal("GAGAL", "", "Gagal kirim data ke Cloud.", null, "alert"); 
+            } 
+        }
+
+        async function downloadCloud() { openModal("DOWNLOADING", "", "Mengambil stok...", null, "cloud"); try { const res = await fetch(CLOUD_URL + "?action=loadStok", { redirect: "follow" }); const data = await res.json(); if(data && data.supplier) { let savedHistory = db.history || []; let savedRetur = db.retur || []; db = data; db.history = savedHistory; db.retur = savedRetur.length > 0 ? savedRetur : (data.retur || []); db.deletedItems = []; unuploadedData = false; document.getElementById('sync-indicator').style.display = 'none'; saveData(); openModal("SUKSES", "", "LOAD BERHASIL!", () => { renderStok(curTab); refreshDL(); }, "alert"); } } catch(e) { openModal("GAGAL", "", "Gagal ambil data.", null, "alert"); } }
 
         function setupDropdown(idLabel, idDropdown, tipe, brObj) { const label = document.getElementById(idLabel); const dropdown = document.getElementById(idDropdown); label.onclick = (e) => { e.stopPropagation(); if(curDropdownOpen && curDropdownOpen !== idDropdown) { document.getElementById(curDropdownOpen).classList.add('hidden'); } let curVal = tipe === 'ecer' ? brObj.sK : brObj.sB; let list = tipe === 'ecer' ? ecerUnitList : grosirUnitList; let html = ''; list.filter(s => s !== curVal).forEach(s => { html += `<div onclick="selectDropdownVal('${tipe}', '${s}', '${idLabel}', '${idDropdown}')" class="p-3 text-[10px] font-bold text-[#ffffff] uppercase border-b border-[#666666] transition-colors active:text-white active:border-white bg-transparent cursor-pointer">${s}</div>`; }); if(html === '') html = `<div class="p-3 text-[10px] font-bold text-[#808080] italic">Habis</div>`; dropdown.innerHTML = html; dropdown.classList.toggle('hidden'); curDropdownOpen = dropdown.classList.contains('hidden') ? null : idDropdown; }; }
         function selectDropdownVal(tipe, val, idLabel, idDropdown) { document.getElementById(idDropdown).classList.add('hidden'); curDropdownOpen = null; const targetId = idLabel === 'm-lb-ecer' ? 'm-label-kecil' : 'm-label-besar'; document.getElementById(targetId).innerHTML = val.toUpperCase() + ' <i class="fas fa-caret-down text-[8px] ml-1"></i>'; if(activeDropdownCallback) activeDropdownCallback(tipe, val); }
 
         function openModal(t, v, d, cb, mode='alert', type='text', brObj=null, isWipe=false) { 
             const m = document.getElementById('b-modal'), dbx = document.getElementById('m-dual-input'), sbx = document.getElementById('m-single-input-box'), bcbx = document.getElementById('m-dual-barcode'), inp = document.getElementById('m-input'), bok = document.getElementById('m-confirm'), mt = document.getElementById('m-title'); 
+            const btnBatal = document.getElementById('m-cancel');
             mt.innerText = t; document.getElementById('m-desc').innerText = d; 
             dbx.style.display = (mode==='dual' || mode==='dual_edit_stok') ? 'block' : 'none'; 
             bcbx.style.display = (mode==='barcode_dual') ? 'block' : 'none'; 
             sbx.style.display = (mode!=='dual' && mode!=='dual_edit_stok' && mode!=='barcode_dual' && mode!=='confirm' && mode!=='cloud' && mode!=='alert' && mode!=='danger_confirm') ? 'flex' : 'none'; 
-            document.getElementById('m-cancel').style.display = (mode!=='alert' && mode!=='cloud' && mode!=='danger_confirm') ? 'block' : 'none'; 
+            btnBatal.style.display = (mode!=='alert' && mode!=='cloud' && mode!=='danger_confirm') ? 'block' : 'none'; 
             document.getElementById('m-back').style.display = (t.includes("RETUR") && (mode==='dual' || mode==='dual_edit_stok')) ? 'block' : 'none'; 
-            
-            let bc = "#666666"; // Default color Dark Gray
-            if (t.includes("HAPUS") || t.includes("GAGAL") || t.includes("KOSONG") || t.includes("KURANG") || t.includes("TIDAK BISA") || t.includes("RETUR MELEBIHI") || t.includes("MEMORI") || t.includes("STOK KURANG") || t.includes("PERINGATAN") || mode==='danger_confirm') { bc = "#ff0000"; } 
-            else if (t.includes("RETUR") || t.includes("SUPPLIER")) { bc = "#facc15"; } 
-            else if (t.includes("UPLOADING") || t.includes("DOWNLOADING") || t.includes("MENCARI") || t.includes("EDIT NAMA") || t.includes("EDIT STOK") || t.includes("EDIT HARGA")) { bc = "#3b82f6"; } 
-            else if (t.includes("SUKSES")) { bc = "#25D366"; } 
-            else if (t.includes("EDIT BARCODE")) { bc = "#ffffff"; }
-            
-            document.getElementById('m-border').style.borderTopColor = bc; 
+            let bc = "#666666"; 
+            if (t.includes("HAPUS") || t.includes("GAGAL") || t.includes("KOSONG") || t.includes("KURANG") || t.includes("TIDAK BISA") || t.includes("RETUR MELEBIHI") || t.includes("MEMORI") || t.includes("STOK KURANG") || t.includes("PERINGATAN") || mode==='danger_confirm') bc = "#ff0000"; 
+            else if (t.includes("RETUR") || t.includes("SUPPLIER")) bc = "#facc15"; 
+            else if (t.includes("UPLOADING") || t.includes("DOWNLOADING") || t.includes("MENCARI") || t.includes("EDIT NAMA") || t.includes("EDIT STOK") || t.includes("EDIT HARGA")) bc = "#3b82f6"; 
+            else if (t.includes("SUKSES")) bc = "#25D366"; 
+            else if (t.includes("EDIT BARCODE")) bc = "#ffffff";
             document.getElementById('m-border').style.borderColor = bc; 
             mt.style.color = "#ffffff"; 
             sbx.style.borderColor = bc; 
-            
-            if (document.getElementById('m-cancel').style.display === 'block') { 
-                document.getElementById('m-cancel').style.borderColor = "#808080"; 
-                document.getElementById('m-cancel').style.color = "#808080"; 
-            } 
-            
             bok.style.display = mode==='cloud' ? "none" : "block"; 
-            bok.className = `flex-1 py-3 bg-transparent rounded-xl text-xs font-black uppercase transition-colors active:text-white active:border-white border`; 
-            bok.style.borderColor = bc;
-            bok.style.color = bc;
-            
-            if(mode === 'danger_confirm') { 
-                document.getElementById('m-cancel').style.display = 'block'; 
-                document.getElementById('m-cancel').className = "flex-1 py-3 bg-transparent text-[#808080] border border-[#808080] rounded-xl text-xs font-black uppercase transition-colors active:text-white active:border-white"; 
-                bok.style.borderColor = "#ff0000";
-                bok.style.color = "#ff0000";
-            } 
+            bok.className = `flex-1 py-3 bg-transparent rounded-xl text-xs font-black uppercase transition-colors active:text-white active:border-white border audiowide-regular`; 
+            if (btnBatal.style.display === 'block') { btnBatal.style.borderColor = bc; btnBatal.style.color = bc; bok.style.borderColor = "#666666"; bok.style.color = "#808080"; } 
+            else { bok.style.borderColor = bc; bok.style.color = bc; }
+            if(mode === 'danger_confirm') { btnBatal.style.display = 'block'; btnBatal.className = "flex-1 py-3 bg-transparent border rounded-xl text-xs font-black uppercase transition-colors active:text-white active:border-white audiowide-regular"; btnBatal.style.borderColor = "#ff0000"; btnBatal.style.color = "#ff0000"; bok.style.borderColor = "#666666"; bok.style.color = "#808080"; } 
             if(document.getElementById('m-lb-ecer')) document.getElementById('m-lb-ecer').onclick = null; 
             if(document.getElementById('m-lb-grosir')) document.getElementById('m-lb-grosir').onclick = null; 
             if(document.getElementById('m-dd-ecer')) document.getElementById('m-dd-ecer').classList.add('hidden'); 
             if(document.getElementById('m-dd-grosir')) document.getElementById('m-dd-grosir').classList.add('hidden'); 
-            
             if ((mode === 'dual' || mode === 'dual_edit_stok') && brObj) { 
+                let isRetur = t.includes("RETUR");
                 let bCls = `m-dual-wrapper border-[#666666]`; 
-                document.getElementById('m-dw-ecer').className = bCls; 
-                document.getElementById('m-dw-grosir').className = bCls;
-                document.getElementById('m-dw-ecer').style.borderColor = bc;
-                document.getElementById('m-dw-grosir').style.borderColor = bc;
+                document.getElementById('m-dw-ecer').className = bCls; document.getElementById('m-dw-grosir').className = bCls;
+                document.getElementById('m-dw-ecer').style.borderColor = bc; document.getElementById('m-dw-grosir').style.borderColor = bc;
                 
                 let lKecil = document.getElementById('m-label-kecil'); 
-                lKecil.innerHTML = (brObj.sK || 'SATUAN').toUpperCase() + (mode==='dual_edit_stok' ? ' <i class="fas fa-caret-down text-[8px] ml-1"></i>' : ''); 
-                document.getElementById('m-lb-ecer').style.borderLeftColor = bc;
-                lKecil.style.color = "#ffffff";
+                lKecil.innerHTML = (brObj.sK || 'SATUAN').toUpperCase() + (mode==='dual_edit_stok' && !isRetur ? ' <i class="fas fa-caret-down text-[8px] ml-1"></i>' : ''); 
+                document.getElementById('m-lb-ecer').style.borderLeftColor = bc; lKecil.style.color = "#ffffff";
                 
-                if(mode === 'dual_edit_stok') { activeDropdownCallback = (tipe, val) => { if(tipe==='ecer') brObj.sK = val; else brObj.sB = val; }; setupDropdown('m-lb-ecer', 'm-dd-ecer', 'ecer', brObj); } 
+                if(mode === 'dual_edit_stok') { 
+                    activeDropdownCallback = (tipe, val) => { if(tipe==='ecer') brObj.sK = val; else brObj.sB = val; }; 
+                    if (!isRetur) setupDropdown('m-lb-ecer', 'm-dd-ecer', 'ecer', brObj); 
+                    else document.getElementById('m-lb-ecer').onclick = null;
+                } 
+                
                 document.getElementById('m-input-kecil').value = isWipe ? "" : (t.includes("HARGA") ? (brObj.hargaE ? brObj.hargaE.toLocaleString('id-ID') : "") : parseFloat((brObj.stok % brObj.isi).toFixed(2))); 
                 
                 if (brObj.sB && (brObj.isi > 0 || t.includes("HARGA") || t.includes("RETUR"))) { 
                     document.getElementById('m-dw-grosir').style.display = 'flex'; 
                     let lBesar = document.getElementById('m-label-besar'); 
-                    lBesar.innerHTML = brObj.sB.toUpperCase() + (mode==='dual_edit_stok' ? ' <i class="fas fa-caret-down text-[8px] ml-1"></i>' : ''); 
-                    document.getElementById('m-lb-grosir').style.borderLeftColor = bc;
-                    lBesar.style.color = "#ffffff";
+                    lBesar.innerHTML = brObj.sB.toUpperCase() + (mode==='dual_edit_stok' && !isRetur ? ' <i class="fas fa-caret-down text-[8px] ml-1"></i>' : ''); 
+                    document.getElementById('m-lb-grosir').style.borderLeftColor = bc; lBesar.style.color = "#ffffff";
                     
-                    if(mode === 'dual_edit_stok') { setupDropdown('m-lb-grosir', 'm-dd-grosir', 'grosir', brObj); } 
+                    if(mode === 'dual_edit_stok') {
+                        if (!isRetur) setupDropdown('m-lb-grosir', 'm-dd-grosir', 'grosir', brObj); 
+                        else document.getElementById('m-lb-grosir').onclick = null;
+                    }
                     document.getElementById('m-input-besar').value = isWipe ? "" : (t.includes("HARGA") ? (brObj.hargaG ? brObj.hargaG.toLocaleString('id-ID') : "") : Math.floor(brObj.stok / brObj.isi)); 
-                } else { document.getElementById('m-dw-grosir').style.display = 'none'; if(!t.includes("HARGA")) document.getElementById('m-input-kecil').value = isWipe ? "" : brObj.stok; } 
+                } else { 
+                    document.getElementById('m-dw-grosir').style.display = 'none'; 
+                    if(!t.includes("HARGA")) document.getElementById('m-input-kecil').value = isWipe ? "" : brObj.stok; 
+                } 
             } else if (mode === 'barcode_dual' && brObj) { 
                 document.getElementById('mb-input-kecil').value = brObj.bcE || ""; document.getElementById('mb-input-besar').value = brObj.bcG || ""; 
             } else { inp.value = v; inp.inputMode = type==="numeric"?"numeric":"text"; } 
             
+            if (mode === 'prompt' && (t.includes("NAMA") || t.includes("SUPPLIER"))) {
+                inp.oninput = () => autoKapital(inp);
+            } else {
+                inp.oninput = null;
+            }
+
             bok.onclick = () => { 
                 let res = null;
-                if ((mode === 'dual' || mode === 'dual_edit_stok') && !t.includes("HARGA")) { 
-                    let bVal = Math.max(0, parseFloat(document.getElementById('m-input-besar').value.replace(/,/g, '.')) || 0); 
-                    let kVal = Math.max(0, parseFloat(document.getElementById('m-input-kecil').value.replace(/,/g, '.')) || 0); 
-                    res = (bVal * (brObj.isi || 0)) + kVal; 
-                } else if (mode === 'dual' || mode === 'dual_edit_stok') { 
-                    res = { 
-                        val1: t.includes("HARGA") ? Math.max(0, clean(document.getElementById('m-input-kecil').value)) : document.getElementById('m-input-kecil').value, 
-                        val2: t.includes("HARGA") ? Math.max(0, clean(document.getElementById('m-input-besar').value)) : document.getElementById('m-input-besar').value 
-                    }; 
-                } else if (mode === 'barcode_dual') { 
-                    res = { val1: document.getElementById('mb-input-kecil').value, val2: document.getElementById('mb-input-besar').value }; 
-                } else { 
-                    res = inp.value; 
-                } 
-                if (typeof cb === 'function') cb(res); 
-                closeModal(); 
+                if ((mode === 'dual' || mode === 'dual_edit_stok') && !t.includes("HARGA")) { let bVal = Math.max(0, parseFloat(document.getElementById('m-input-besar').value.replace(/,/g, '.')) || 0); let kVal = Math.max(0, parseFloat(document.getElementById('m-input-kecil').value.replace(/,/g, '.')) || 0); res = (bVal * (brObj.isi || 0)) + kVal; } 
+                else if (mode === 'dual' || mode === 'dual_edit_stok') { res = { val1: t.includes("HARGA") ? Math.max(0, clean(document.getElementById('m-input-kecil').value)) : document.getElementById('m-input-kecil').value, val2: t.includes("HARGA") ? Math.max(0, clean(document.getElementById('m-input-besar').value)) : document.getElementById('m-input-besar').value }; } 
+                else if (mode === 'barcode_dual') res = { val1: document.getElementById('mb-input-kecil').value, val2: document.getElementById('mb-input-besar').value }; 
+                else res = inp.value; 
+                if (typeof cb === 'function') cb(res); closeModal(); 
             }; 
             m.style.display = 'flex'; activeModalId = 'b-modal'; if(mode==='prompt') setTimeout(()=>inp.focus(),300); 
         }
         function closeModal() { document.getElementById('b-modal').style.display = 'none'; activeModalId = null; }
+
+        let calDate = new Date(); let selDate = new Date(); let calTargetInput = null;
+        function openCalendar(inputId) {
+            calTargetInput = document.getElementById(inputId);
+            if (calTargetInput.value) {
+                let parts = calTargetInput.value.split('-'); 
+                selDate = new Date(parts[0], parts[1]-1, parts[2]);
+                calDate = new Date(selDate);
+            } else { selDate = new Date(); calDate = new Date(); }
+            renderCalendar();
+            document.getElementById('modal-calendar').style.display = 'flex';
+            activeModalId = 'modal-calendar';
+        }
+        function closeCalendar() { document.getElementById('modal-calendar').style.display = 'none'; activeModalId = null; }
+        function setCalendar() {
+            if (calTargetInput) {
+                let y = selDate.getFullYear();
+                let m = String(selDate.getMonth() + 1).padStart(2, '0');
+                let d = String(selDate.getDate()).padStart(2, '0');
+                calTargetInput.value = `${y}-${m}-${d}`;
+            }
+            closeCalendar();
+        }
+        function changeMonth(delta) { calDate.setMonth(calDate.getMonth() + delta); renderCalendar(); }
+        function selectDate(y, m, d) { selDate = new Date(y, m, d); renderCalendar(); }
+        function renderCalendar() {
+            const year = calDate.getFullYear(); const month = calDate.getMonth(); const today = new Date();
+            const days = ['Ming', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+            const monthsShort = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+            const monthsFull = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            
+            document.getElementById('cal-year').innerText = selDate.getFullYear();
+            document.getElementById('cal-date-display').innerText = `${days[selDate.getDay()]}, ${selDate.getDate()} ${monthsShort[selDate.getMonth()]}`;
+            document.getElementById('cal-month-year').innerText = `${monthsFull[month]} ${year}`;
+
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+            const grid = document.getElementById('cal-grid'); grid.innerHTML = '';
+            
+            for (let i = 0; i < firstDay; i++) { grid.innerHTML += `<div></div>`; }
+            for (let i = 1; i <= daysInMonth; i++) {
+                let isToday = (i === today.getDate() && month === today.getMonth() && year === today.getFullYear());
+                let isSelected = (i === selDate.getDate() && month === selDate.getMonth() && year === selDate.getFullYear());
+                let cls = "w-8 h-8 flex items-center justify-center rounded-full mx-auto cursor-pointer transition-colors ";
+                if (isSelected) cls += "bg-[#ff0000] text-[#ffffff] shadow-[0_0_10px_rgba(255,0,0,0.5)]";
+                else if (isToday) cls += "border border-[#ff0000] text-[#ff0000]";
+                else cls += "text-[#ffffff] active:bg-[#333333]";
+                grid.innerHTML += `<div onclick="selectDate(${year}, ${month}, ${i})" class="${cls}">${i}</div>`;
+            }
+        }
         
         function exportData() { let ds = []; db.supplier.forEach(s=>s.barang.forEach(b=>ds.push({"Supplier":s.nama,"Barang":b.nama,"BC Satuan":b.bcE||"","BC Grosir":b.bcG||"","Harga Satuan":b.hargaE||0,"Harga Grosir":b.hargaG||0,"Stok":b.stok,"Satuan":b.sK||'pcs',"Grosir":b.sB||'',"Isi":b.isi||0,"Batas Laporan":getMinLimit(b.sB||b.sK)}))); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(ds), "Stok"); XLSX.writeFile(wb, "DATA_STORE_FAM_BARLA.xlsx"); }
-        
-        function importData(inp) { if(!inp.files[0]) return; const r = new FileReader(); r.readAsArrayBuffer(inp.files[0]); r.onload = (e) => { try { const wb = XLSX.read(new Uint8Array(e.target.result), {type:'array'}); const json = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]); json.forEach(row => { const sn = (row["Supplier"]||"").toString().trim(), bn = (row["Barang"]||"").toString().trim(); if(sn && bn) { let s = db.supplier.find(x=>x.nama.toLowerCase()===sn.toLowerCase()) || {nama:sn, barang:[]}; if(!db.supplier.includes(s)) db.supplier.unshift(s); let b = s.barang.find(x=>x.nama.toLowerCase()===bn.toLowerCase()); if(b) { b.stok = parseFloat((row["Stok"]||0).toString().replace(/,/g, '.'))||0; b.hargaE = parseInt((row["Harga Satuan"]||0).toString().split(',')[0].replace(/[^0-9]/g, ''))||0; b.hargaG = parseInt((row["Harga Grosir"]||0).toString().split(',')[0].replace(/[^0-9]/g, ''))||0; b.bcE = (row["BC Satuan"]||'').toString().trim(); b.bcG = (row["BC Grosir"]||'').toString().trim(); b.sK = (row["Satuan"]||'pcs').toString().toLowerCase().trim(); b.sB = (row["Grosir"]||'').toString().toLowerCase().trim(); b.isi = parseInt(row["Isi"])||0; } else s.barang.unshift({nama:bn, bcE:(row["BC Satuan"]||"").toString().trim(), bcG:(row["BC Grosir"]||"").toString().trim(), hargaE:parseInt((row["Harga Satuan"]||0).toString().split(',')[0].replace(/[^0-9]/g, ''))||0, hargaG:parseInt((row["Harga Grosir"]||0).toString().split(',')[0].replace(/[^0-9]/g, ''))||0, stok:parseFloat((row["Stok"]||0).toString().replace(/,/g, '.'))||0, sK:(row["Satuan"]||'pcs').toString().toLowerCase().trim(), sB:(row["Grosir"]||'').toString().toLowerCase().trim(), isi:parseInt(row["Isi"])||0}); } }); saveData(); renderStok(curTab); } catch(err) { openModal("ERROR","","Format salah!",null,"alert"); } }; }
+        function importData(inp) { if(!inp.files[0]) return; const r = new FileReader(); r.readAsArrayBuffer(inp.files[0]); r.onload = (e) => { try { const wb = XLSX.read(new Uint8Array(e.target.result), {type:'array'}); const json = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]); json.forEach(row => { const sn = (row["Supplier"]||"").toString().trim(), bn = (row["Barang"]||"").toString().trim(); if(sn && bn) { let s = db.supplier.find(x=>x.nama.toLowerCase()===sn.toLowerCase()) || {nama:sn, barang:[]}; if(!db.supplier.includes(s)) db.supplier.unshift(s); let b = s.barang.find(x=>x.nama.toLowerCase()===bn.toLowerCase()); if(b) { b.stok = parseFloat((row["Stok"]||0).toString().replace(/,/g, '.'))||0; b.hargaE = parseInt((row["Harga Satuan"]||0).toString().split(',')[0].replace(/[^0-9]/g, ''))||0; b.hargaG = parseInt((row["Harga Grosir"]||0).toString().split(',')[0].replace(/[^0-9]/g, ''))||0; b.bcE = (row["BC Satuan"]||'').toString().trim(); b.bcG = (row["BC Grosir"]||'').toString().trim(); b.sK = (row["Satuan"]||'pcs').toString().toLowerCase().trim(); b.sB = (row["Grosir"]||'').toString().toLowerCase().trim(); b.isi = parseInt(row["Isi"])||0; b.lastModified = Date.now(); } else s.barang.unshift({nama:bn, bcE:(row["BC Satuan"]||"").toString().trim(), bcG:(row["BC Grosir"]||"").toString().trim(), hargaE:parseInt((row["Harga Satuan"]||0).toString().split(',')[0].replace(/[^0-9]/g, ''))||0, hargaG:parseInt((row["Harga Grosir"]||0).toString().split(',')[0].replace(/[^0-9]/g, ''))||0, stok:parseFloat((row["Stok"]||0).toString().replace(/,/g, '.'))||0, sK:(row["Satuan"]||'pcs').toString().toLowerCase().trim(), sB:(row["Grosir"]||'').toString().toLowerCase().trim(), isi:parseInt(row["Isi"])||0, lastModified: Date.now()}); } }); saveData(); renderStok(curTab); } catch(err) { openModal("ERROR","","Format salah!",null,"alert"); } }; }
         function printReturSemua() { let h = `          STORE famBARLA         \n     Ps. Sunggingan Lt. 2      \n-------------------------------\nREKAP RETUR - ${getTglStr()}\n-------------------------------\n`; const g = db.retur.reduce((a,r)=>{(a[r.sup]=a[r.sup]||[]);a[r.sup].push(r);return a;},{}); for(let s in g){ h += `• ${escapeHTML(s).toUpperCase()}\n`; g[s].forEach(r=> h += `  ${escapeHTML(r.nama).substring(0,18).padEnd(19)} ${r.type==='in'?'+':'-'}${escapeHTML(r.qtyStr)}\n`); h += `\n`; } document.getElementById('p-konten').innerHTML = `<pre>${h}</pre>`; window.print(); }
         function printReturSup(sn) { let h = `          STORE famBARLA         \n     Ps. Sunggingan Lt. 2      \n-------------------------------\nRETUR: ${escapeHTML(sn).toUpperCase()}\n-------------------------------\n`; db.retur.filter(x=>x.sup===sn).forEach(r=> h += `${escapeHTML(r.nama).substring(0,18).padEnd(19)} ${r.type==='in'?'+':'-'}${escapeHTML(r.qtyStr)}\n`); document.getElementById('p-konten').innerHTML = `<pre>${h}</pre>`; window.print(); }
         function printLapSemua() { let h = `          STORE famBARLA         \n     Ps. Sunggingan Lt. 2      \n-------------------------------\nLAPORAN STOK - ${getTglStr()}\n-------------------------------\n`; db.supplier.forEach(s=>{ const k=s.barang.filter(b=>{ if(b.sB && b.isi > 0) { let krt = Math.floor(b.stok / b.isi); return krt <= getMinLimit(b.sB); } else { return b.stok <= getMinLimit(b.sK); }}); if(k.length>0){ h += `• ${escapeHTML(s.nama).toUpperCase()}\n`; k.forEach(b=> h += `  ${escapeHTML(b.nama).substring(0,18).padEnd(19)} ${formatStok(b.stok, b.isi, b.sK, b.sB)}\n`); h += `\n`; } }); document.getElementById('p-konten').innerHTML=`<pre>${h}</pre>`; window.print(); }
@@ -666,12 +856,7 @@
         function waO(i) { let s=db.supplier[i], h = `*ORDER famBARLA*\nSupplier: ${s.nama}\n-------------------\n`; s.barang.filter(b=>{ if(b.sB && b.isi > 0) { let krt = Math.floor(b.stok / b.isi); return krt <= getMinLimit(b.sB); } else { return b.stok <= getMinLimit(b.sK); }}).forEach(b=> h += `• ${b.nama}: (Sisa ${formatStok(b.stok, b.isi, b.sK, b.sB)})\n`); window.open(`https://wa.me/?text=${encodeURIComponent(h)}`); }
         function trHR(sn) { openModal("HAPUS?", "", `Hapus data retur ${sn}?`, () => { db.retur=db.retur.filter(x=>x.sup!==sn); saveData(); renderStok('retur'); }, "confirm"); }
         
-        window.addEventListener('online', () => {
-            if (unuploadedData && (Date.now() - lastSyncAttempt > 60000)) {
-                lastSyncAttempt = Date.now();
-                // uploadCloud(true); // Dihapus sesuai permintaan auto-sync hanya jam 12
-            }
-        });
+        window.addEventListener('online', () => { if (unuploadedData && (Date.now() - lastSyncAttempt > 60000)) lastSyncAttempt = Date.now(); });
     </script>
 </body>
 </html>
