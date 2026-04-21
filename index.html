@@ -9,8 +9,8 @@
     <meta name="theme-color" content="#000000">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="STORE famBARLA">
-    <title>STORE famBARLA v1.0</title>
+    <meta name="apple-mobile-web-app-title" content="store famBARLA">
+    <title>store famBARLA v1.0</title>
     <link rel="manifest" href="./manifest.json">
     <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -18,14 +18,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
     <style>
-        :root { --gemini-bg: #000000; --gemini-grey: #000000; }
+        :root { --gemini-bg: #000000; }
         body { font-family: "Segoe UI", sans-serif; background: var(--gemini-bg); color: #ffffff; -webkit-tap-highlight-color: transparent; overflow-x: hidden; }
         input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
         
         /* FONT & ANIMASI LED HEADER */
         .audiowide-regular { font-family: "Audiowide", sans-serif; font-weight: 400; font-style: normal; }
         .led-matrix-text { color: #333333; }
-        .led-char { animation: led-sweep 2.8s infinite; }
+        /* ANIMASI DIPERLAMBAT MENJADI 4.5s */
+        .led-char { animation: led-sweep 4.5s infinite; }
         @keyframes led-sweep {
             0%, 100% { color: #333333; text-shadow: none; }
             10% { color: #ff0000; text-shadow: 0 0 5px #ff0000, 0 0 15px #ff0000; }
@@ -34,7 +35,7 @@
 
         /* ANIMASI MENU GARIS TIGA BERURUTAN */
         .menu-lines { display: flex; flex-direction: column; gap: 3px; justify-content: center; align-items: center; width: 14px; height: 12px; }
-        .menu-line { height: 2px; width: 100%; background-color: #808080; border-radius: 2px; animation: laser-run 1.5s infinite; }
+        .menu-line { height: 2px; width: 100%; background-color: #808080; border-radius: 2px; animation: laser-run 3s infinite; }
         .menu-line:nth-child(1) { animation-delay: 0s; }
         .menu-line:nth-child(2) { animation-delay: 0.5s; }
         .menu-line:nth-child(3) { animation-delay: 1.0s; }
@@ -52,9 +53,11 @@
             pre { font-family: 'Courier New', Courier, monospace !important; white-space: pre !important; font-size: 10pt !important; line-height: 1.2 !important; margin: 0; padding: 0; overflow: visible !important; }
         }
         
-        .tab-active { border-bottom: 2px solid #ffffff; color: #ffffff !important; }
+        /* TAMPILAN TAB AKTIF MERAH MENYALA TANPA GARIS BAWAH */
+        .tab-active { color: #ff0000 !important; text-shadow: 0 0 8px rgba(255, 0, 0, 0.8); }
+        
         .sheet-bg { background: rgba(0, 0, 0, 0.85); z-index: 1000; position: fixed; inset: 0; display: none; align-items: flex-end; }
-        .sheet-content { background: var(--gemini-grey); width: 100%; border-radius: 2rem 2rem 0 0; padding: 2rem; transform: translateY(100%); transition: transform 0.3s; border-top: 1px solid #666666;}
+        .sheet-content { background: #000000; width: 100%; border-radius: 2rem 2rem 0 0; padding: 2rem; transform: translateY(100%); transition: transform 0.3s; border-top: 1px solid #666666;}
         .sheet-active .sheet-content { transform: translateY(0); }
         .modal-bg { background: rgba(0, 0, 0, 0.9); position: fixed; inset: 0; display: none; align-items: center; justify-content: center; padding: 20px; z-index: 1500; }
 
@@ -104,7 +107,7 @@
             <p id="h-time" class="text-[8px] mt-1 uppercase font-bold text-[#808080]"><span class="text-[#808080]" id="date-part"></span> <span class="text-[#ff0000] font-black ml-1" id="time-part"></span></p>
         </div>
         
-        <button onclick="openMenuModal()" class="border border-[#666666] text-[#808080] font-bold text-[10px] px-4 py-2 rounded-full uppercase tracking-widest transition-colors active:text-white active:border-white bg-[#1a1a1a] mx-2 flex-shrink-0 flex items-center gap-1.5 shadow-sm">
+        <button onclick="openMenuModal()" class="border border-[#ff0000] text-[#ffffff] font-bold text-[10px] px-4 py-2 rounded-full uppercase tracking-widest transition-colors active:text-white active:border-white bg-[#1a1a1a] mx-2 flex-shrink-0 flex items-center gap-1.5 shadow-sm">
             <div class="menu-lines">
                 <div class="menu-line"></div>
                 <div class="menu-line"></div>
@@ -172,7 +175,7 @@
                 </div>
                 <div class="flex gap-2">
                     <div class="relative w-2/5"><span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-[9px] font-black text-[#808080] z-10">Rp</span><input type="text" id="k-harga" inputmode="numeric" oninput="formatRupiah(this)" placeholder="Harga" class="w-full pl-7 pr-2 py-2 rounded-lg font-bold text-xs outline-none transition-colors placeholder-[#808080] text-[#ffffff] bg-[#000000]"></div>
-                    <input type="number" step="0.01" id="k-qty" inputmode="decimal" placeholder="Qty" class="w-1/5 px-1 py-2 rounded-lg font-bold text-xs text-center outline-none transition-colors placeholder-[#808080] text-[#ffffff] bg-[#000000]">
+                    <input type="text" id="k-qty" inputmode="decimal" placeholder="Qty" class="w-1/5 px-1 py-2 rounded-lg font-bold text-xs text-center outline-none transition-colors placeholder-[#808080] text-[#ffffff] bg-[#000000]">
                     <button onclick="tambahItem()" class="w-2/5 bg-transparent border border-[#3b82f6] text-[#3b82f6] font-bold text-xs rounded-lg transition-colors active:text-white active:border-white flex items-center justify-center gap-1 uppercase audiowide-regular"><i class="fas fa-plus"></i> ADD</button>
                 </div>
             </div>
@@ -196,9 +199,9 @@
             <div id="stok-tabs-container" class="flex bg-[#000000] rounded-xl p-1 border border-[#666666] mb-4 mt-1 items-center">
                 <button onclick="toggleStokSearch(true)" id="btn-stok-search" class="px-3 text-[#808080] transition-colors active:text-white"><i class="fas fa-search text-sm"></i></button>
                 <div id="stok-tabs" class="flex flex-1 gap-1">
-                    <button onclick="tab('sup')" id="b-sup" class="audiowide-regular flex-1 py-2 text-[10px] uppercase rounded-lg tab-active transition-colors text-[#808080] bg-transparent border-b-2 border-transparent">Supplier</button>
-                    <button onclick="tab('retur')" id="b-retur" class="audiowide-regular flex-1 py-2 text-[10px] uppercase rounded-lg transition-colors text-[#808080] bg-transparent border-b-2 border-transparent">Retur</button>
-                    <button onclick="tab('lap')" id="b-lap" class="audiowide-regular flex-1 py-2 text-[10px] uppercase rounded-lg transition-colors text-[#808080] bg-transparent border-b-2 border-transparent">Laporan</button>
+                    <button onclick="tab('sup')" id="b-sup" class="audiowide-regular flex-1 py-2 text-[10px] uppercase rounded-lg tab-active transition-colors text-[#808080] bg-transparent">Supplier</button>
+                    <button onclick="tab('retur')" id="b-retur" class="audiowide-regular flex-1 py-2 text-[10px] uppercase rounded-lg transition-colors text-[#808080] bg-transparent">Retur</button>
+                    <button onclick="tab('lap')" id="b-lap" class="audiowide-regular flex-1 py-2 text-[10px] uppercase rounded-lg transition-colors text-[#808080] bg-transparent">Laporan</button>
                 </div>
                 <div id="stok-search-box" class="hidden flex-1 relative items-center">
                     <input type="text" id="i-stok-search" oninput="renderStok(curTab)" placeholder="Cari..." class="border-none w-full py-2 pl-3 pr-8 rounded-lg font-bold text-xs outline-none bg-transparent text-[#ffffff] focus:ring-0 placeholder-[#808080]">
@@ -234,7 +237,7 @@
     </div>
 
     <div id="modal-calendar" class="modal-bg z-[2500]">
-        <div class="bg-[#111111] w-full max-w-[280px] rounded-3xl overflow-hidden border border-[#666666] shadow-2xl">
+        <div class="bg-[#111111] w-full max-w-[280px] rounded-3xl overflow-hidden border border-[#ff0000] shadow-2xl">
             <div class="bg-[#1f1f1f] p-4 text-[#ffffff] border-b border-[#666666]">
                 <div id="cal-year" class="text-xs text-[#808080] font-bold audiowide-regular">2026</div>
                 <div id="cal-date-display" class="text-2xl font-black mt-1 tracking-tight audiowide-regular">Sel, 21 Apr</div>
@@ -336,9 +339,9 @@
 
     <script>
         const KEY = 'STORE_FAM_BARLA_V1_0';
-        const CLOUD_URL = "https://script.google.com/macros/s/AKfycbzPGJMBH1epQHAayVc5bHb8Q8gs9AW3pWuZrOplJccsuU4Dnh6C4sg_vB41ooyNFxjl/exec"; 
+        const CLOUD_URL = "https://script.google.com/macros/s/AKfycbzB2foDrLx-HYIkZAoEJAXazd-VPNuEOxCahkFHcAPfPWD4i4ADG9hS2sK_2Do8UULC/exec"; 
 
-        let db = { supplier: [], retur: [], history: [], deletedItems: [] }; 
+        let db = { supplier: [], retur: [], history: [] }; 
         let cart = []; let tempCloudHistory = [];
         let isScanning = false, html5QrCode = null, curTab = 'sup', selS = null, selB = null, openIdx = null, pendingIdxGrosir = null; 
         let isKasirGrosir = false, selKasirSup = null, activeReturType = null, activeReturItem = null, curDropdownOpen = null, activeDropdownCallback = null;
@@ -355,9 +358,15 @@
         function getMinLimit(unit) { const u = (unit || '').toLowerCase(); const limits = { 'karton':2, 'lusin':1, 'slop':1, 'pack':3, 'renceng':5, 'botol':10, 'kg':5, 'bungkus':15, 'kaleng':10, 'pcs':10, 'strip':15, 'sachet':12 }; return limits[u] || 0; }
 
         window.onload = () => { 
-            try { const data = localStorage.getItem(KEY); if (data) db = JSON.parse(data); if (!db.history) db.history = []; if(!db.retur) db.retur = []; if(!db.deletedItems) db.deletedItems = [];
+            try { const data = localStorage.getItem(KEY); if (data) db = JSON.parse(data); if (!db.history) db.history = []; if(!db.retur) db.retur = []; 
                 const savedCart = localStorage.getItem('BARLA_CART_' + KEY); if (savedCart) cart = JSON.parse(savedCart);
-            } catch(e) { db = { supplier: [], retur: [], history: [], deletedItems: [] }; }
+            } catch(e) { db = { supplier: [], retur: [], history: [] }; }
+            
+            if (localStorage.getItem('BARLA_UNSYNC') === '1') {
+                unuploadedData = true;
+                document.getElementById('sync-indicator').style.display = 'block';
+            }
+
             html5QrCode = new Html5Qrcode("scanner-modal-layer"); refreshClock(); setInterval(refreshClock, 60000); refreshDL(); renderCart(); setupScannerEvents();
             navMode('kasir'); 
         };
@@ -387,14 +396,19 @@
             try { el.setSelectionRange(start, end); } catch(e){} 
         }
 
-        function saveData() { 
+        function saveData(skipSyncFlag = false) { 
             try {
                 localStorage.setItem(KEY, JSON.stringify(db)); 
                 localStorage.setItem('BARLA_CART_' + KEY, JSON.stringify(cart)); 
+                
+                if (!skipSyncFlag) {
+                    localStorage.setItem('BARLA_UNSYNC', '1');
+                    unuploadedData = true; 
+                    document.getElementById('sync-indicator').style.display = 'block'; 
+                }
+
                 refreshDL(); 
                 if (!document.getElementById('section-stok').classList.contains('hidden')) renderStok(curTab); 
-                unuploadedData = true; 
-                document.getElementById('sync-indicator').style.display = 'block'; 
             } catch(e) {
                 openModal("MEMORI PENUH", "", "Penyimpanan HP penuh! Tidak bisa menyimpan data baru. Segera hapus data HP Anda.", null, "alert");
             }
@@ -409,12 +423,12 @@
             document.getElementById('date-part').innerText = now.toLocaleDateString('id-ID', {day:'2-digit', month:'short', year:'numeric'});
             document.getElementById('time-part').innerText = now.toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}).replace(/\./g, ':'); 
             let currentDateStr = now.toLocaleDateString('id-ID');
-            if (now.getHours() >= 12 && lastBackupDate !== currentDateStr) {
+            if (lastBackupDate !== currentDateStr) {
                 lastBackupDate = currentDateStr; 
-                if (navigator.onLine && unuploadedData && (Date.now() - lastSyncAttempt > 60000)) {
-                    lastSyncAttempt = Date.now();
-                    uploadCloud(true);
-                }
+            }
+            if (navigator.onLine && unuploadedData && (Date.now() - lastSyncAttempt > 60000)) {
+                lastSyncAttempt = Date.now();
+                uploadCloud(true);
             }
         }
         
@@ -430,10 +444,13 @@
             let val = el.value.trim(); 
             if (!val) { document.getElementById('k-harga').value = ""; return; } 
             let f = null; let isG = false; let fSup = null; 
-            db.supplier.forEach(s => s.barang.forEach(b => { 
-                if (b.nama.toUpperCase() === val.toUpperCase() || b.bcE === val) { f = b; isG = false; fSup = s.nama; } 
-                if (b.bcG === val && val !== "") { f = b; isG = true; fSup = s.nama; } 
-            })); 
+            for (let s of db.supplier) {
+                for (let b of s.barang) {
+                    if (b.nama.toUpperCase() === val.toUpperCase() || b.bcE === val) { f = b; isG = false; fSup = s.nama; break; } 
+                    if (b.bcG === val && val !== "") { f = b; isG = true; fSup = s.nama; break; } 
+                }
+                if (f) break;
+            }
             isKasirGrosir = isG; selKasirSup = fSup; 
             if (f) { 
                 document.getElementById('k-nama').value = f.nama; 
@@ -442,7 +459,19 @@
             } 
         }
 
-        function refreshDL() { const dl = document.getElementById('db-list'); dl.innerHTML = ""; db.supplier.forEach(s => s.barang.forEach(b => { const inC = cart.find(x => x.nama.toUpperCase() === b.nama.toUpperCase() && x.sup === s.nama); if (b.stok > 0 && (!inC || inC.qty < b.stok)) { let o = document.createElement('option'); o.value = b.nama; o.innerText = `Sisa: ${formatStok(b.stok, b.isi, b.sK, b.sB)}`; dl.appendChild(o); } })); }
+        function refreshDL() { 
+            const dl = document.getElementById('db-list'); dl.innerHTML = ""; 
+            let limit = 0; 
+            for (let s of db.supplier) { 
+                for (let b of s.barang) { 
+                    if (limit > 50) return; 
+                    const inC = cart.find(x => x.nama.toUpperCase() === b.nama.toUpperCase() && x.sup === s.nama); 
+                    if (b.stok > 0 && (!inC || inC.qty < b.stok)) { 
+                        let o = document.createElement('option'); o.value = b.nama; o.innerText = `Sisa: ${formatStok(b.stok, b.isi, b.sK, b.sB)}`; dl.appendChild(o); limit++; 
+                    } 
+                } 
+            } 
+        }
         function formatStok(total, isi, sK, sB) { if (!sB || !isi || isi <= 1) return `${total} ${sK || 'satuan'}`; let besar = isi > 0 ? Math.floor(total / isi) : 0; let kecil = parseFloat((total % isi).toFixed(2)); let res = []; if (besar > 0) res.push(`${besar} ${sB}`); if (kecil > 0 || besar === 0) res.push(`${kecil} ${sK || 'satuan'}`); return res.join(' '); }
 
         function tambahItem() { 
@@ -556,7 +585,6 @@
                     if (br && sisa > 0) { 
                         if (br.stok >= sisa) { br.stok = parseFloat((br.stok - sisa).toFixed(2)); sisa = 0; } 
                         else { sisa -= br.stok; br.stok = 0; } 
-                        br.lastModified = Date.now(); 
                     } 
                 } 
             });
@@ -639,7 +667,7 @@
             } else if (t === 'retur') { 
                 const g = db.retur.reduce((a, r) => { (a[r.sup] = a[r.sup] || []); a[r.sup].push(r); return a; }, {}); 
                 if (Object.keys(g).length === 0) { c.innerHTML = "<div class='text-center py-20 font-black text-[#808080] uppercase'>Kosong</div>"; return; } 
-                outHtml = `<button onclick="printReturSemua()" class="w-full bg-transparent border border-[#808080] text-[#808080] py-3 rounded-xl font-bold uppercase text-xs mb-4 transition-colors active:text-white active:border-white audiowide-regular">Print Semua Retur</button>`; 
+                outHtml = `<button onclick="printReturSemua()" class="w-full bg-transparent border border-[#ff0000] text-[#ff0000] py-3 rounded-xl font-bold uppercase text-xs mb-4 transition-colors active:text-white active:border-white audiowide-regular">Print Semua Retur</button>`; 
                 for (let s in g) { 
                     let inItems = "", outItems = ""; 
                     g[s].forEach(r => { 
@@ -650,7 +678,7 @@
                 } 
                 c.innerHTML = outHtml; 
             } else if (t === 'lap') { 
-                outHtml = `<button onclick="printLapSemua()" class="w-full bg-transparent border border-[#808080] text-[#808080] py-3 rounded-xl font-bold uppercase text-xs mb-4 transition-colors active:text-white active:border-white audiowide-regular">Print Laporan Stok</button>`; 
+                outHtml = `<button onclick="printLapSemua()" class="w-full bg-transparent border border-[#ff0000] text-[#ff0000] py-3 rounded-xl font-bold uppercase text-xs mb-4 transition-colors active:text-white active:border-white audiowide-regular">Print Laporan Stok</button>`; 
                 let has = false; 
                 db.supplier.forEach((s, i) => { 
                     let k = s.barang.filter(b => { 
@@ -670,7 +698,7 @@
         function openSheet(type, i1, i2) { const s = document.getElementById('a-sheet'), o = document.getElementById('sheet-opts'); s.style.display = 'flex'; o.innerHTML = ""; setTimeout(() => s.classList.add('sheet-active'), 10); if (type === 'sup') { selS = i1; selB = i2; o.innerHTML = `<button onclick="action('nama')" class="p-3.5 bg-transparent text-[#3b82f6] rounded-xl font-bold text-sm border border-[#3b82f6] transition-colors active:text-white active:border-white audiowide-regular">Edit Nama Barang</button><button onclick="action('stok')" class="p-3.5 bg-transparent text-[#3b82f6] rounded-xl font-bold text-sm border border-[#3b82f6] transition-colors active:text-white active:border-white audiowide-regular">Edit Stok</button><button onclick="action('harga')" class="p-3.5 bg-transparent text-[#3b82f6] rounded-xl font-bold text-sm border border-[#3b82f6] transition-colors active:text-white active:border-white audiowide-regular">Edit Harga</button><button onclick="action('barcode')" class="p-3.5 bg-transparent text-[#ffffff] rounded-xl font-bold text-sm border border-[#ffffff] transition-colors active:text-white active:border-white audiowide-regular">Edit Barcode</button><button onclick="openModalReturType(${i1}, ${i2})" class="p-3.5 bg-transparent text-[#facc15] rounded-xl font-bold text-sm border border-[#facc15] transition-colors active:text-white active:border-white audiowide-regular">Retur Barang</button><button onclick="action('hapus')" class="p-3.5 bg-transparent text-[#ff0000] rounded-xl font-bold text-sm border border-[#ff0000] transition-colors active:text-white active:border-white audiowide-regular">Hapus Barang</button>`; } else if (type === 'head') { selS = i1; o.innerHTML = `<button onclick="editSupplier(${i1})" class="p-3.5 bg-transparent text-[#3b82f6] rounded-xl font-bold text-sm border border-[#3b82f6] transition-colors active:text-white active:border-white audiowide-regular">Edit Nama Supplier</button><button onclick="delSup('${escapeHTML(db.supplier[i1].nama)}')" class="p-3.5 bg-transparent text-[#ff0000] rounded-xl font-bold text-sm border border-[#ff0000] transition-colors active:text-white active:border-white audiowide-regular">Hapus Supplier</button>`; } else if (type === 'retur') { o.innerHTML = `<button onclick="closeSheet();waR('${escapeHTML(i1)}')" class="p-3.5 bg-transparent text-[#25D366] rounded-xl font-bold text-sm border border-[#25D366] transition-colors active:text-white active:border-white audiowide-regular">WhatsApp Retur</button><button onclick="closeSheet();printReturSup('${escapeHTML(i1)}')" class="p-3.5 bg-transparent text-[#808080] rounded-xl font-bold text-sm border border-[#808080] transition-colors active:text-white active:border-white audiowide-regular">Print Struk Retur</button><button onclick="closeSheet();trHR('${escapeHTML(i1)}')" class="p-3.5 bg-transparent text-[#ff0000] rounded-xl font-bold text-sm border border-[#ff0000] transition-colors active:text-white active:border-white audiowide-regular">Hapus Data Retur</button>`; } else if (type === 'lap') o.innerHTML = `<button onclick="closeSheet();waO(${i1})" class="p-3.5 bg-transparent text-[#25D366] rounded-xl font-bold text-sm border border-[#25D366] transition-colors active:text-white active:border-white audiowide-regular">WhatsApp Order</button>`; }
         function closeSheet(e) { if (e && e.target.id !== 'a-sheet') return; const s = document.getElementById('a-sheet'); s.classList.remove('sheet-active'); setTimeout(() => s.style.display = 'none', 300); }
         
-        function action(type) { closeSheet(); const br = db.supplier[selS].barang[selB]; if (type === 'nama') openModal("EDIT NAMA", br.nama, "Ubah nama barang:", (v) => { if(v.trim() && v.trim() !== br.nama) { br.nama = v.trim(); br.lastModified = Date.now(); saveData(); renderStok('sup'); } }, "prompt"); if (type === 'stok') openModal("EDIT STOK", 0, br.nama, (v) => { db.supplier[selS].barang[selB].stok = v; br.lastModified = Date.now(); cart=[]; saveData(); }, "dual_edit_stok", "numeric", br); if (type === 'harga') openModal("EDIT HARGA", "", br.nama, (v) => { br.hargaE = v.val1; br.hargaG = v.val2; br.lastModified = Date.now(); saveData(); renderCart(); }, "dual", "numeric", {sK: br.sK, sB: br.sB, hargaE: br.hargaE, hargaG: br.hargaG}); if (type === 'barcode') openModal("EDIT BARCODE", "", br.nama, (v) => { br.bcE = v.val1.trim(); br.bcG = v.val2.trim(); br.lastModified = Date.now(); saveData(); renderStok('sup'); }, "barcode_dual", "numeric", {sK: 'BC SATUAN', sB: 'BC GROSIR', bcE: br.bcE, bcG: br.bcG}); if (type === 'hapus') openModal("HAPUS?", "", `Hapus ${br.nama}?`, () => { db.deletedItems.push(db.supplier[selS].nama + "|" + br.nama); cart = cart.filter(c => !(c.nama.toUpperCase() === br.nama.toUpperCase() && c.sup === db.supplier[selS].nama)); db.supplier[selS].barang.splice(selB,1); saveData(); renderCart(); renderStok('sup'); }, "confirm"); }
+        function action(type) { closeSheet(); const br = db.supplier[selS].barang[selB]; if (type === 'nama') openModal("EDIT NAMA", br.nama, "Ubah nama barang:", (v) => { if(v.trim() && v.trim() !== br.nama) { br.nama = v.trim(); saveData(); renderStok('sup'); } }, "prompt"); if (type === 'stok') openModal("EDIT STOK", 0, br.nama, (v) => { db.supplier[selS].barang[selB].stok = v; cart=[]; saveData(); }, "dual_edit_stok", "numeric", br); if (type === 'harga') openModal("EDIT HARGA", "", br.nama, (v) => { br.hargaE = v.val1; br.hargaG = v.val2; saveData(); renderCart(); }, "dual", "numeric", {sK: br.sK, sB: br.sB, hargaE: br.hargaE, hargaG: br.hargaG}); if (type === 'barcode') openModal("EDIT BARCODE", "", br.nama, (v) => { br.bcE = v.val1.trim(); br.bcG = v.val2.trim(); saveData(); renderStok('sup'); }, "barcode_dual", "numeric", {sK: 'BC SATUAN', sB: 'BC GROSIR', bcE: br.bcE, bcG: br.bcG}); if (type === 'hapus') openModal("HAPUS?", "", `Hapus ${br.nama}?`, () => { cart = cart.filter(c => !(c.nama.toUpperCase() === br.nama.toUpperCase() && c.sup === db.supplier[selS].nama)); db.supplier[selS].barang.splice(selB,1); saveData(); renderCart(); renderStok('sup'); }, "confirm"); }
         function openModalReturType(sIdx, bIdx) { closeSheet(); activeReturItem = { s: sIdx, b: bIdx }; activeReturType = null; document.getElementById('mr-nama-brg').innerText = db.supplier[sIdx].barang[bIdx].nama; document.getElementById('btn-retur-in').className = "w-full p-3 rounded-xl font-bold uppercase text-[11px] border border-[#666666] text-[#808080] bg-transparent transition-colors active:text-white active:border-white"; document.getElementById('btn-retur-out').className = "w-full p-3 rounded-xl font-bold uppercase text-[11px] border border-[#666666] text-[#808080] bg-transparent transition-colors active:text-white active:border-white"; document.getElementById('modal-retur-step1').style.display = 'flex'; activeModalId = 'modal-retur-step1'; }
         function selectReturType(type) { activeReturType = type; document.getElementById('btn-retur-in').className = type === 'in' ? "w-full p-3 rounded-xl font-bold uppercase text-[11px] border border-[#facc15] text-[#facc15] bg-transparent transition-colors" : "w-full p-3 rounded-xl font-bold uppercase text-[11px] border border-[#666666] text-[#808080] bg-transparent transition-colors active:text-white active:border-white"; document.getElementById('btn-retur-out').className = type === 'out' ? "w-full p-3 rounded-xl font-bold uppercase text-[11px] border border-[#facc15] text-[#facc15] bg-transparent transition-colors" : "w-full p-3 rounded-xl font-bold uppercase text-[11px] border border-[#666666] text-[#808080] bg-transparent transition-colors active:text-white active:border-white"; }
         
@@ -683,7 +711,6 @@
                 let sign = activeReturType === 'in' ? 1 : -1; 
                 if(activeReturType === 'out' && v > br.stok) { openModal("RETUR MELEBIHI STOK!", "", `Stok cuma sisa: ${br.stok}`, null, "alert"); return; } 
                 br.stok += (v * sign); 
-                br.lastModified = Date.now();
                 let qs = formatStok(v, br.isi, br.sK, br.sB); 
                 db.retur.push({id: Date.now(), sup: db.supplier[activeReturItem.s].nama, nama: br.nama, qty: v, qtyStr: qs, type: activeReturType}); 
                 if (db.retur.length > 100) db.retur.shift(); 
@@ -695,9 +722,9 @@
         function backToStep1() { document.getElementById('b-modal').style.display = 'none'; document.getElementById('modal-retur-step1').style.display = 'flex'; activeModalId = 'modal-retur-step1'; } 
         function editSupplier(i) { closeSheet(); let on = db.supplier[i].nama; openModal("EDIT SUPPLIER", on, "", (v) => { let n = v.trim(); if (!n) return; db.supplier[i].nama = n; saveData(); }, "prompt"); } 
         function openModalSup() { openModal("TAMBAH SUPPLIER", "", "", (v) => { if(v.trim()) { db.supplier.unshift({nama:v.trim(), barang:[]}); saveData(); renderStok(curTab); } }, "prompt"); } 
-        function delSup(n) { closeSheet(); openModal("HAPUS?", "", `Hapus Supplier ${n}?`, () => { db.supplier.find(x=>x.nama===n)?.barang.forEach(b => db.deletedItems.push(n + "|" + b.nama)); db.supplier=db.supplier.filter(x=>x.nama!==n); db.retur=db.retur.filter(x=>x.sup!==n); cart=cart.filter(x=>x.sup!==n); saveData(); renderCart(); renderStok(curTab); }, "confirm"); }
+        function delSup(n) { closeSheet(); openModal("HAPUS?", "", `Hapus Supplier ${n}?`, () => { db.supplier=db.supplier.filter(x=>x.nama!==n); db.retur=db.retur.filter(x=>x.sup!==n); cart=cart.filter(x=>x.sup!==n); saveData(); renderCart(); renderStok(curTab); }, "confirm"); }
         
-        function addB(i) { const n = document.getElementById(`ib-n-${i}`).value.trim(), bce = document.getElementById(`ib-bce-${i}`).value.trim(), bcg = document.getElementById(`ib-bcg-${i}`).value.trim(); const he = clean(document.getElementById(`ib-he-${i}`).value), hg = clean(document.getElementById(`ib-hg-${i}`).value); const sk = document.getElementById(`ib-sk-${i}`).value, sb = document.getElementById(`ib-sb-${i}`).value, isi = Math.abs(parseInt(document.getElementById(`ib-isi-${i}`).value)) || 0; const se = Math.max(0, parseFloat(document.getElementById(`ib-st-k-${i}`).value.replace(/,/g, '.'))) || 0, sg = Math.max(0, parseFloat(document.getElementById(`ib-st-b-${i}`).value.replace(/,/g, '.'))) || 0, st = (sg * (isi || 0)) + se; if(!n || (he <= 0 && hg <= 0)) { openModal("GAGAL", "", "Nama dan minimal 1 Harga harus diisi!", null, "alert"); return; } if(sb !== "" && hg > 0 && isi <= 0) { openModal("GAGAL", "", "Isi Per Grosir belum diatur (Pilih ulang grosirnya)", null, "alert"); return; } db.supplier[i].barang.unshift({ nama:n, bcE:bce, bcG:bcg, hargaE:he, hargaG:hg, stok:st, sK:sk, sB:sb, isi:isi, lastModified: Date.now() }); saveData(); renderStok('sup'); }
+        function addB(i) { const n = document.getElementById(`ib-n-${i}`).value.trim(), bce = document.getElementById(`ib-bce-${i}`).value.trim(), bcg = document.getElementById(`ib-bcg-${i}`).value.trim(); const he = clean(document.getElementById(`ib-he-${i}`).value), hg = clean(document.getElementById(`ib-hg-${i}`).value); const sk = document.getElementById(`ib-sk-${i}`).value, sb = document.getElementById(`ib-sb-${i}`).value, isi = Math.abs(parseInt(document.getElementById(`ib-isi-${i}`).value)) || 0; const se = Math.max(0, parseFloat(document.getElementById(`ib-st-k-${i}`).value.replace(/,/g, '.'))) || 0, sg = Math.max(0, parseFloat(document.getElementById(`ib-st-b-${i}`).value.replace(/,/g, '.'))) || 0, st = (sg * (isi || 0)) + se; if(!n || (he <= 0 && hg <= 0)) { openModal("GAGAL", "", "Nama dan minimal 1 Harga harus diisi!", null, "alert"); return; } if(sb !== "" && hg > 0 && isi <= 0) { openModal("GAGAL", "", "Isi Per Grosir belum diatur (Pilih ulang grosirnya)", null, "alert"); return; } db.supplier[i].barang.unshift({ nama:n, bcE:bce, bcG:bcg, hargaE:he, hargaG:hg, stok:st, sK:sk, sB:sb, isi:isi }); saveData(); renderStok('sup'); }
 
         async function uploadCloud(silent = false) { 
             if(!silent) openModal("UPLOADING", "", "Mengirim data ke Cloud...", null, "cloud"); 
@@ -705,8 +732,7 @@
                 const payload = {
                     supplier: db.supplier,
                     retur: db.retur.filter(r => !r.isUploaded),
-                    history: db.history.filter(h => !h.isUploaded),
-                    deletedItems: db.deletedItems
+                    history: db.history.filter(h => !h.isUploaded)
                 };
                 const res = await fetch(CLOUD_URL, { method: 'POST', redirect: "follow", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload) }); 
                 if(res.ok) { 
@@ -714,10 +740,12 @@
                     if(!resText.includes("Error") && !resText.includes("<html")) { 
                         db.history.forEach(h => h.isUploaded = true);
                         db.retur.forEach(r => r.isUploaded = true);
-                        db.deletedItems = [];
+                        
                         unuploadedData = false; 
-                        saveData();
+                        saveData(true); 
+                        localStorage.removeItem('BARLA_UNSYNC'); 
                         document.getElementById('sync-indicator').style.display = 'none'; 
+                        
                         if(!silent) openModal("SUKSES", "", "Upload berhasil!", null, "alert"); 
                     } else throw new Error(); 
                 } else throw new Error(); 
@@ -726,7 +754,26 @@
             } 
         }
 
-        async function downloadCloud() { openModal("DOWNLOADING", "", "Mengambil stok...", null, "cloud"); try { const res = await fetch(CLOUD_URL + "?action=loadStok", { redirect: "follow" }); const data = await res.json(); if(data && data.supplier) { let savedHistory = db.history || []; let savedRetur = db.retur || []; db = data; db.history = savedHistory; db.retur = savedRetur.length > 0 ? savedRetur : (data.retur || []); db.deletedItems = []; unuploadedData = false; document.getElementById('sync-indicator').style.display = 'none'; saveData(); openModal("SUKSES", "", "LOAD BERHASIL!", () => { renderStok(curTab); refreshDL(); }, "alert"); } } catch(e) { openModal("GAGAL", "", "Gagal ambil data.", null, "alert"); } }
+        async function downloadCloud() { 
+            openModal("DOWNLOADING", "", "Mengambil stok...", null, "cloud"); 
+            try { 
+                const res = await fetch(CLOUD_URL + "?action=loadStok", { redirect: "follow" }); 
+                const data = await res.json(); 
+                if(data && data.supplier) { 
+                    let savedHistory = db.history || []; let savedRetur = db.retur || []; 
+                    db = data; db.history = savedHistory; db.retur = savedRetur.length > 0 ? savedRetur : (data.retur || []); 
+                    
+                    unuploadedData = false; 
+                    saveData(true);
+                    localStorage.removeItem('BARLA_UNSYNC');
+                    document.getElementById('sync-indicator').style.display = 'none'; 
+                    
+                    openModal("SUKSES", "", "LOAD BERHASIL!", () => { renderStok(curTab); refreshDL(); }, "alert"); 
+                } 
+            } catch(e) { 
+                openModal("GAGAL", "", "Gagal ambil data.", null, "alert"); 
+            } 
+        }
 
         function setupDropdown(idLabel, idDropdown, tipe, brObj) { const label = document.getElementById(idLabel); const dropdown = document.getElementById(idDropdown); label.onclick = (e) => { e.stopPropagation(); if(curDropdownOpen && curDropdownOpen !== idDropdown) { document.getElementById(curDropdownOpen).classList.add('hidden'); } let curVal = tipe === 'ecer' ? brObj.sK : brObj.sB; let list = tipe === 'ecer' ? ecerUnitList : grosirUnitList; let html = ''; list.filter(s => s !== curVal).forEach(s => { html += `<div onclick="selectDropdownVal('${tipe}', '${s}', '${idLabel}', '${idDropdown}')" class="p-3 text-[10px] font-bold text-[#ffffff] uppercase border-b border-[#666666] transition-colors active:text-white active:border-white bg-transparent cursor-pointer">${s}</div>`; }); if(html === '') html = `<div class="p-3 text-[10px] font-bold text-[#808080] italic">Habis</div>`; dropdown.innerHTML = html; dropdown.classList.toggle('hidden'); curDropdownOpen = dropdown.classList.contains('hidden') ? null : idDropdown; }; }
         function selectDropdownVal(tipe, val, idLabel, idDropdown) { document.getElementById(idDropdown).classList.add('hidden'); curDropdownOpen = null; const targetId = idLabel === 'm-lb-ecer' ? 'm-label-kecil' : 'm-label-besar'; document.getElementById(targetId).innerHTML = val.toUpperCase() + ' <i class="fas fa-caret-down text-[8px] ml-1"></i>'; if(activeDropdownCallback) activeDropdownCallback(tipe, val); }
@@ -741,7 +788,6 @@
             btnBatal.style.display = (mode!=='alert' && mode!=='cloud' && mode!=='danger_confirm') ? 'block' : 'none'; 
             document.getElementById('m-back').style.display = (t.includes("RETUR") && (mode==='dual' || mode==='dual_edit_stok')) ? 'block' : 'none'; 
             
-            /* LOGIKA WARNA MODAL */
             let bc = "#666666"; 
             if (t.includes("HAPUS") || t.includes("GAGAL") || t.includes("KOSONG") || t.includes("KURANG") || t.includes("TIDAK BISA") || t.includes("RETUR MELEBIHI") || t.includes("MEMORI") || t.includes("STOK KURANG") || t.includes("PERINGATAN") || mode==='danger_confirm') bc = "#ff0000"; 
             else if (t.includes("RETUR")) bc = "#facc15"; 
@@ -871,7 +917,7 @@
         }
         
         function exportData() { let ds = []; db.supplier.forEach(s=>s.barang.forEach(b=>ds.push({"Supplier":s.nama,"Barang":b.nama,"BC Satuan":b.bcE||"","BC Grosir":b.bcG||"","Harga Satuan":b.hargaE||0,"Harga Grosir":b.hargaG||0,"Stok":b.stok,"Satuan":b.sK||'pcs',"Grosir":b.sB||'',"Isi":b.isi||0,"Batas Laporan":getMinLimit(b.sB||b.sK)}))); const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(ds), "Stok"); XLSX.writeFile(wb, "DATA_STORE_FAM_BARLA.xlsx"); }
-        function importData(inp) { if(!inp.files[0]) return; const r = new FileReader(); r.readAsArrayBuffer(inp.files[0]); r.onload = (e) => { try { const wb = XLSX.read(new Uint8Array(e.target.result), {type:'array'}); const json = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]); json.forEach(row => { const sn = (row["Supplier"]||"").toString().trim(), bn = (row["Barang"]||"").toString().trim(); if(sn && bn) { let s = db.supplier.find(x=>x.nama.toLowerCase()===sn.toLowerCase()) || {nama:sn, barang:[]}; if(!db.supplier.includes(s)) db.supplier.unshift(s); let b = s.barang.find(x=>x.nama.toLowerCase()===bn.toLowerCase()); if(b) { b.stok = parseFloat((row["Stok"]||0).toString().replace(/,/g, '.'))||0; b.hargaE = parseInt((row["Harga Satuan"]||0).toString().split(',')[0].replace(/[^0-9]/g, ''))||0; b.hargaG = parseInt((row["Harga Grosir"]||0).toString().split(',')[0].replace(/[^0-9]/g, ''))||0; b.bcE = (row["BC Satuan"]||'').toString().trim(); b.bcG = (row["BC Grosir"]||'').toString().trim(); b.sK = (row["Satuan"]||'pcs').toString().toLowerCase().trim(); b.sB = (row["Grosir"]||'').toString().toLowerCase().trim(); b.isi = parseInt(row["Isi"])||0; b.lastModified = Date.now(); } else s.barang.unshift({nama:bn, bcE:(row["BC Satuan"]||"").toString().trim(), bcG:(row["BC Grosir"]||"").toString().trim(), hargaE:parseInt((row["Harga Satuan"]||0).toString().split(',')[0].replace(/[^0-9]/g, ''))||0, hargaG:parseInt((row["Harga Grosir"]||0).toString().split(',')[0].replace(/[^0-9]/g, ''))||0, stok:parseFloat((row["Stok"]||0).toString().replace(/,/g, '.'))||0, sK:(row["Satuan"]||'pcs').toString().toLowerCase().trim(), sB:(row["Grosir"]||'').toString().toLowerCase().trim(), isi:parseInt(row["Isi"])||0, lastModified: Date.now()}); } }); saveData(); renderStok(curTab); } catch(err) { openModal("ERROR","","Format salah!",null,"alert"); } }; }
+        function importData(inp) { if(!inp.files[0]) return; const r = new FileReader(); r.readAsArrayBuffer(inp.files[0]); r.onload = (e) => { try { const wb = XLSX.read(new Uint8Array(e.target.result), {type:'array'}); const json = XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]]); json.forEach(row => { const sn = (row["Supplier"]||"").toString().trim(), bn = (row["Barang"]||"").toString().trim(); if(sn && bn) { let s = db.supplier.find(x=>x.nama.toLowerCase()===sn.toLowerCase()) || {nama:sn, barang:[]}; if(!db.supplier.includes(s)) db.supplier.unshift(s); let b = s.barang.find(x=>x.nama.toLowerCase()===bn.toLowerCase()); if(b) { b.stok = parseFloat((row["Stok"]||0).toString().replace(/,/g, '.'))||0; b.hargaE = parseInt((row["Harga Satuan"]||0).toString().split(',')[0].replace(/[^0-9]/g, ''))||0; b.hargaG = parseInt((row["Harga Grosir"]||0).toString().split(',')[0].replace(/[^0-9]/g, ''))||0; b.bcE = (row["BC Satuan"]||'').toString().trim(); b.bcG = (row["BC Grosir"]||'').toString().trim(); b.sK = (row["Satuan"]||'pcs').toString().toLowerCase().trim(); b.sB = (row["Grosir"]||'').toString().toLowerCase().trim(); b.isi = Math.abs(parseInt(row["Isi"]))||0; } else { s.barang.unshift({nama:bn, bcE:(row["BC Satuan"]||"").toString().trim(), bcG:(row["BC Grosir"]||"").toString().trim(), hargaE:parseInt((row["Harga Satuan"]||0).toString().split(',')[0].replace(/[^0-9]/g, ''))||0, hargaG:parseInt((row["Harga Grosir"]||0).toString().split(',')[0].replace(/[^0-9]/g, ''))||0, stok:parseFloat((row["Stok"]||0).toString().replace(/,/g, '.'))||0, sK:(row["Satuan"]||'pcs').toString().toLowerCase().trim(), sB:(row["Grosir"]||'').toString().toLowerCase().trim(), isi:Math.abs(parseInt(row["Isi"]))||0}); } } }); saveData(); renderStok(curTab); } catch(err) { openModal("ERROR","","Format salah!",null,"alert"); } }; }
         function printReturSemua() { let h = `          STORE famBARLA         \n     Ps. Sunggingan Lt. 2      \n-------------------------------\nREKAP RETUR - ${getTglStr()}\n-------------------------------\n`; const g = db.retur.reduce((a,r)=>{(a[r.sup]=a[r.sup]||[]);a[r.sup].push(r);return a;},{}); for(let s in g){ h += `• ${escapeHTML(s).toUpperCase()}\n`; g[s].forEach(r=> h += `  ${escapeHTML(r.nama).substring(0,18).padEnd(19)} ${r.type==='in'?'+':'-'}${escapeHTML(r.qtyStr)}\n`); h += `\n`; } document.getElementById('p-konten').innerHTML = `<pre>${h}</pre>`; window.print(); }
         function printReturSup(sn) { let h = `          STORE famBARLA         \n     Ps. Sunggingan Lt. 2      \n-------------------------------\nRETUR: ${escapeHTML(sn).toUpperCase()}\n-------------------------------\n`; db.retur.filter(x=>x.sup===sn).forEach(r=> h += `${escapeHTML(r.nama).substring(0,18).padEnd(19)} ${r.type==='in'?'+':'-'}${escapeHTML(r.qtyStr)}\n`); document.getElementById('p-konten').innerHTML = `<pre>${h}</pre>`; window.print(); }
         function printLapSemua() { let h = `          STORE famBARLA         \n     Ps. Sunggingan Lt. 2      \n-------------------------------\nLAPORAN STOK - ${getTglStr()}\n-------------------------------\n`; db.supplier.forEach(s=>{ const k=s.barang.filter(b=>{ if(b.sB && b.isi > 0) { let krt = Math.floor(b.stok / b.isi); return krt <= getMinLimit(b.sB); } else { return b.stok <= getMinLimit(b.sK); }}); if(k.length>0){ h += `• ${escapeHTML(s.nama).toUpperCase()}\n`; k.forEach(b=> h += `  ${escapeHTML(b.nama).substring(0,18).padEnd(19)} ${formatStok(b.stok, b.isi, b.sK, b.sB)}\n`); h += `\n`; } }); document.getElementById('p-konten').innerHTML=`<pre>${h}</pre>`; window.print(); }
